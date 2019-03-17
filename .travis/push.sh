@@ -11,7 +11,7 @@ commit_changes() {
 }
 
 upload_files() {
-  git push master
+  git push
 }
 
 setup_git
