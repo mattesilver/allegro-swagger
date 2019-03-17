@@ -7,6 +7,7 @@ setup_git() {
 
 commit_changes() {
   git add swagger.yaml
+  VERSION=`cat VERSION`
   git commit --message "New swagger file version: $VERSION"
 }
 
