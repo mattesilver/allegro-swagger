@@ -11,8 +11,7 @@ commit_changes() {
 }
 
 upload_files() {
-  git remote add origin-pages https://${GH_TOKEN}@github.com/mattesilver/allegro-swagger.git > /dev/null 2>&1
-  git push --quiet --set-upstream origin-pages gh-pages
+  git push master
 }
 
 setup_git
