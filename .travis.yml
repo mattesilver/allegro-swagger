@@ -1,3 +1,4 @@
+language: minimal
 script:
 - curl -o swagger-new.yaml https://developer.allegro.pl/swagger.yaml
 - test -n "$(diff swagger.yaml swagger-new.yaml)"
@@ -7,6 +8,7 @@ deploy:
     condition: $CHANGED = 1
   provider: script
   script: .travis/update.sh && .travis/push.sh
+  skip_cleanup: true
 env:
   global:
     secure: w3vmxcHuVnNtV9dwmlWRyvyfpD9utHdPUo0iGX8JjiXy4/z0FV6ThTar+DP74vgtFw3t4JE8M2WYtSDsft4yK1hHCtNxm98R4oa3fu2tTCwEw28QLluHG3CNkUPtgDB7s0HWt6Z6iEo0NO21mgWzhPSN58MEgf3eBhonN0tQh5BQO54FtiGIl+1r0U83xQQTdDpsKbjTML7i1jvLFrh0AuyYl+nJ4vs7eZUkYQz2JE9ZAx3i83HFLV4k1bzDDjQUzg3kJlFIpLcz73jX7PnikFDcliYsH9iMbdvpOc1qSVCtT3gP7DcQRGAWJVtagjRiTKTbCCUEtdvXNiT4mXSBAA1V6tM/up0q4JIYo3W3eKbF30Dp0DkOXwsmEjhltrUFU5nywoZUimdKJRyalwv6WuylyI4gOeRbYA83+djVMAnI+iRQHcu7e1W4s6CYfpzfYAarLXYXNoB70Hoz2nsTEm5PHCNNNz3RdWU0HgwL+zEU41MxAitxRCEx0DKvnsdSxfMtw/doPbjXl1Qs0d6LbkE1QkT1v3IJmlAjU4fqwr5HJdUaTX1c6bBcaZQO+HDfcmMJs3eKu7orIPk1ydzCWZt/N54Lm0bHollhs0TwtoF1U7jaiPQODWH3TNhY9upd5Y8u4LfjYxYPmyY3CbRvJ4zITX2tCiVIKTlfmy4FGaE=

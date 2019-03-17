@@ -7,3 +7,4 @@ export VERSION
 
 mv swagger-new.yaml swagger.yaml
 
+git add VERSION swagger.yaml
