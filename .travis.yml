@@ -2,8 +2,7 @@ language: minimal
 script:
 - git checkout master
 - curl -o swagger-new.yaml https://developer.allegro.pl/swagger.yaml
-- test -n "$(diff swagger.yaml swagger-new.yaml)"
-- CHANGED=$?
+- test -n "$(diff swagger.yaml swagger-new.yaml)" && CHANGED=$? && true
 deploy:
   on:
     condition: $CHANGED = 1
