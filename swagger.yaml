@@ -21,6 +21,7 @@ tags:
 
   - name: User's offer information
   - name: Offer management
+  - name: Products
   - name: Images and attachments
   - name: Pricing
   - name: Batch offer modification
@@ -3461,6 +3462,61 @@ paths:
               schema:
                 $ref: '#/components/schemas/Errors'
 
+  /sale/products:
+    get:
+      tags:
+        - Products
+      summary: "Get search products results"
+      description: >-
+        Use this resource to get a list of products according to provided parameters.
+        At least ean parameter is required.
+      operationId: getSaleProducts
+      parameters:
+        - name: ean
+          in: query
+          description: The EAN values can include EAN, ISBN, and UPC identifier types.
+          required: false
+          schema:
+            type: string
+            maxLength: 18
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/GetSaleProductsResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: >-
+            One of parameters have invalid value.
+  '/sale/products/{productId}':
+    get:
+      tags:
+        - Products
+      summary: 'Get all data of the particular product'
+      description: 'Use this resource to retrieve all data of the particular product.'
+      operationId: getSaleProduct
+      parameters:
+        - name: productId
+          in: path
+          description: Product identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product returned successfully
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductResponseDto'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -3776,6 +3832,8 @@ components:
         advertisementPriceOptional:
           type: boolean
         variantsByColorPatternAllowed:
+          type: boolean
+        offersWithProductPublicationEnabled:
           type: boolean
       title: CategoryOptionsDto
     Cells:
@@ -4283,6 +4341,8 @@ components:
             $ref: '#/components/schemas/Parameter'
         payments:
           $ref: '#/components/schemas/Payments'
+        product:
+          $ref: '#/components/schemas/JustId'
         promotion:
           $ref: '#/components/schemas/Promotion'
         publication:
@@ -4508,15 +4568,10 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          INTEGER: '#/components/schemas/IntegerCategoryParameter'
-          FLOAT: '#/components/schemas/FloatCategoryParameter'
-          STRING: '#/components/schemas/StringCategoryParameter'
-          DICTIONARY: '#/components/schemas/DictionaryCategoryParameter'
-      anyOf:
-        - $ref: '#/components/schemas/IntegerCategoryParameter'
-        - $ref: '#/components/schemas/FloatCategoryParameter'
-        - $ref: '#/components/schemas/StringCategoryParameter'
-        - $ref: '#/components/schemas/DictionaryCategoryParameter'
+          integer: '#/components/schemas/IntegerCategoryParameter'
+          float: '#/components/schemas/FloatCategoryParameter'
+          string: '#/components/schemas/StringCategoryParameter'
+          dictionary: '#/components/schemas/DictionaryCategoryParameter'
       properties:
         id:
           type: string
@@ -4524,7 +4579,7 @@ components:
           type: string
         type:
           type: string
-          example: 'INTEGER, FLOAT, STRING, DICTIONARY'
+          example: 'integer, float, string, dictionary'
         required:
           type: boolean
         unit:
@@ -4548,7 +4603,7 @@ components:
           properties:
             type:
               type: string
-              default: 'DICTIONARY'
+              default: 'dictionary'
             restrictions:
               type: object
               properties:
@@ -4570,7 +4625,7 @@ components:
           properties:
             type:
               type: string
-              default: 'INTEGER'
+              default: 'integer'
             restrictions:
               type: object
               properties:
@@ -4587,7 +4642,7 @@ components:
           properties:
             type:
               type: string
-              default: 'FLOAT'
+              default: 'float'
             restrictions:
               type: object
               properties:
@@ -4606,7 +4661,7 @@ components:
           properties:
             type:
               type: string
-              default: 'STRING'
+              default: 'string'
             restrictions:
               type: object
               properties:
@@ -4838,6 +4893,19 @@ components:
         status:
           type: string
           description: 'Publication status, one of: INACTIVE, ACTIVATING, ACTIVE, ENDED'
+        endedBy:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - EXPIRATION
+            - ERROR
+          description: >
+            The types of ended by can be as follows:</br>
+            - `USER` - offer ended by user.</br>
+            - `ADMIN` - offer ended by admin.</br>
+            - `EXPIRATION` - offer ended due to available items had sold out or offer duration had expired (valid for offers with specified duration).</br>
+            - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with success status, but further processing failed.
     PublicationChangeCommandDto:
       type: object
       properties:
@@ -5599,18 +5667,6 @@ components:
           description: Available sorting options.
           items:
             $ref: '#/components/schemas/ListingResponseSort'
-    OfferSellerContactPhones:
-      properties:
-        number:
-          type: string
-          description: Phone number.
-    OfferSellerContact:
-      properties:
-        phones:
-          type: array
-          items:
-            $ref: '#/components/schemas/OfferSellerContactPhones'
-      description: Optional contact details for items with advertisement selling format.
     OfferSeller:
       properties:
         id:
@@ -5622,8 +5678,6 @@ components:
         superSeller:
           type: boolean
           description: Indicates whether the item has Super Seller option.
-        contact:
-          $ref: '#/components/schemas/OfferSellerContact'
       description: Information about the seller of the item.
     OfferStock:
       properties:
@@ -6993,4 +7047,77 @@ components:
             List of parcel tracking numbers currently assigned to the order.
           items:
             $ref: '#/components/schemas/CheckoutFormAddWaybillCreated'
-
+    GetSaleProductsResponse:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleProductResponseDto'
+        count:
+          type: number
+          description: >-
+            Total number of products matching query criteria
+    SaleProductResponseDto:
+      type: object
+      required:
+        - id
+        - name
+        - category
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Name of the product.
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/Category'
+        ean:
+          type: string
+          maxLength: 18
+        eans:
+          type: array
+          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
+          items:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageUrl'
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductParameter'
+      description: Product data
+    ProductParameter:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        rangeValue:
+          $ref: '#/components/schemas/ParameterRangeValue'
+        values:
+          type: array
+          items:
+            type: string
+        valuesIds:
+          type: array
+          items:
+            type: string
+        valueLabels:
+          type: array
+          items:
+            type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              identifiesProduct:
+                type: boolean
+      description: Product's parameter
