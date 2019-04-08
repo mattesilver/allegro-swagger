@@ -4778,12 +4778,14 @@ components:
             temporarily closed, CLOSED_DOWN - closed down, DELETED - deleted.
         createdAt:
           type: string
-          description: 'Creation date. Date format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ'
+          description: >-
+            Creation date. Date format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ
+            When creating (Post) or updating (Put) a point of service (Post) the field is ignored.
         updatedAt:
           type: string
           description: >-
-            Modification date. Date format (ISO 8601) -
-            yyyy-MM-dd'T'HH:mm:ss.SSSZ
+            Modification date. Date format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ
+            When creating (Post) or updating (Put) a point of service (Post) the field is ignored.
     Price:
       type: object
       required:
@@ -5099,7 +5101,10 @@ components:
       properties:
         id:
           type: string
-          description: Shipping rates set ID
+          description: >-
+            Shipping rates set ID (UUID)
+            When creating a shipping rates set (Post) the field is ignored.
+            It is required when updating (Put) a shipping rates.
         name:
           type: string
           minLength: 1
@@ -5166,7 +5171,8 @@ components:
           type: string
           description: >-
             Date and time of the last modification of the set in UTC
-            ISO 8601 format
+            ISO 8601 format.
+            When creating (Post) or updating (Put) a shipping rates set the field is ignored.
     Stock:
       type: object
       properties:
