@@ -2606,13 +2606,72 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+  '/sale/images':
+    post:
+      tags:
+        - Images and attachments
+      summary: "Upload an offer image"
+      description: |
+        Upload image to our servers.
+
+        More information about rules for photos in an offer's gallery and description you will find
+        <a href="https://allegro.pl/dla-sprzedajacych/nowe-zasady-dla-zdjec-w-galerii-i-w-opisie-YLlAAa2oXf7" target="_blank">here</a>.
+
+        You can choose from two upload options:
+          * \- provide a link and we will download an image for you
+          * \- send an image as binary data
+
+        **Important!** Remember to use dedicated domain for upload, i.e.
+          * \- https://upload.allegro.pl for Production
+          * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
+      operationId: uploadOfferImageUsingPOST
+      servers:
+        - url: https://upload.{environment}
+          variables:
+            environment:
+              default: allegro.pl
+              enum:
+                - allegro.pl
+                - allegro.pl.allegrosandbox.pl
+      responses:
+        '201':
+          description: Image uploaded correctly
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferImageUploadResponse'
+        '400':
+          description: Syntactically incorrect request
+        '401':
+          description: Invalid or missing bearer token
+        '413':
+          description: Image is too big
+        '415':
+          description: Unsupported media type
+      requestBody:
+        $ref: '#/components/requestBodies/OfferImageUploadRequest'
   '/sale/offer-attachments':
     post:
       tags:
         - Images and attachments
       summary: "Create an offer attachment"
-      description:
-        'Creates attachment and returns location header for file upload'
+      description: |
+        You can upload PDF attachments to your offers.
+        We will present them under the offer description in the Additional information section.
+        You can upload up to 7 attachments – one per item from the list:
+          * \- Guide (MANUAL)
+          * \- Special offer terms (SPECIAL_OFFER_RULES)
+          * \- Competition terms (COMPETITION_RULES)
+          * \- Book excerpt (BOOK_EXCERPT)
+          * \- Manual (USER_MANUAL)
+          * \- Installation manual (INSTALLATION_INSTRUCTIONS)
+          * \- Game manual (GAME_INSTRUCTIONS)
+
+        Uploading attachments flow:
+          1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
+          2. Use the upload URL to submit the PDF file (*PUT /sale/offer-attachments/{attachmentId}*),
+          3. Add the attachment to the offer (*PUT /sale/offers/{offerId}*).
+
       operationId: createOfferAttachmentUsingPOST
       responses:
         '201':
@@ -2631,6 +2690,35 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/OfferAttachmentRequest'
+  '/sale/offer-attachments/{attachmentId}':
+    put:
+      tags:
+        - Images and attachments
+      summary: "Upload an offer attachment"
+      description: |
+        Upload an offer attachment.
+
+        This operation should be used after creating an offer attachment with *POST /sale/offer-attachments*
+
+        **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/offer-attachments*.
+        The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
+        Do not compose the address on your own.
+      operationId: uploadOfferAttachmentUsingPUT
+      servers:
+        - url: https://upload.{environment}
+          variables:
+            environment:
+              default: allegro.pl
+              enum:
+                - allegro.pl
+                - allegro.pl.allegrosandbox.pl
+      requestBody:
+        content:
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
   /offers/listing:
     get:
       tags:
@@ -3128,6 +3216,72 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AttachmentDeclaration'
   '/sale/dispute-attachments/{attachmentId}':
+    put:
+      tags:
+        - Disputes
+      summary: "Upload a dispute message attachment"
+      description: |
+        Upload a dispute message attachment.
+
+        This operation should be used after creating an attachment declaration with *POST /sale/dispute-attachments*
+
+        **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/dispute-attachments*.
+        The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
+        Do not compose the address on your own.
+
+      operationId: uploadDisputeAttachmentUsingPUT
+      servers:
+        - url: https://upload.{environment}
+          variables:
+            environment:
+              default: allegro.pl
+              enum:
+                - allegro.pl
+                - allegro.pl.allegrosandbox.pl
+      responses:
+        '201':
+          description: File uploaded correctly
+        '400':
+          description: Syntactically incorrect request
+        '401':
+          description: Invalid or missing bearer token
+        '413':
+          description: File is too big
+        '415':
+          description: Unsupported media type
+      requestBody:
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+          image/gif:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+          image/bmp:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+          image/tiff:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
     get:
       tags:
         - Disputes
@@ -3590,6 +3744,27 @@ components:
             $ref: '#/components/schemas/AttachmentDeclaration'
       description: A detailed declaration of a file to be uploaded
       required: true
+    OfferImageUploadRequest:
+      required: true
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/OfferImageLinkUploadRequest'
+        image/jpeg:
+          schema:
+            type: string
+            format: binary
+            description: File in a binary format
+        image/png:
+          schema:
+            type: string
+            format: binary
+            description: File in a binary format
+        image/gif:
+          schema:
+            type: string
+            format: binary
+            description: File in a binary format
   schemas:
     AdditionalServiceDefinitionRequest:
       type: object
@@ -4293,6 +4468,25 @@ components:
         name:
           type: string
           maxLength: 200
+    OfferImageLinkUploadRequest:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+    OfferImageUploadResponse:
+      type: object
+      properties:
+        expiresAt:
+          type: string
+          format: date-time
+          description: >-
+            Date of file expiration (removal from the server).
+            We will remove it unless you use it in your offer.
+        location:
+          type: string
+          description: Link to the uploaded image
     Offer:
       type: object
       required:
