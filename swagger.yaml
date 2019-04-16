@@ -168,7 +168,7 @@ paths:
               - ACTIVE
               - ACTIVATING
               - ENDED
-            default: 'ACTIVE,ACTIVATING,ENDED'
+            default: 'INACTIVE,ACTIVE,ACTIVATING,ENDED'
         - name: sellingMode.format
           in: query
           required: false
@@ -3623,7 +3623,7 @@ paths:
       summary: "Get search products results"
       description: >-
         Use this resource to get a list of products according to provided parameters.
-        At least ean parameter is required.
+        At least ean or phrase parameter is required.
       operationId: getSaleProducts
       parameters:
         - name: ean
@@ -3633,6 +3633,25 @@ paths:
           schema:
             type: string
             maxLength: 18
+        - name: phrase
+          in: query
+          description: Search phrase.
+          required: false
+          schema:
+            type: string
+            maxLength: 1024
+        - name: category.id
+          in: query
+          description: The category identifier to filter results.
+          required: false
+          schema:
+            type: string
+        - name: page.id
+          in: query
+          description: A "cursor" to the next set of results.
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation.
@@ -7256,10 +7275,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SaleProductResponseDto'
-        count:
-          type: number
-          description: >-
-            Total number of products matching query criteria
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleProductResponseCategoriesDto'
+        nextPage:
+          type: object
+          properties:
+            id:
+              type: string
+              description: A "cursor" to the next set of results.
     SaleProductResponseDto:
       type: object
       required:
@@ -7291,7 +7316,45 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductParameter'
+        offerRequirements:
+          $ref: '#/components/schemas/OfferRequirements'
+        compatibilityList:
+          $ref: '#/components/schemas/CompatibilityList'
       description: Product data
+    SaleProductResponseCategoriesDto:
+      properties:
+        subcategories:
+          type: array
+          description: A list of categories that contain results for given search parameters.
+          items:
+            $ref: '#/components/schemas/ProductsCategorySubcategories'
+        path:
+          type: array
+          description: The path of current category used as categrory filter in search.
+          items:
+            $ref: '#/components/schemas/ProductsCategoryPath'
+    ProductsCategorySubcategories:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Category id.
+        name:
+          type: string
+          description: Category name.
+        count:
+          type: integer
+          description: Total number of products matching query criteria in this category
+          format: int32
+    ProductsCategoryPath:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Category id.
+        name:
+          type: string
+          description: Category name.
     ProductParameter:
       type: object
       required:
@@ -7309,7 +7372,7 @@ components:
           type: array
           items:
             type: string
-        valueLabels:
+        valuesLabels:
           type: array
           items:
             type: string
@@ -7321,3 +7384,10 @@ components:
               identifiesProduct:
                 type: boolean
       description: Product's parameter
+    OfferRequirements:
+      description: Requirements for creating offer related to this product. For future use.      
+      properties:
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductParameter'
