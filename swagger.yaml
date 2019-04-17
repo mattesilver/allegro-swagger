@@ -3623,7 +3623,7 @@ paths:
       summary: "Get search products results"
       description: >-
         Use this resource to get a list of products according to provided parameters.
-        At least ean or phrase parameter is required.
+        At least ean or phrase parameter is required. ou can find more details <a href="../../productization/#search" target="_blank">here</a>.
       operationId: getSaleProducts
       parameters:
         - name: ean
@@ -3669,7 +3669,7 @@ paths:
       tags:
         - Products
       summary: 'Get all data of the particular product'
-      description: 'Use this resource to retrieve all data of the particular product.'
+      description: 'Use this resource to retrieve all data of the particular product. You can find more details <a href="../../productization/#details" target="_blank">here</a>.'
       operationId: getSaleProduct
       parameters:
         - name: productId
