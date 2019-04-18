@@ -130,7 +130,7 @@ paths:
         - User's offer information
       summary: "Get seller's offers"
       description:
-        "Search seller's offers by given criteria. Accept header should be set to application/vnd.allegro.beta.v1+json"
+        "Search seller's offers by given criteria. Accept header should be set to application/vnd.allegro.public.v1+json"
       operationId: searchOffersUsingGET
       parameters:
         - name: seller.id
@@ -219,13 +219,13 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/OffersSearchResultDtoV1'
         '400':
           description: Bad request
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   '/sale/offers/{offerId}':
@@ -6222,13 +6222,7 @@ components:
         startingAt:
           type: string
           format: date-time
-        startedAt:
-          type: string
-          format: date-time
         endingAt:
-          type: string
-          format: date-time
-        endedAt:
           type: string
           format: date-time
     OfferListingDtoV1.OfferStatus:
@@ -7385,7 +7379,7 @@ components:
                 type: boolean
       description: Product's parameter
     OfferRequirements:
-      description: Requirements for creating offer related to this product. For future use.      
+      description: Requirements for creating offer related to this product. For future use.
       properties:
         parameters:
           type: array
