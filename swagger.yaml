@@ -38,6 +38,7 @@ tags:
   - name: Order management
   - name: Disputes
   - name: User information
+  - name: Account information
 
 security:
   - bearer-token-for-user: []
@@ -3689,6 +3690,125 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  '/account/additional-emails/':
+    get:
+      tags:
+        - Account information
+      summary: "Get user's additional emails"
+      description: "Use this resource to get a list of all additional email addresses assigned to account."
+      operationId: getListOfAdditionalEmailsUsingGET
+      responses:
+        '200':
+          description: List of user's additional emails returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AdditionalEmailsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
+    post:
+      tags:
+        - Account information
+      summary: "Add a new additional email address to user's account"
+      description: "Use this resource to add a new additional email address to account."
+      operationId: addAdditionalEmailUsingPOST
+      responses:
+        '201':
+          description: Additional email added successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AdditionalEmail'
+        '400':
+          description: Bad request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '422':
+          description: Email address provided in the request is not valid
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/AdditionalEmailRequest'
+        description: request
+        required: true
+  '/account/additional-emails/{emailId}':
+    get:
+      tags:
+        - Account information
+      summary: "Get information about a particular additional email"
+      description: "Use this resource to retrieve a single additional email."
+      operationId: getAdditionalEmailUsingGET
+      parameters:
+        - name: emailId
+          in: path
+          description: Id of the additional email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Additional email returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AdditionalEmail'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Additional email not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
+    delete:
+      tags:
+        - Account information
+      summary: "Delete an additional email address"
+      description: "Use this resource to delete one of additional emails"
+      operationId: deleteAdditionalEmailUsingDELETE
+      parameters:
+        - name: emailId
+          in: path
+          description: Id of the additional email to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully deleted additional email
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Additional email not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Errors'
 
 components:
   securitySchemes:
@@ -7385,3 +7505,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductParameter'
+    AdditionalEmailsResponse:
+      type: object
+      required:
+        - additional-emails
+      properties:
+        additional-emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalEmail'
+    AdditionalEmail:
+      type: object
+      description: Details of a single additional email address.
+      required:
+        - id
+        - email
+        - createdAt
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+    AdditionalEmailRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: >-
+            A valid email address you want to add to your account. Maximum length of the part before the `@` sign is
+            64 characters.
