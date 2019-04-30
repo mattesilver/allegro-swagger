@@ -5423,6 +5423,63 @@ components:
         startingPrice:
           $ref: '#/components/schemas/Price'
       description: Offer's selling mode
+    ShippingRate:
+      type: object
+      properties:
+        deliveryMethod:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the delivery method
+        maxQuantityPerPackage:
+          type: integer
+          description: >-
+            Maximum quantity per package for the given delivery
+            method. Minimum value is 1.
+          minimum: 1
+        firstItemRate:
+          type: object
+          description: >-
+            Rate for the first item in the parcel for the given
+            delivery method
+          properties:
+            amount:
+              type: string
+              description: Amount
+            currency:
+              type: string
+              description: ISO 4217 currency code
+        nextItemRate:
+          type: object
+          description: >-
+            Rate for every other item, after the first, in the
+            same parcel for the given delivery method
+          properties:
+            amount:
+              type: string
+              description: Amount
+            currency:
+              type: string
+              description: ISO 4217 currency code
+        shippingTime:
+          type: object
+          description: >-
+            Custom shipping time for the given delivery method. If
+            not set the default shipping time for the method is
+            used.
+          properties:
+            from:
+              type: string
+              description: 'ISO 8601 duration format, e.g. P3D for 3 days'
+            to:
+              type: string
+              description: 'ISO 8601 duration format, e.g. P3D for 3 days'
+      required:
+        - deliveryMethod
+        - firstItemRate
+        - maxQuantityPerPackage
+        - nextItemRate
     ShippingRates:
       type: object
       properties:
@@ -5444,62 +5501,9 @@ components:
           maxLength: 64
           description: User defined name of the shipping rates set
         rates:
-          type: object
-          properties:
-            deliveryMethod:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: ID of the delivery method
-            maxQuantityPerPackage:
-              type: integer
-              description: >-
-                Maximum quantity per package for the given delivery
-                method. Minimum value is 1.
-              minimum: 1
-            firstItemRate:
-              type: object
-              description: >-
-                Rate for the first item in the parcel for the given
-                delivery method
-              properties:
-                amount:
-                  type: string
-                  description: Amount
-                currency:
-                  type: string
-                  description: ISO 4217 currency code
-            nextItemRate:
-              type: object
-              description: >-
-                Rate for every other item, after the first, in the
-                same parcel for the given delivery method
-              properties:
-                amount:
-                  type: string
-                  description: Amount
-                currency:
-                  type: string
-                  description: ISO 4217 currency code
-            shippingTime:
-              type: object
-              description: >-
-                Custom shipping time for the given delivery method. If
-                not set the default shipping time for the method is
-                used.
-              properties:
-                from:
-                  type: string
-                  description: 'ISO 8601 duration format, e.g. P3D for 3 days'
-                to:
-                  type: string
-                  description: 'ISO 8601 duration format, e.g. P3D for 3 days'
-          required:
-            - deliveryMethod
-            - firstItemRate
-            - maxQuantityPerPackage
-            - nextItemRate
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingRate'
         lastModified:
           type: string
           description: >-
@@ -7414,9 +7418,6 @@ components:
           maxLength: 50
         category:
           $ref: '#/components/schemas/Category'
-        ean:
-          type: string
-          maxLength: 18
         eans:
           type: array
           description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
