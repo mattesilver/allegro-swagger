@@ -5510,6 +5510,8 @@ components:
             Date and time of the last modification of the set in UTC
             ISO 8601 format.
             When creating (Post) or updating (Put) a shipping rates set the field is ignored.
+      required:
+        - rates
     Stock:
       type: object
       properties:
