@@ -134,12 +134,6 @@ paths:
         "Search seller's offers by given criteria. Accept header should be set to application/vnd.allegro.public.v1+json"
       operationId: searchOffersUsingGET
       parameters:
-        - name: seller.id
-          in: query
-          description: Seller id
-          required: true
-          schema:
-            type: string
         - name: name
           in: query
           description: Text to search in offer title
@@ -6348,7 +6342,13 @@ components:
         startingAt:
           type: string
           format: date-time
+        startedAt:
+          type: string
+          format: date-time
         endingAt:
+          type: string
+          format: date-time
+        endedAt:
           type: string
           format: date-time
     OfferListingDtoV1.OfferStatus:
