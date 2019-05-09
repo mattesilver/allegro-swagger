@@ -6555,7 +6555,6 @@ components:
         - id
         - buyer
         - status
-        - invoice
         - lineItems
         - surcharges
         - discounts
