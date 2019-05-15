@@ -3041,6 +3041,42 @@ paths:
           schema:
             type: boolean
             default: true
+        - name: "\"A filter's ID\""
+          in: query
+          description: >-
+            You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value.
+            When the filter definition looks like:
+              ````
+                {
+                	"id": "parameter.11323",
+                	"type": "MULTI",
+                	"name": "Stan",
+                	"values": [{
+                			"value": "1",
+                			"name": "nowe",
+                			"count": 21,
+                			"selected": false
+                		},
+                		{
+                			"value": "2",
+                			"name": "używane",
+                			"count": 157,
+                			"selected": false
+                		},
+                		{
+                			"value": "238066",
+                			"name": "po zwrocie",
+                			"count": 1,
+                			"selected": false
+                		}
+                	]
+                }
+              ````
+            You can use 'Stan' filter to query results, i.e.: parameter.11323=1 (for "nowe"), parameter.11323=2 (for "używane") or parameter.11323=238066 (for "po zwrocie")
+          example: 127448=2
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: The request successfully returns the search result.
@@ -3888,6 +3924,32 @@ paths:
         - name: category.id
           in: query
           description: The category identifier to filter results.
+          required: false
+          schema:
+            type: string
+        - name: "\"A filter's ID\""
+          in: query
+          description: >-
+            You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value.
+            When the filter definition looks like:
+              ````
+              {
+                "id": "127448",
+                "name": "Kolor",
+                "type": "SINGLE",
+                "values": [
+                  {
+                    "name": "biały",
+                    "value": "2"
+                  },
+                  {
+                    "name": "czarny",
+                    "value": "1" }
+                ]
+              }
+              ````
+            You can use 'Kolor' filter to query results, i.e.: 127448=2 (for "biały") or 127448=1 (for "czarny")
+          example: 127448=2
           required: false
           schema:
             type: string
@@ -7874,6 +7936,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SaleProductResponseCategoriesDto'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListingResponseFilters'
         nextPage:
           type: object
           properties:
