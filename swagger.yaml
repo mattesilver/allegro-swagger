@@ -22,6 +22,7 @@ tags:
   - name: User's offer information
   - name: Offer management
   - name: Products
+  - name: Classifieds
   - name: Images and attachments
   - name: Pricing
   - name: Batch offer modification
@@ -430,15 +431,15 @@ paths:
   '/sale/offer-classifieds-packages/{offerId}':
     get:
       tags:
-        - Offer management
-      summary: Gets classified packages assigned to offer
+        - Classifieds
+      summary: Get classified packages assigned to an offer
       description:
-        'Use this resource to retrieve classified packages currently assigned to offer'
+        'Use this resource to retrieve classified packages currently assigned to an offer.'
       operationId: getClassifiedPackagesUsingGET
       parameters:
         - name: offerId
           in: path
-          description: Offer id
+          description: Offer ID.
           required: true
           schema:
             type: string
@@ -475,21 +476,21 @@ paths:
                 $ref: '#/components/schemas/Errors'
     put:
       tags:
-        - Offer management
-      summary: Assigns packages to classified
+        - Classifieds
+      summary: Assign packages to a classified
       description:
-        'Use this resource to assign classified packages to offer'
+        'Use this resource to assign classified packages to an offer.'
       operationId: assignClassifiedPackagesUsingPUT
       parameters:
         - name: offerId
           in: path
-          description: Offer id
+          description: The offer ID.
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Packages have been successfully assigned to classified
+          description: Packages have been successfully assigned to the classified.
         '400':
           description: Bad request
           content:
@@ -524,8 +525,8 @@ paths:
   '/sale/classifieds-packages':
     get:
       tags:
-        - Offer management
-      summary: Gets configurations of packages
+        - Classifieds
+      summary: Get configurations of packages
       description:
         'Use this resource to retrieve configurations of classifieds packages for a category.'
       operationId: getClassifiedPackageConfigurationsForCategoryUsingGET
@@ -558,8 +559,8 @@ paths:
   '/sale/classifieds-packages/{packageId}':
     get:
       tags:
-        - Offer management
-      summary: Gets the configuration of a package
+        - Classifieds
+      summary: Get the configuration of a package
       description:
         'Use this resource to retrieve the configuration of a classifieds package.'
       operationId: getClassifiedPackageConfigurationUsingGET
