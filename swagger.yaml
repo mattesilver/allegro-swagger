@@ -217,13 +217,13 @@ paths:
             minimum: 0
       responses:
         '200':
-          description: OK
+          description: The list of offers returned successfully.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/OffersSearchResultDtoV1'
+                $ref: '#/components/schemas/OffersSearchResultDto'
         '400':
-          description: Bad request
+          description: The request query parameters are invalid.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -1703,7 +1703,7 @@ paths:
       parameters:
         - name: categoryId
           in: path
-          description: categoryId
+          description: The category ID.
           required: true
           schema:
             type: string
@@ -1736,7 +1736,7 @@ paths:
       parameters:
         - name: categoryId
           in: path
-          description: categoryId
+          description: The category ID.
           required: true
           schema:
             type: string
@@ -1748,6 +1748,95 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CategoryParameterList'
+              examples:
+                integer:
+                  summary: Integer
+                  value:
+                    id: "202877"
+                    name: "Liczba rdzeni procesora"
+                    type: "integer"
+                    required: false
+                    unit: null
+                    options:
+                      variantsAllowed: true
+                      variantsEqual: false
+                    restrictions:
+                      min: 0
+                      max: 1000000
+                      range: false
+                string_single:
+                  summary: String single
+                  value:
+                    id: "224017"
+                    name: "Kod producenta"
+                    type: "string"
+                    required: false
+                    unit: null
+                    options:
+                      variantsAllowed: false
+                      variantsEqual: false
+                    restrictions:
+                      minLength: 2
+                      maxLength: 35
+                      allowedNumberOfValues: 1
+                dictionary:
+                  summary: Dictionary
+                  value:
+                    id: "11323"
+                    name: "Stan"
+                    type: "dictionary"
+                    required: false
+                    unit: null
+                    options:
+                      variantsAllowed: false
+                      variantsEqual: true
+                    dictionary:
+                      - id: "11323_1"
+                        value: "Nowy"
+                      - id: "11323_2"
+                        value: "Używany"
+                      - id: "11323_238066"
+                        value: "Po zwrocie"
+                      - id: "11323_238058"
+                        value: "Powystawowy"
+                      - id: "11323_238062"
+                        value: "Uszkodzony"
+                      - id: "11323_246534"
+                        value: "Odnowiony przez producenta"
+                    restrictions:
+                      multipleChoices: false
+                float:
+                  summary: Float
+                  value:
+                    id: "17448"
+                    name: "Waga (z opakowaniem)"
+                    type: "float"
+                    required: false
+                    unit: "kg"
+                    options:
+                      variantsAllowed: false
+                      variantsEqual: false
+                    restrictions:
+                      min: 0
+                      max: 1000000
+                      range: false
+                      precision: 3
+                float_range:
+                  summary: Float range
+                  value:
+                    id: "211966"
+                    name: "Zakres regulacji wysokości koszenia"
+                    type: "float"
+                    required: false
+                    unit: "cm"
+                    options:
+                      variantsAllowed: false
+                      variantsEqual: false
+                    restrictions:
+                      min: 0
+                      max: 1000
+                      range: true
+                      precision: 2
         404:
           description: The category with the given ID does not exist.
           content:
@@ -4318,13 +4407,41 @@ components:
           $ref: '#/components/schemas/Coordinates'
     AfterSalesServices:
       type: object
+      description: The definitions of the different after sales services assigned to the offer.
       properties:
         impliedWarranty:
-          $ref: '#/components/schemas/JustId'
+          $ref: '#/components/schemas/ImpliedWarranty'
         returnPolicy:
-          $ref: '#/components/schemas/JustId'
+          $ref: '#/components/schemas/ReturnPolicy'
         warranty:
-          $ref: '#/components/schemas/JustId'
+          $ref: '#/components/schemas/Warranty'
+    ImpliedWarranty:
+      type: object
+      description: The implied warranty information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the implied warranty definition.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+    ReturnPolicy:
+      type: object
+      description: The return policy information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the return policy definition.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+    Warranty:
+      type: object
+      description: The warranty information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the warranty definition.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
     Answer:
       type: object
       required:
@@ -4417,6 +4534,7 @@ components:
       title: Caption
     CategoriesDto:
       type: object
+      description: The list of categories.
       properties:
         categories:
           type: array
@@ -4757,6 +4875,7 @@ components:
           example: The request contains incorrect data. Contact the author of the application.
     Errors:
       type: array
+      description: The list of all the error objects explaining the error.
       items:
         $ref: '#/components/schemas/Error'
     ErrorsHolder:
@@ -4866,11 +4985,12 @@ components:
           type: string
     ExternalId:
       type: object
+      description: The information on the offer in an external system.
       properties:
         id:
           type: string
           maxLength: 100
-          description: The id of the offer from an external system.
+          description: The ID of the offer in the external system.
           example: "AH-129834"
     Location:
       type: object
@@ -5339,6 +5459,7 @@ components:
         unit:
           type: string
           description: The unit in which values of the parameter are used. May be `null`.
+          example: "kg"
         options:
           $ref: '#/components/schemas/CategoryParameterOptions'
     CategoryParameterOptions:
@@ -5686,8 +5807,7 @@ components:
             Publication starting date: Format (ISO 8601) -
             yyyy-MM-dd'T'HH:mm:ss.SSSZ. Cannot be modified
         status:
-          type: string
-          description: 'Publication status, one of: INACTIVE, ACTIVATING, ACTIVE, ENDED'
+          $ref: '#/components/schemas/OfferStatus'
         endedBy:
           type: string
           enum:
@@ -5874,8 +5994,7 @@ components:
       type: object
       properties:
         format:
-          type: string
-          description: 'Selling mode format, one of: BUY_NOW, AUCTION, ADVERTISEMENT'
+          $ref: '#/components/schemas/SellingModeFormat'
         minimalPrice:
           $ref: '#/components/schemas/Price'
         price:
@@ -6597,12 +6716,7 @@ components:
     OfferSellingMode:
       properties:
         format:
-          type: string
-          enum:
-            - BUY_NOW
-            - AUCTION
-            - ADVERTISEMENT
-          description: The selling format of the offer.
+          $ref: '#/components/schemas/SellingModeFormat'
         price:
           $ref: '#/components/schemas/OfferPrice'
         fixedPrice:
@@ -6617,6 +6731,8 @@ components:
           example: 12
       description: This section describes the selling format and prices.
     OfferCategory:
+      type: object
+      description: The category to which the offer is assigned.
       properties:
         id:
           type: string
@@ -6784,30 +6900,47 @@ components:
           type: boolean
           description: Indicates whether this sorting option was used in the current request.
       description: Available sort options.
-    OffersSearchResultDtoV1:
+    OfferAdditionalServices:
+      type: object
+      description: The definition of the additional services assigned to the offer.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the additional services definition.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+    OffersSearchResultDto:
       type: object
       properties:
         offers:
           type: array
+          description: The list of seller's offers matching the request's criteria.
           items:
-            $ref: '#/components/schemas/OfferListingDtoV1'
+            $ref: '#/components/schemas/OfferListingDto'
         count:
           type: integer
-          description: Number of offers in search result for given parameters
+          description: Number of offers in the search result.
+          example: 1
         totalCount:
           type: integer
-          description: Total number of offers for given parameters
-    OfferListingDtoV1:
+          description: The total number of offers matching the request's criteria.
+          example: 1234
+    OfferListingDto:
       type: object
+      description: An offer.
       properties:
         id:
           type: string
+          description: The offer ID.
+          example: "2865624934"
         name:
           type: string
+          description: The title of the offer.
+          example: Buty damskie adidas
         category:
-          $ref: '#/components/schemas/OfferListingDtoV1.Category'
+          $ref: '#/components/schemas/OfferCategory'
         primaryImage:
-          $ref: '#/components/schemas/OfferListingDtoV1.Image'
+          $ref: '#/components/schemas/OfferListingDto.Image'
         sellingMode:
           $ref: '#/components/schemas/OfferListingDtoV1.SellingMode'
         saleInfo:
@@ -6821,78 +6954,120 @@ components:
         afterSalesServices:
           $ref: '#/components/schemas/AfterSalesServices'
         additionalServices:
-          $ref: '#/components/schemas/JustId'
+          $ref: '#/components/schemas/OfferAdditionalServices'
         external:
           $ref: '#/components/schemas/ExternalId'
-    OfferListingDtoV1.Category:
+    OfferListingDto.Image:
       type: object
-      properties:
-        id:
-          type: string
-    OfferListingDtoV1.Image:
-      type: object
+      description: The image used as a thumbnail on the listings.
       properties:
         url:
           type: string
+          description: The url to the image in its original size.
+          example: https://a.allegroimg.com/original/05a2af/929c6dae4fb8721a8539582eb421
     OfferListingDtoV1.SellingMode:
       type: object
+      description: Information on the offer's selling mode.
       properties:
         format:
-          $ref: '#/components/schemas/OfferListingDtoV1.OfferType'
+          $ref: '#/components/schemas/SellingModeFormat'
         price:
-          $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/BuyNowPrice'
         minimalPrice:
-          $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/MinimalPrice'
         startingPrice:
-          $ref: '#/components/schemas/Price'
-    OfferListingDtoV1.OfferType:
+          $ref: '#/components/schemas/StartingPrice'
+    BuyNowPrice:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: The buy now or advertisement price (depending on the offer's format).
+    MinimalPrice:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: The minimal price for offers in auction format.
+    StartingPrice:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: The starting price for offers in auction format.
+    CurrentPrice:
+      allOf:
+      - $ref: '#/components/schemas/Price'
+      description: The current highest bid in auction format.
+    SellingModeFormat:
       type: string
+      description: The selling format of the offer.
       enum:
         - 'BUY_NOW'
         - 'AUCTION'
         - 'ADVERTISEMENT'
     OfferListingDtoV1.SaleInfo:
       type: object
+      description: Additional information about offers in auction format.
       properties:
         currentPrice:
-          $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/CurrentPrice'
         biddersCount:
           type: integer
+          description: The number of bidders.
+          example: 4
     OfferListingDtoV1.Stock:
       type: object
+      description: Information on the offer's stock.
       properties:
         available:
           type: integer
+          description: The available stock value.
+          example: 23
         sold:
           type: integer
+          description: The number of sold items in the last 30 days.
+          example: 3
     OfferListingDtoV1.Stats:
       type: object
+      description: The offer's statistics.
       properties:
         watchersCount:
           type: integer
-          description: 'Number of users that added this offer to watching offers list'
+          description: The number of users who added this offer to their watch lists.
+          example: 99
         visitsCount:
           type: integer
-          description: 'Number of users visits from past 30 days. Any number of offer shows during the same day by the same user is one visit.'
+          description: The number of unique users viewing this offer in the past 30 days.
     OfferListingDtoV1.Publication:
       type: object
+      description: Information on the offer's publication status and dates.
       properties:
         status:
-          $ref: '#/components/schemas/OfferListingDtoV1.OfferStatus'
+          $ref: '#/components/schemas/OfferStatus'
         startingAt:
           type: string
-          format: date-time
+          description: The date and time of activation in UTC for a planned listing.
+          format: ISO 8601
+          example: 2019-05-29T12:00:00Z
         startedAt:
           type: string
-          format: date-time
+          format: ISO 8601
+          description: The actual date and time of activation in UTC.
+          example: 2019-05-29T12:00:00Z
         endingAt:
           type: string
-          format: date-time
+          format: ISO 6801
+          description: The date and time of a planned ending in UTC.
+          example: 2019-06-30T12:00:00Z
         endedAt:
           type: string
-          format: date-time
-    OfferListingDtoV1.OfferStatus:
+          format: ISO 8601
+          description: The actual date and time of last ending in UTC.
+          example: 2019-06-30T12:10:00Z
+    OfferStatus:
       type: string
+      description: >-
+        The publication status of the current offer. The possible values:
+
+          - *INACTIVE* - a draft offer
+          - *ACTIVATING* - the offer is planned for listing or is during the process of activation
+          - *ACTIVE* - the offer is active
+          - *ENDED* - the offer was active and is now ended (for whatever reason)
       enum:
         - 'INACTIVE'
         - 'ACTIVATING'
