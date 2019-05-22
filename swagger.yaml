@@ -455,25 +455,25 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Classified not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     put:
       tags:
         - Classifieds
@@ -496,25 +496,25 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Validation error
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         description: Packages that should be assigned to the classified.
         required: true
@@ -549,13 +549,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
   '/sale/classifieds-packages/{packageId}':
     get:
       tags:
@@ -583,19 +583,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: The classifieds package not found.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/users/{userId}/ratings-summary':
     get:
       tags:
@@ -777,102 +777,6 @@ paths:
         pick and choose forEachQuantity offers and the cheapest of them gets a discount.
 
         Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/" target="_blank">bundles</a>, <a href="../../news/2018-02-01-rabaty_ilosciowe/" target="_blank">multipack</a> and <a href="../../news/2018-10-08-rabaty_ilosciowe/" target="_blank">cross-offer multipack</a>.
-
-        **Example request bodies:**
-        1) Bundle
-        ```
-        {
-          "benefits": [
-            {
-              "specification": {
-                "type": "ORDER_FIXED_DISCOUNT",
-                "value": {
-                  "amount": "10",
-                  "currency": "PLN"
-                }
-              }
-            }
-          ],
-          "offerCriteria": [
-            {
-              "type": "CONTAINS_OFFERS",
-              "offers": [
-                {
-                  "id": "1122334455",
-                  "quantity": 2,
-                  "promotionEntryPoint": true
-                },
-                {
-                  "id": "2233445566",
-                  "quantity": 1,
-                  "promotionEntryPoint": false
-                }
-              ]
-            }
-          ]
-        }
-        ```
-        2) Multipack
-        ```
-        {
-          "benefits": [
-            {
-              "specification": {
-                "type": "UNIT_PERCENTAGE_DISCOUNT",
-                "configuration": {
-                  "percentage": "100"
-                },
-                "trigger": {
-                  "forEachQuantity": "3",
-                  "discountedNumber": "1"
-                }
-              }
-            }
-          ],
-          "offerCriteria": [
-            {
-              "type": "CONTAINS_OFFERS",
-              "offers": [
-                {
-                  "id": "1122334455"
-                }
-              ]
-            }
-          ]
-        }
-        ```
-        3) Cross-offer multipack
-        ```
-        {
-          "benefits": [
-            {
-              "specification": {
-                "type": "UNIT_PERCENTAGE_DISCOUNT",
-                "configuration": {
-                  "percentage": "100"
-                },
-                "trigger": {
-                  "forEachQuantity": "3",
-                  "discountedNumber": "1"
-                }
-              }
-            }
-          ],
-          "offerCriteria": [
-            {
-              "type": "CONTAINS_OFFERS",
-              "offers": [
-                {
-                  "id": "1122334455"
-                },
-                {
-                  "id": "2233445566"
-                },
-              ]
-            }
-          ]
-        }
-        ```
       operationId: createPromotionUsingPOST_1
       responses:
         '201':
@@ -881,12 +785,71 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/SellerRebateDto'
+              examples:
+                bundle:
+                  summary: Bundle
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: ORDER_FIXED_DISCOUNT
+                          value:
+                            amount: '10.00'
+                            currency: PLN
+                    offerCriteria:
+                      - type: CONTAINS_OFFERS
+                        offers:
+                          - id: '1122334455'
+                            quantity: 2
+                            promotionEntryPoint: true
+                          - id: '2233445566'
+                            quantity: 1
+                            promotionEntryPoint: false
+                multipack:
+                  summary: Multipack
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: UNIT_PERCENTAGE_DISCOUNT
+                          configuration:
+                            percentage: 100
+                          trigger:
+                            forEachQuantity: 3
+                            discountedNumber: 1
+                    offerCriteria:
+                      - type: CONTAINS_OFFERS
+                        offers:
+                          - id: '1122334455'
+                cross-offer-multipack:
+                  summary: Cross-offer Multipack
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: UNIT_PERCENTAGE_DISCOUNT
+                          configuration:
+                            percentage: 100
+                          trigger:
+                            forEachQuantity: 3
+                            discountedNumber: 1
+                    offerCriteria:
+                      - type: CONTAINS_OFFERS
+                        offers:
+                          - id: '1122334455'
+                          - id: '2233445566'
         '400':
           description: Bad request
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
             Validation failed - your request was correct, but the promotion
@@ -894,12 +857,62 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/SellerCreateRebateRequestDto'
+            examples:
+              bundle:
+                summary: Bundle
+                value:
+                  benefits:
+                    - specification:
+                        type: ORDER_FIXED_DISCOUNT
+                        value:
+                          amount: '10.00'
+                          currency: PLN
+                  offerCriteria:
+                    - type: CONTAINS_OFFERS
+                      offers:
+                        - id: '1122334455'
+                          quantity: 2
+                          promotionEntryPoint: true
+                        - id: '2233445566'
+                          quantity: 1
+                          promotionEntryPoint: false
+              multipack:
+                summary: Multipack
+                value:
+                  benefits:
+                    - specification:
+                        type: UNIT_PERCENTAGE_DISCOUNT
+                        configuration:
+                          percentage: 100
+                        trigger:
+                          forEachQuantity: 3
+                          discountedNumber: 1
+                  offerCriteria:
+                    - type: CONTAINS_OFFERS
+                      offers:
+                        - id: '1122334455'
+              cross-offer-multipack:
+                summary: Cross-offer Multipack
+                value:
+                  benefits:
+                    - specification:
+                        type: UNIT_PERCENTAGE_DISCOUNT
+                        configuration:
+                          percentage: 100
+                        trigger:
+                          forEachQuantity: 3
+                          discountedNumber: 1
+                  offerCriteria:
+                    - type: CONTAINS_OFFERS
+                      offers:
+                        - id: '1122334455'
+                        - id: '2233445566'
         description: request
         required: true
     get:
@@ -949,13 +962,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: User id not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/loyalty/promotions/{promotionId}':
     get:
       tags:
@@ -985,7 +998,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
         - Sets and rebates
@@ -1010,13 +1023,13 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Promotion cannot be reactivated
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/loyalty/promotion-campaigns:
     post:
       tags:
@@ -1043,19 +1056,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
             Validation failed - your request was correct, but the promotion
@@ -1063,7 +1076,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -1114,19 +1127,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Promotion campaign not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
         - Listing badges
@@ -1156,25 +1169,25 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Promotion not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Campaign cannot be deleted
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/loyalty/promotion-campaign-applications/{applicationId}':
     get:
       tags:
@@ -1205,19 +1218,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Promotion campaign application not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
         - Listing badges
@@ -1241,25 +1254,25 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Promotion campaign application not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Promotion campaign application cannot be deleted
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   /pricing/fee-preview:
     post:
       tags:
@@ -1292,7 +1305,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
             Server understands the content but can not process the requested
@@ -1300,7 +1313,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -1328,19 +1341,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '422':
           description: Unprocessable entity
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -1929,13 +1942,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     post:
       tags:
         - Delivery
@@ -1962,13 +1975,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '422':
           description: The user has reached the limit of shipping rates sets. Information on the limit will be returned in the error message.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/shipping-rates/{id}':
     get:
       tags:
@@ -2015,19 +2028,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: Unauthorized
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: Shipping rates set with given ID not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     put:
       tags:
         - Delivery
@@ -2061,13 +2074,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: Set with given id does not exist
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/points-of-service':
     post:
       tags:
@@ -2092,7 +2105,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         $ref: '#/components/requestBodies/Pos'
     get:
@@ -2123,7 +2136,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/points-of-service/{id}':
     get:
       tags:
@@ -2156,7 +2169,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     put:
       tags:
         - Points of service
@@ -2189,7 +2202,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         $ref: '#/components/requestBodies/Pos'
     delete:
@@ -2218,7 +2231,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/offer-contacts:
     post:
       tags:
@@ -2379,7 +2392,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
   '/sale/offer-additional-services/groups/{groupId}':
     get:
       tags:
@@ -3426,7 +3439,7 @@ paths:
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Authentication failed, e.g. token is expired
         '404':
@@ -3436,7 +3449,7 @@ paths:
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/disputes':
     get:
       tags:
@@ -3745,7 +3758,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
             Validation failed - your request was correct, but the tag
@@ -3753,19 +3766,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized action
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: User is not brandzone user and doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -3814,13 +3827,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: User is not brandzone user and doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
 
   '/sale/offer-tags/{tagId}':
     delete:
@@ -3845,19 +3858,19 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized action
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: User is not brandzone user and doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     put:
       tags:
         - Offer tags
@@ -3881,19 +3894,19 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized action
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: User is not brandzone user and doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -3925,13 +3938,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '403':
           description: Forbidden - offer is created by someone else or user is not brandzone user or doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
             Validation failed - your request was correct, but the tag
@@ -3939,13 +3952,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized action
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -3979,13 +3992,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: User is not brandzone user and doesn't have tags subscription
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
 
   /sale/products:
     get:
@@ -4105,7 +4118,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
     post:
       tags:
         - Account information
@@ -4124,19 +4137,19 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '422':
           description: Email address provided in the request is not valid
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -4170,13 +4183,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: Additional email not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
         - Account information
@@ -4198,13 +4211,13 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: Additional email not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Errors'
+                $ref: '#/components/schemas/ErrorsHolder'
 
 components:
   securitySchemes:
@@ -4516,11 +4529,63 @@ components:
           $ref: '#/components/schemas/BenefitSpecification'
     BenefitSpecification:
       type: object
-      required:
-        - type
+      description: "One of: BundleBenefitSpecification, MultiPackBenefitSpecification"
       properties:
         type:
-          type: string
+          description: type of benefit
+          enum:
+            - ORDER_FIXED_DISCOUNT
+            - UNIT_PERCENTAGE_DISCOUNT
+      required:
+        - type
+      discriminator:
+        propertyName: type
+        mapping:
+          ORDER_FIXED_DISCOUNT: '#/components/schemas/BundleBenefitSpecification'
+          UNIT_PERCENTAGE_DISCOUNT: '#/components/schemas/MultiPackBenefitSpecification'
+    BundleBenefitSpecification:
+      allOf:
+        - $ref: "#/components/schemas/BenefitSpecification"
+        - type: object
+          required:
+            - price
+          properties:
+            value:
+              $ref: '#/components/schemas/Price'
+    MultiPackBenefitSpecification:
+      allOf:
+        - $ref: "#/components/schemas/BenefitSpecification"
+        - type: object
+          required:
+            - configuration
+            - trigger
+          properties:
+            configuration:
+              type: object
+              description: what rebate will be given
+              required:
+                - percentage
+              properties:
+                percentage:
+                  type: number
+                  example: 100
+                  description: discount percentage
+            trigger:
+              description: describes what will cause the rebate
+              type: object
+              required:
+                - forEachQuantity
+                - discountedNumber
+              properties:
+                forEachQuantity:
+                  type: number
+                  description: >-
+                    for every pack of this quantity new rebate will be given
+                  example: 3
+                discountedNumber:
+                  type: number
+                  description: how many offers in pack should be discounted by discount percentage?
+                  example: 1
     Caption:
       type: object
       required:
@@ -4884,6 +4949,19 @@ components:
         errors:
           $ref: '#/components/schemas/Errors'
       title: ErrorsHolder
+    AuthError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Authorization error code
+          example: "unauthorized"
+        error_description:
+          type: string
+          description: Authorization error message
+          example: "Full authentication is required to access this resource"
     Fee:
       type: object
       properties:
@@ -5309,13 +5387,40 @@ components:
             - 'GAIN'
         value:
           type: integer
-    OfferCriterion:
+    SellerRebateOfferCriterion:
       type: object
       required:
         - type
+        - offers
       properties:
+        offers:
+          type: array
+          description: Set of offers
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                description: Offer id
+                example: "1233432"
+              quantity:
+                type: number
+                description: >-
+                  that many pieces of your offer will be part of the bundle, valid only for bundle `ORDER_FIXED_DISCOUNT` promotions
+                example: 5
+              promotionEntryPoint:
+                type: boolean
+                description: >-
+                  offers with this flag set to true will have a section that allows the users to purchase your bundle,
+                  valid only for bundle `ORDER_FIXED_DISCOUNT` promotions
+                example: false
         type:
           type: string
+          description: 'Criteria type: CONTAINS_OFFERS'
+          enum:
+            - CONTAINS_OFFERS
     OfferCriterium:
       type: object
       properties:
@@ -5944,13 +6049,15 @@ components:
         - offerCriteria
       properties:
         benefits:
+          description: What kind of rebate will be given
           type: array
           items:
             $ref: '#/components/schemas/Benefit'
         offerCriteria:
+          description: What offers will be included
           type: array
           items:
-            $ref: '#/components/schemas/OfferCriterion'
+            $ref: '#/components/schemas/SellerRebateOfferCriterion'
     SellerRebateDto:
       type: object
       required:
@@ -5960,17 +6067,24 @@ components:
         - status
       properties:
         benefits:
+          description: What kind of rebate will be given
           type: array
           items:
             $ref: '#/components/schemas/Benefit'
         createdAt:
           type: string
+          description: when was this rebate created
+          format: date-time
+          example: '2019-05-01T10:12:32.321Z'
         id:
           type: string
+          description: Rebate identifier
+          example: '7c9a76d3-9fd0-4d13-a4ce-5d49bec12c79'
         offerCriteria:
+          description: What offers will be included
           type: array
           items:
-            $ref: '#/components/schemas/OfferCriterion'
+            $ref: '#/components/schemas/SellerRebateOfferCriterion'
         status:
           type: string
           enum:
