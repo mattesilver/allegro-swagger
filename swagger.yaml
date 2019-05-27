@@ -3999,7 +3999,40 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-
+  '/sale/offers/{offerId}/shipping-rates':
+    get:
+      tags:
+        - Delivery
+      summary: "Get shipping rates assigned to an offer"
+      description: >-
+        Use this resource to get the delivery methods and costs defined in the offer when there is no seller's shipping rates set attached to offer
+      operationId: getOfferShippingRatesGET
+      parameters:
+        - name: offerId
+          in: path
+          description: offerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned assigned shipping rates set
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferShippingRates'
+        '401':
+          description: Unauthorized action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/products:
     get:
       tags:
@@ -6178,6 +6211,16 @@ components:
         id:
           type: string
           description: Id of shipping rates
+    OfferShippingRates:
+      type: object
+      properties:
+        rates:
+          type: array
+          description: >-
+            If empty there is the shipping rates set attached to offer.
+            You should use the GET /sale/offers/{offerId} resource to retrieve the shipping rates set ID.
+          items:
+            $ref: '#/components/schemas/ShippingRate'
     ShippingRatesSet:
       type: object
       properties:
