@@ -37,6 +37,7 @@ tags:
   - name: Delivery
   - name: Offer tags
   - name: Order management
+  - name: Payments
   - name: Disputes
   - name: User information
   - name: Account information
@@ -4249,6 +4250,122 @@ paths:
           description: Additional email not found
           content:
             '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/payments/payment-operations':
+    get:
+      tags:
+        - Payments
+      summary: Payment operations history
+      description: Use this endpoint to get the list of the seller's payment operations.
+      operationId: getPaymentsOperationHistory
+      parameters:
+        - name: wallet.type
+          in: query
+          description: |
+            Type of the wallet:
+            * AVAILABLE - operations available for payout
+            * WAITING - operations temporarily suspended for payout
+          required: false
+          schema:
+            type: string
+            default: AVAILABLE
+            enum:
+              - AVAILABLE
+              - WAITING
+        - name: wallet.paymentOperator
+          in: query
+          description: |
+            Payment operator:
+            * PAYU - operations processed by PAYU operator
+            * P24 - operations processed by PRZELEWY24 operator
+          required: false
+          schema:
+            type: string
+            enum:
+              - PAYU
+              - P24
+        - name: payment.id
+          in: query
+          description: The payment ID.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: participant.login
+          in: query
+          description: >-
+            Login of the participant. In case of REFUND_INCREASE operation this is the login of the seller,
+            in other cases, of the buyer.
+          required: false
+          schema:
+            type: string
+        - name: occurredAt.gte
+          in: query
+          description: The minimum date and time of operation occurrence in ISO 8601 format.
+          example: 2019-05-08T09:45:818Z
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: occurredAt.lte
+          in: query
+          description: The maximum date and time of operation occurrence in ISO 8601 format.
+          required: false
+          example: 2019-05-08T09:45:818Z
+          schema:
+            type: string
+            format: date-time
+        - name: group
+          in: query
+          description: |
+            Group of operation types:
+            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION
+            * OUTCOME - PAYOUT, PAYOUT_CANCEL
+            * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - INCOME
+                - OUTCOME
+                - REFUND
+        - name: limit
+          in: query
+          required: false
+          description: Number of returned operations.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 50
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          description: Index of the first returned payment operation from all search results.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: The payment operations history for given search criteria returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/PaymentOperations'
+        '422':
+          description: >-
+            Returned when any of the given search parameters have an invalid value or when the search result reached
+            the limit of found operations - 10000.
+          content:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
 
@@ -8518,3 +8635,283 @@ components:
           description: 'Duration in ISO 8601 format.'
           example: 'PT240H'
       title: ClassifiedPublication
+    PaymentOperations:
+      type: object
+      required:
+        - count
+        - totalCount
+        - paymentOperations
+      properties:
+        paymentOperations:
+          type: array
+          description: Collection of payment operations.
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/CorrectionOperation'
+              - $ref: '#/components/schemas/ContributionOperation'
+              - $ref: '#/components/schemas/PayoutOperation'
+              - $ref: '#/components/schemas/PayoutCancelOperation'
+              - $ref: '#/components/schemas/RefundIncreaseOperation'
+              - $ref: '#/components/schemas/RefundCancelOperation'
+              - $ref: '#/components/schemas/RefundChargeOperation'
+              - $ref: '#/components/schemas/SurchargeOperation'
+            discriminator:
+              propertyName: type
+              mapping:
+                CORRECTION: '#/components/schemas/CorrectionOperation'
+                CONTRIBUTION: '#/components/schemas/ContributionOperation'
+                PAYOUT: '#/components/schemas/PayoutOperation'
+                PAYOUT_CANCEL: '#/components/schemas/PayoutCancelOperation'
+                REFUND_INCREASE: '#/components/schemas/RefundIncreaseOperation'
+                REFUND_CHARGE: '#/components/schemas/RefundChargeOperation'
+                REFUND_CANCEL: '#/components/schemas/RefundCancelOperation'
+                SURCHARGE: '#/components/schemas/SurchargeOperation'
+        count:
+          type: integer
+          format: int32
+          description: Number of payment operations returned in search result for the given parameters.
+          example: 50
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of payment operations for the given parameters.
+          example: 123
+    BaseOperation:
+      type: object
+      required:
+        - type
+        - group
+        - occurredAt
+        - wallet
+        - value
+      properties:
+        type:
+          type: string
+          description: Type of the operation.
+        group:
+          type: string
+          description: The group to which the given operation type belongs.
+          enum:
+            - INCOME
+            - OUTCOME
+            - REFUND
+        wallet:
+          $ref: '#/components/schemas/Wallet'
+        value:
+          $ref: '#/components/schemas/OperationValue'
+        occurredAt:
+          type: string
+          format: date-time
+          description: Date and time of the operation in ISO 8601 format.
+          example: 2019-05-08T09:45:818Z
+    Wallet:
+      type: object
+      description: The state of the wallet after the operation.
+      required:
+        - paymentOperator
+        - type
+        - balance
+      properties:
+        paymentOperator:
+          type: string
+          description: The payment operator.
+          enum:
+            - PAYU
+            - P24
+        type:
+          type: string
+          description: The type of the wallet.
+          enum:
+            - AVAILABLE
+            - WAITING
+        balance:
+          $ref: '#/components/schemas/WalletBalance'
+    WalletBalance:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: The wallet balance after the operation.
+    OperationValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: The operation value.
+    CorrectionOperation:
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+    ContributionOperation:
+      required:
+        - payment
+        - participant
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payment:
+              $ref: '#/components/schemas/OperationPayment'
+            participant:
+              $ref: '#/components/schemas/BuyerParticipant'
+    PayoutOperation:
+      required:
+        - payout
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payout:
+              $ref: '#/components/schemas/Payout'
+    PayoutCancelOperation:
+      allOf:
+        - $ref: '#/components/schemas/PayoutOperation'
+        - type: object
+    RefundIncreaseOperation:
+      required:
+        - payment
+        - participant
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payment:
+              $ref: '#/components/schemas/OperationPayment'
+            participant:
+              $ref: '#/components/schemas/SellerParticipant'
+    RefundCancelOperation:
+      required:
+        - payment
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payment:
+              $ref: '#/components/schemas/OperationPayment'
+    RefundChargeOperation:
+      required:
+        - payment
+        - participant
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payment:
+              $ref: '#/components/schemas/OperationPayment'
+            participant:
+              $ref: '#/components/schemas/BuyerParticipant'
+    SurchargeOperation:
+      required:
+        - payment
+        - surcharge
+        - participant
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payment:
+              $ref: '#/components/schemas/OperationPayment'
+            surcharge:
+              $ref: '#/components/schemas/Surcharge'
+            participant:
+              $ref: '#/components/schemas/BuyerParticipant'
+    OperationPayment:
+      type: object
+      title: Payment
+      description: Payment.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The payment ID.
+          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+    Participant:
+      type: object
+      required:
+        - id
+        - login
+        - firstName
+        - lastName
+      properties:
+        companyName:
+          type: string
+          description: Company name.
+          example: Allegro
+        login:
+          type: string
+          description: Login.
+          example: User_login
+        firstName:
+          type: string
+          description: First name.
+          example: Jan
+        lastName:
+          type: string
+          description: Last name.
+          example: Nowak
+        address:
+          $ref: '#/components/schemas/OperationParticipantAddress'
+    SellerParticipant:
+      title: Participant
+      description: The seller's data.
+      allOf:
+        - $ref: '#/components/schemas/Participant'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: The seller's ID.
+    BuyerParticipant:
+      title: Participant
+      description: The buyer's data.
+      allOf:
+        - $ref: '#/components/schemas/Participant'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: The buyers's ID.
+    OperationParticipantAddress:
+      type: object
+      required:
+        - street
+        - city
+        - postCode
+      description: Address.
+      properties:
+        street:
+          type: string
+          description: Street.
+          example: Grunwaldzka 108
+        city:
+          type: string
+          description: City.
+          example: Poznań
+        postCode:
+          type: string
+          description: Postal code.
+          example: 60-166
+    Payout:
+      type: object
+      description: Payout.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The payout ID.
+          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+    Surcharge:
+      type: object
+      description: Surcharge.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The surcharge ID.
+          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
