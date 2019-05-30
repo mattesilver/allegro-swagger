@@ -6254,18 +6254,6 @@ components:
         totalCount:
           type: integer
           format: int64
-    SellingMode:
-      type: object
-      properties:
-        format:
-          $ref: '#/components/schemas/SellingModeFormat'
-        minimalPrice:
-          $ref: '#/components/schemas/Price'
-        price:
-          $ref: '#/components/schemas/Price'
-        startingPrice:
-          $ref: '#/components/schemas/Price'
-      description: Offer's selling mode
     ShippingRate:
       type: object
       properties:
@@ -7216,7 +7204,7 @@ components:
         primaryImage:
           $ref: '#/components/schemas/OfferListingDto.Image'
         sellingMode:
-          $ref: '#/components/schemas/OfferListingDtoV1.SellingMode'
+          $ref: '#/components/schemas/SellingMode'
         saleInfo:
           $ref: '#/components/schemas/OfferListingDtoV1.SaleInfo'
         stock:
@@ -7239,7 +7227,7 @@ components:
           type: string
           description: The url to the image in its original size.
           example: https://a.allegroimg.com/original/05a2af/929c6dae4fb8721a8539582eb421
-    OfferListingDtoV1.SellingMode:
+    SellingMode:
       type: object
       description: Information on the offer's selling mode.
       properties:
