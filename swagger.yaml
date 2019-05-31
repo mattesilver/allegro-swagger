@@ -151,37 +151,44 @@ paths:
         - name: publication.status
           in: query
           description: >-
-            The publication status of the offer. You can add more than one value separating them with a comma. Then,
-            this will search for offers with any of the given statuses.
+            The publication status of the offer. Passing more than one value will search for offers with any of the given statuses. By default all statuses are included.
+            Example: `publication.status=INACTIVE&publication.status=ACTIVE` - returns offers with status `INACTIVE` or `ACTIVE`.
           required: false
           schema:
-            type: string
-            enum:
-              - INACTIVE
-              - ACTIVE
-              - ACTIVATING
-              - ENDED
-            default: INACTIVE,ACTIVE,ACTIVATING,ENDED
+            type: array
+            items:
+              type: string
+              enum:
+                - INACTIVE
+                - ACTIVE
+                - ACTIVATING
+                - ENDED
         - name: sellingMode.format
           in: query
           required: false
           description: >-
-            The offer's selling format. You can add more than one value separating them with a comma. Then, this will
-            search for offers with any of the given formats.
+            The offer's selling format. Passing more than one value will search for offers with any of the given formats. By default all formats are included.
+            Example: `sellingMode.format=BUY_NOW&sellingMode.format=ADVERTISEMENT` - returns offers with with format `BUY_NOW` or `ADVERTISEMENT`.
           schema:
-            type: string
-            enum:
-              - BUY_NOW
-              - ADVERTISEMENT
-              - AUCTION
-            default: BUY_NOW,ADVERTISEMENT,AUCTION
+            type: array
+            items:
+              type: string
+              enum:
+                - BUY_NOW
+                - ADVERTISEMENT
+                - AUCTION
         - name: external.id
           in: query
-          description: The ID from the client's external system.
+          description: >-
+            The ID from the client's external system. Passing more than one value will search for offers with any of the given IDs. By default no ID is included.
+            Example: `external.id=1233&external.id=1234` - returns offers with ID `1233` or `1234`. Single ID length shouldn't exceed 100 characters.
           required: false
           schema:
-            type: string
-            maxLength: 100
+            type: array
+            maxItems: 100
+            items:
+              type: string
+              maxLength: 100
         - name: sort
           in: query
           description: >-
