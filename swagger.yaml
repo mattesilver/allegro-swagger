@@ -5229,6 +5229,7 @@ components:
           example: "AH-129834"
     Location:
       type: object
+      description: for offer with a delivery method it is a parcel dispatch location. For offers with personal pick-up it is a pick-up location, additionally we recommend to use points of service (<a href="../../documentation/#tag/Points-of-service" target="_blank">https://developer.allegro.pl/documentation/#tag/Points-of-service</a>)
       properties:
         city:
           type: string
