@@ -4327,8 +4327,8 @@ paths:
           in: query
           description: |
             Group of operation types:
-            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION
-            * OUTCOME - PAYOUT, PAYOUT_CANCEL
+            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE
+            * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE
             * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION
           required: false
           schema:
@@ -8651,6 +8651,8 @@ components:
               - $ref: '#/components/schemas/RefundCancelOperation'
               - $ref: '#/components/schemas/RefundChargeOperation'
               - $ref: '#/components/schemas/SurchargeOperation'
+              - $ref: '#/components/schemas/DeductionChargeOperation'
+              - $ref: '#/components/schemas/DeductionIncreaseOperation'
             discriminator:
               propertyName: type
               mapping:
@@ -8662,6 +8664,8 @@ components:
                 REFUND_CHARGE: '#/components/schemas/RefundChargeOperation'
                 REFUND_CANCEL: '#/components/schemas/RefundCancelOperation'
                 SURCHARGE: '#/components/schemas/SurchargeOperation'
+                DEDUCTION_CHARGE: '#/components/schemas/DeductionChargeOperation'
+                DEDUCTION_INCREASE: '#/components/schemas/DeductionIncreaseOperation'
         count:
           type: integer
           format: int32
@@ -8811,6 +8815,24 @@ components:
               $ref: '#/components/schemas/Surcharge'
             participant:
               $ref: '#/components/schemas/BuyerParticipant'
+    DeductionChargeOperation:
+      required:
+        - deduction
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            deduction:
+              $ref: '#/components/schemas/Deduction'
+    DeductionIncreaseOperation:
+      required:
+        - deduction
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            deduction:
+              $ref: '#/components/schemas/Deduction'
     OperationPayment:
       type: object
       title: Payment
@@ -8910,4 +8932,15 @@ components:
           type: string
           format: uuid
           description: The surcharge ID.
+          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+    Deduction:
+      type: object
+      description: Deduction.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The deduction ID.
           example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
