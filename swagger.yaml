@@ -22,6 +22,7 @@ tags:
   - name: User's offer information
   - name: Offer management
   - name: Products
+  - name: Compatible Products
   - name: Classifieds
   - name: Images and attachments
   - name: Pricing
@@ -716,7 +717,7 @@ paths:
         '401':
           description: Unauthorized
         '422':
-          description: Unprocessable entity
+          description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/AdditionalServicesGroupRequest'
     get:
@@ -1357,7 +1358,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '422':
-          description: Unprocessable entity
+          description: Unprocessable Entity
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -3575,7 +3576,7 @@ paths:
         '404':
           description: Not Found
         '422':
-          description: Unprocessable entity
+          description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/MessageRequest'
   '/sale/dispute-attachments':
@@ -3603,7 +3604,7 @@ paths:
         '403':
           description: Forbidden
         '422':
-          description: Unprocessable entity
+          description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/AttachmentDeclaration'
   '/sale/dispute-attachments/{attachmentId}':
@@ -4140,6 +4141,146 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  '/sale/compatible-products/groups':
+    get:
+      tags:
+      - Compatible Products
+      summary: 'Get list of compatible product groups'
+      description: 'Compatible products are organized in groups, this resource allows to browse these groups.'
+      parameters:
+        - name: If-Modified-Since
+          in: header
+          description: 'Date of last data modification. If data has been modified after specified date,
+                        full set of data is returned. If header is not specified, full set of data
+                        is returned. Date has to be provided in HTTP-date format.'
+          required: false
+          schema:
+            type: string
+            format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
+            example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+        - name: type
+          in: query
+          description: 'Type of compatible products.'
+          required: true
+          schema:
+            type: string
+            enum: ['CAR', 'MOTORCYCLE']
+        - name: limit
+          in: query
+          description: 'The limit of returned items.'
+          required: false
+          schema:
+            type: integer
+            default: 200
+        - name: offset
+          in: query
+          description: 'The offset of returned items.'
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: 'Groups of compatible products returned successfully.'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CompatibleProductsGroupsDto'
+        '304':
+          description: 'Data has not been modified after the date provided in If-Modified-Since header.'
+        '400':
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+  '/sale/compatible-products':
+    get:
+      tags:
+      - Compatible Products
+      summary: 'Get list of compatible products'
+      description: 'Resource allows to fetch compatible products of given type.'
+      parameters:
+      - name: If-Modified-Since
+        in: header
+        description: 'Date of last data modification. If data has been modified after specified date,
+                      full set of data is returned. If header is not specified, full set of data
+                      is returned. Date has to be provided in HTTP-date format.
+                      Header is ignored if `phrase` parameter is used.'
+        required: false
+        schema:
+          type: string
+          format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
+          example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+      - name: type
+        in: query
+        description: 'Type of compatible products.'
+        required: true
+        schema:
+          type: string
+          enum: ['CAR', 'MOTORCYCLE']
+      - name: group.id
+        in: query
+        description: 'Group identifier from `/sale/compatible-products/groups` resource.
+                      Parameter is required when parameter `tecdoc.kTypNr` or `tecdoc.nTypNr` or `phrase` is not specified.'
+        required: false
+        schema:
+          type: string
+      - name: tecdoc.kTypNr
+        in: query
+        description: 'Identifier of passenger vehicle (kTypNr) from TecDoc database.
+                      When used, `group.id` parameter is ignored.'
+        required: false
+        schema:
+          type: string
+      - name: tecdoc.nTypNr
+        in: query
+        description: 'Identifier of commercial vehicle (nTypNr) from TecDoc database.
+                      When used, `group.id` parameter is ignored.'
+        required: false
+        schema:
+          type: string
+      - name: phrase
+        in: query
+        description: 'Query for compatible products.
+                      When used, parameters: `group.id`, `limit`, `offset` and header `If-Modified-Since` are ignored.'
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: 'The limit of returned items. If `phrase` parameter is present,
+                      parameter is ignored and maximum value is set to `200`.'
+        required: false
+        schema:
+          type: integer
+          default: 200
+      - name: offset
+        in: query
+        description: 'The offset of returned items. If `phrase` parameter is present, parameter is ignored.'
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: 'Compatible products returned successfully.'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CompatibleProductsListDto'
+        '304':
+          description: 'Data has not been modified after the date provided in If-Modified-Since header.'
+        '400':
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
   '/account/additional-emails/':
     get:
       tags:
@@ -4816,6 +4957,138 @@ components:
           type: boolean
           description: Information whether the category supports assigning offers to a product.
       description: A list of the different options which can be used with this category.
+    CompatibleProductsGroupsDto:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: 'List of groups for given type of compatible products.'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: 'Identifier of the group.'
+                minLength: 32
+                maxLength: 32
+                example: 'b0dfe6de8fb2f2b1309ad94c6cc4e09d'
+              text:
+                type: string
+                description: 'Name of the group.'
+                example: 'ABARTH'
+          example:
+            - id: 'b0dfe6de8fb2f2b1309ad94c6cc4e09d'
+              text: 'ABARTH'
+            - id: '4144e097d2fa7a491cec2a7a4322f2bc'
+              text: 'AC'
+            - id: 'de3e2253f276cd1c757f58860d77b9bb'
+              text: 'ACURA'
+        count:
+          type: integer
+          description: 'Number of returned elements.'
+          example: 3
+        totalCount:
+          type: integer
+          description: 'Total number of available elements.'
+          example: 256
+    CompatibleProductsListDto:
+      type: object
+      properties:
+        compatibleProducts:
+          type: array
+          description: 'List of compatible products for given type and parameters.'
+          items:
+            $ref: '#/components/schemas/CompatibleProductDto'
+          example:
+            - id: 'fc1058e6-a901-4b58-be4d-3d7e1368f63e'
+              text: 'AUDI A6 (4G2, 4GC, C7) 2014/09-2018/09 3.0 TDI quattro 326KM/240kW'
+              group:
+                id: '19d71c872aa6c78663876a7e7bc7776d'
+              attributes:
+                - id: 'POWER_KW'
+                  values:
+                    - '240'
+                - id: 'MODEL_FROM'
+                  values:
+                    - '2010/11'
+                - id: 'BRAND'
+                  values:
+                    - 'AUDI'
+                - id: 'POWER_HP'
+                  values:
+                    - '326'
+                - id: 'MODEL_TO'
+                  values:
+                    - '2018/09'
+                - id: 'ENGINE_CODE'
+                  values:
+                    - 'CVUB'
+                - id: 'K_TYP_NR'
+                  values:
+                    - '108441'
+                - id: 'VERSION_FROM'
+                  values:
+                    - '2014/09'
+                - id: 'VERSION_TO'
+                  values:
+                    - '2018/09'
+                - id: 'MODEL'
+                  values:
+                    - 'A6 (4G2, 4GC, C7)'
+                - id: 'BODY'
+                  values:
+                    - 'sedan'
+                - id: 'TYPE'
+                  values:
+                    - '3.0 TDI quattro'
+        count:
+          type: integer
+          description: 'Number of returned elements.'
+          example: 1
+        totalCount:
+          type: integer
+          description: 'Total number of available elements.
+                        Field is not present when `phrase` parameter is used.'
+          example: 1448
+    CompatibleProductDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'Identifier of the compatible product.'
+          example: 'fc1058e6-a901-4b58-be4d-3d7e1368f63e'
+        text:
+          type: string
+          description: 'Textual representation of the compatible product.'
+          example: 'AUDI A6 (4G2, 4GC, C7) 2014/09-2018/09 3.0 TDI quattro 326KM/240kW'
+        group:
+          type: object
+          description: 'Group to which compatible product is assigned to.'
+          properties:
+            id:
+              type: string
+              description: 'Identifier of the group.'
+              example: '19d71c872aa6c78663876a7e7bc7776d'
+        attributes:
+          type: array
+          description: "List of compatible products attributes."
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: "Identifier of an attribute"
+                example: "BRAND"
+              values:
+                type: array
+                description: "List of attribute's values."
+                items:
+                  type: string
+                  example: "AUDI"
+          example:
+          - id: 'BRAND'
+            values:
+            - 'AUDI'
     Cells:
       type: object
       required:
@@ -4905,18 +5178,71 @@ components:
       properties:
         items:
           type: array
-          maxItems: 2000
           items:
             $ref: '#/components/schemas/CompatibilityListItem'
-      description: List of items compatible with offer
+          description: 'List of the compatible items.
+                        Maximum number of elements on the list depends on type of included compatible items.
+                        <ul>
+                          <li>2000 - for compatible items of type ID and car TEXT compatible items</li>
+                          <li>200 - for other compatible items</li>
+                        </ul>'
+      description: 'List of items compatible with offer.'
     CompatibilityListItem:
       type: object
       properties:
-        text:
+        type:
           type: string
-          maxLength: 200
-          description: 'text representation of compatible item'
-      description: Item compatible with offer
+          default: 'TEXT'
+      discriminator:
+        propertyName: type
+        mapping:
+          TEXT: '#/components/schemas/CompatibilityListTextItem'
+          ID: '#/components/schemas/CompatibilityListIdItem'
+    CompatibilityListTextItem:
+      allOf:
+        - $ref: '#/components/schemas/CompatibilityListItem'
+        - type: object
+          required:
+            - text
+          properties:
+            text:
+              type: string
+              description: 'Text description of the compatible item.
+                Maximum length of the text depends on category where compatible item is used.
+                <ul>
+                  <li>160 - for compatible item describing car</li>
+                  <li>100 - for other compatible items</li>
+                </ul>
+                Should be used in categories where TEXT version of compatible list
+                is supported. <a href="../../compatibility_list" target="_blank">Read more</a>.'
+              example: 'CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW'
+    CompatibilityListIdItem:
+      allOf:
+        - $ref: '#/components/schemas/CompatibilityListItem'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              description: 'Id of the compatible item. Should be used in categories
+                            where ID version of compatible list is supported.
+                            <a href="../../compatibility_list" target="_blank">Read more</a>.'
+              example: '0006563f-f2b9-44ea-ae67-4678679be1f1'
+            additionalInfo:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompatibilityListIdItemAdditionalInfo'
+              description: 'Details of the compatible item represented by ID.'
+    CompatibilityListIdItemAdditionalInfo:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          description: 'Additional information describing the compatible item. E.g. for cars it can be an engine code or an equipment version.'
+          example: 'only for versions with BDX engine code'
     Configuration:
       type: object
       properties:
