@@ -129,6 +129,12 @@ paths:
         the list.
       operationId: searchOffersUsingGET
       parameters:
+        - name: offer.id
+          in: query
+          description: Offer ID.
+          required: false
+          schema:
+            type: string
         - name: name
           in: query
           description: The text to search in the offer title.
