@@ -2062,7 +2062,7 @@ paths:
       summary: "Edit a user's shipping rates set"
       description:
         'Use this resource to edit a new seller''s shipping rates set. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
-      operationId: modifyShipiingRatesSetUsingPUT
+      operationId: modifyShippingRatesSetUsingPUT
       parameters:
         - name: id
           in: path
@@ -3347,6 +3347,16 @@ paths:
             type: string
             format: date-time
           description: The lower bound of date time range from which checkout forms will be taken.
+        - name: payment.id
+          in: query
+          schema:
+            type: string
+          description: Find checkout-forms having specified payment id.
+        - name: surcharges.id
+          in: query
+          schema:
+            type: string
+          description: Find checkout-forms having specified surcharge id.
       responses:
         '200':
           description: OK
@@ -4522,6 +4532,58 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/payments/payment-id-mappings':
+    get:
+      tags:
+        - Payments
+      summary: Mapping of payment identifiers
+      description: >-
+        Use this endpoint to get payment identifiers compatible with RestAPI and WebAPI.
+        Querying is allowed only by paymentId or transactionId.
+      operationId: getPaymentIdMapping
+      parameters:
+        - in: query
+          name: paymentId
+          schema:
+            type: uuid
+            description: The payment ID compatible with RestAPI.
+        - in: query
+          name: transactionId
+          schema:
+            type: string
+            description: The payment ID compatible with WebAPI.
+      responses:
+        '200':
+          description: The payment identifiers for given query param returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/PaymentIdMapping'
+        '400':
+          description: >-
+            Returned when none or every of query params was provided in search parameters.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
 
 components:
   securitySchemes:
@@ -4836,10 +4898,8 @@ components:
       description: "One of: BundleBenefitSpecification, MultiPackBenefitSpecification"
       properties:
         type:
+          type: string
           description: type of benefit
-          enum:
-            - ORDER_FIXED_DISCOUNT
-            - UNIT_PERCENTAGE_DISCOUNT
       required:
         - type
       discriminator:
@@ -4927,7 +4987,7 @@ components:
           example: "12"
         leaf:
           type: boolean
-          description: Indicates wheter the category is at the lowest level. Leaf categories do not have any children. Offers can be listed only in leaf categories.
+          description: Indicates whether the category is at the lowest level. Leaf categories do not have any children. Offers can be listed only in leaf categories.
         name:
           type: string
           description: Name of the category in Polish.
@@ -6416,6 +6476,14 @@ components:
             - `ADMIN` - offer ended by admin.</br>
             - `EXPIRATION` - offer ended due to available items had sold out or offer duration had expired (valid for offers with specified duration).</br>
             - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with success status, but further processing failed.
+        republish:
+          type: boolean
+          example: false
+          description: >-
+            Whether to republish an offer after ending. Automatically republish offers or auctions:</br>
+            - `BUY_NOW` offer type are republished with initial stock, regardless of how many items you have sold.</br>
+            - `AUCTION` offer type are republished only if they were not concluded with purchase.</br>
+            - `ADVERTISEMENT` offer type cannot be republished.
     PublicationChangeCommandDto:
       type: object
       properties:
@@ -8974,30 +9042,10 @@ components:
           type: array
           description: Collection of payment operations.
           items:
-            anyOf:
-              - $ref: '#/components/schemas/CorrectionOperation'
-              - $ref: '#/components/schemas/ContributionOperation'
-              - $ref: '#/components/schemas/PayoutOperation'
-              - $ref: '#/components/schemas/PayoutCancelOperation'
-              - $ref: '#/components/schemas/RefundIncreaseOperation'
-              - $ref: '#/components/schemas/RefundCancelOperation'
-              - $ref: '#/components/schemas/RefundChargeOperation'
-              - $ref: '#/components/schemas/SurchargeOperation'
-              - $ref: '#/components/schemas/DeductionChargeOperation'
-              - $ref: '#/components/schemas/DeductionIncreaseOperation'
-            discriminator:
-              propertyName: type
-              mapping:
-                CORRECTION: '#/components/schemas/CorrectionOperation'
-                CONTRIBUTION: '#/components/schemas/ContributionOperation'
-                PAYOUT: '#/components/schemas/PayoutOperation'
-                PAYOUT_CANCEL: '#/components/schemas/PayoutCancelOperation'
-                REFUND_INCREASE: '#/components/schemas/RefundIncreaseOperation'
-                REFUND_CHARGE: '#/components/schemas/RefundChargeOperation'
-                REFUND_CANCEL: '#/components/schemas/RefundCancelOperation'
-                SURCHARGE: '#/components/schemas/SurchargeOperation'
-                DEDUCTION_CHARGE: '#/components/schemas/DeductionChargeOperation'
-                DEDUCTION_INCREASE: '#/components/schemas/DeductionIncreaseOperation'
+            type: object
+            required:
+              - type
+            $ref: '#/components/schemas/BaseOperation'
         count:
           type: integer
           format: int32
@@ -9036,6 +9084,19 @@ components:
           format: date-time
           description: Date and time of the operation in ISO 8601 format.
           example: 2019-05-08T09:45:818Z
+      discriminator:
+        propertyName: type
+        mapping:
+          CORRECTION: '#/components/schemas/CorrectionOperation'
+          CONTRIBUTION: '#/components/schemas/ContributionOperation'
+          PAYOUT: '#/components/schemas/PayoutOperation'
+          PAYOUT_CANCEL: '#/components/schemas/PayoutOperation'
+          REFUND_INCREASE: '#/components/schemas/RefundIncreaseOperation'
+          REFUND_CHARGE: '#/components/schemas/RefundChargeOperation'
+          REFUND_CANCEL: '#/components/schemas/RefundCancelOperation'
+          SURCHARGE: '#/components/schemas/SurchargeOperation'
+          DEDUCTION_CHARGE: '#/components/schemas/DeductionChargeOperation'
+          DEDUCTION_INCREASE: '#/components/schemas/DeductionIncreaseOperation'
     Wallet:
       type: object
       description: The state of the wallet after the operation.
@@ -9095,10 +9156,6 @@ components:
           properties:
             payout:
               $ref: '#/components/schemas/Payout'
-    PayoutCancelOperation:
-      allOf:
-        - $ref: '#/components/schemas/PayoutOperation'
-        - type: object
     RefundIncreaseOperation:
       required:
         - payment
@@ -9276,3 +9333,18 @@ components:
           format: uuid
           description: The deduction ID.
           example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+    PaymentIdMapping:
+      type: object
+      required:
+        - paymentId
+        - transactionId
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+          description: The payment ID compatible with RestAPI.
+          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+        transactionId:
+          type: string
+          description: The transaction ID compatible with WebAPI.
+          example: 1016873349
