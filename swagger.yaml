@@ -42,6 +42,7 @@ tags:
   - name: Disputes
   - name: User information
   - name: Account information
+  - name: Blacklist management
 
 security:
   - bearer-token-for-user: []
@@ -2364,9 +2365,9 @@ paths:
     get:
       tags:
         - Delivery
-      summary: "Get the list of available delivery methods"
+      summary: "Get the list of delivery methods"
       description:
-        'Use this resource to get a list of available delivery methods. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to get a list of all delivery methods currently available on the platform, as well as those that have already been discontinued. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
       operationId: getListOfDeliveryMethodsUsingGET
       security:
         - bearer-token-for-application: []
@@ -2386,24 +2387,127 @@ paths:
                       properties:
                         id:
                           type: string
-                          description: Delivery method ID
+                          description: Delivery method ID.
                         name:
                           type: string
-                          description: Delivery method name
+                          description: Delivery method name.
                         paymentPolicy:
                           type: string
                           enum:
                             - IN_ADVANCE
                             - CASH_ON_DELIVERY
-                          description: Whether the payment is to be collected in advance or on delivery
+                          description: Whether the payment is to be collected in advance or on delivery.
+                        allegroEndorsed:
+                          type: boolean
+                          description: >-
+                            Indicates Allegro signed delivery method, which allows to easily distinguish similar delivery methods
+                            with various restrictions, e.g. Allegro Paczkomaty 24/7 InPost from Paczkomaty 24/7.
+                        shippingRatesConstraints:
+                          type: object
+                          description: Rules for the delivery method, i.e. price, quantity, shipping time, etc.
+                          properties:
+                            allowed:
+                              type: boolean
+                              description: Indicates whether delivery method can be used when adding or modifying shipping rates.
+                            maxQuantityPerPackage:
+                              type: object
+                              description: Rules for the quantity per parcel.
+                              properties:
+                                max:
+                                  type: integer
+                                  description: Upper limit for quantity per package.
+                                  minimum: 1
+                                  maximum: 999999
+                                  example: 999999
+                            firstItemRate:
+                              type: object
+                              description: Rules for the shipping cost for the first item in the parcel.
+                              properties:
+                                min:
+                                  type: number
+                                  format: double
+                                  description: Lower limit for the rate.
+                                  minimum: "0.00"
+                                  maximum: "100000000.00"
+                                  example: "0.00"
+                                max:
+                                  type: number
+                                  format: double
+                                  description: Upper limit for the rate.
+                                  minimum: "0.00"
+                                  maximum: "100000000.00"
+                                  example: "8.99"
+                                currency:
+                                  type: string
+                                  description: ISO 4217 currency code.
+                                  example: "PLN"
+                            nextItemRate:
+                              type: object
+                              description: Rules for the shipping cost of another item in the parcel.
+                              properties:
+                                min:
+                                  type: number
+                                  format: double
+                                  description: Lower limit for the rate.
+                                  minimum: "0.00"
+                                  maximum: "100000000.00"
+                                  example: "0.00"
+                                max:
+                                  type: number
+                                  format: double
+                                  description: Upper limit for the rate.
+                                  minimum: "0.00"
+                                  maximum: "100000000.00"
+                                  example: "8.99"
+                                currency:
+                                  type: string
+                                  description: ISO 4217 currency code.
+                                  example: "PLN"
+                            shippingTime:
+                              type: object
+                              description: Rules for the shipping time.
+                              properties:
+                                default:
+                                  type: object
+                                  description: Default shipping time.
+                                  properties:
+                                    from:
+                                      type: string
+                                      description: ISO 8601 duration format.
+                                      example: "PT24H"
+                                    to:
+                                      type: string
+                                      description: ISO 8601 duration format.
+                                      example: "PT48H"
+                                customizable:
+                                  type: boolean
+                                  description: Indicates if custom shipping time can be set when adding or modifying shipping rates.
               examples:
                 response:
                   value:
                     - id: 758fcd59-fbfa-4453-ae07-4800d72c2ca5
                       name: List polecony priorytetowy
                       paymentPolicy: IN_ADVANCE
+                      allegroEndorsed: false
+                      shippingRatesConstraints:
+                        allowed: true
+                        maxQuantityPerPackage:
+                          max: 999999
+                        firstItemRate:
+                          min: '0.00'
+                          max: '100000000.00'
+                          currency: PLN
+                        nextItemRate:
+                          min: '0.00'
+                          max: '100000000.00'
+                          currency: PLN
+                        shippingTime:
+                          default:
+                            from: PT24H
+                            to: PT48H
+                          customizable: true
         '401':
-          description: Authentication required
+          description: Authentication required.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -4585,6 +4689,87 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
 
+  '/sale/blacklisted-users':
+    get:
+      tags:
+        - Blacklist management
+      summary: "[BETA] Get list of blacklisted users"
+      description: "Use this resource to get a list of blacklisted users created on given account."
+      operationId: doGetBlackListUsers
+      responses:
+        '200':
+          description: List of blacklisted users returned successfully
+          content:
+            application/vnd.allegro.public.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BlackListPagedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+    post:
+      tags:
+        - Blacklist management
+      summary: "[BETA] Add a users to the blacklist"
+      description: "Use this resource to add new users to the blacklist on given account. At least one of id or login is required."
+      operationId: doAddToBlackList
+      responses:
+        '201':
+          description: Users successfully added to the blacklist.
+          content:
+            application/vnd.allegro.public.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BlackListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '409':
+          description: User already added to the blacklist.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '400':
+          description: Request is invalid
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/BlacklistRequest'
+        description: request
+        required: true
+  '/sale/blacklisted-users/{excludedUserId}':
+    delete:
+      tags:
+        - Blacklist management
+      parameters:
+        - name: excludedUserId
+          in: path
+          description: Remove users from the blacklist.
+          required: true
+          schema:
+            type: long
+      summary: "[BETA] Remove users from the blacklist."
+      description: "Use this resource to remove users from the blacklist on given account."
+      operationId: doRemoveFromBlackList
+      responses:
+        '204':
+          description: User removed form the blacklist successfully.
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -5633,6 +5818,14 @@ components:
         province:
           type: string
           maxLength: 50
+          description: >-
+            This field is mandatory if countryCode is set to "PL", for other values, currently, it is ignored.
+            For countryCode equalling "PL", this field must be set to one of the following: DOLNOSLASKIE,
+            KUJAWSKO_POMORSKIE, LUBELSKIE, LUBUSKIE,
+            LODZKIE, MALOPOLSKIE, MAZOWIECKIE, OPOLSKIE,
+            PODKARPACKIE, PODLASKIE, POMORSKIE, SLASKIE,
+            SWIETOKRZYSKIE, WARMINSKO_MAZURSKIE,
+            WIELKOPOLSKIE, ZACHODNIOPOMORSKIE.
     Modification:
       type: object
       properties:
@@ -6704,8 +6897,8 @@ components:
         shippingTime:
           type: object
           description: >-
-            Custom shipping time for the given delivery method (if the method allows a custom shipping time).
-            If not set the default shipping time for the method is used.
+            Custom shipping time for the given delivery method (allowed only for methods with shippingRatesConstraints.shippingTime.customizable set to true in the delivery-methods resource).
+            If not set the default shipping time specified in the delivery-methods resource is used.
           properties:
             from:
               type: string
@@ -9348,3 +9541,51 @@ components:
           type: string
           description: The transaction ID compatible with WebAPI.
           example: 1016873349
+    BlackListResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/BlacklistUser'
+        note:
+          type: String
+          description: Note about reason of blacklisting.
+          example: Rude person
+        createdAt:
+          type: String
+          format: date-time
+          description: Date and time of the creation in ISO 8601 format.
+          example: 2019-05-08T09:45:818Z
+    BlackListPagedResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlackListResponse'
+        offset:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+    BlacklistRequest:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/BlacklistUser'
+        note:
+          type: String
+          description: Note about reason of blacklisting.
+          example: Rude person
+    BlacklistUser:
+      type: object
+      properties:
+          id:
+            type: number
+            description: Id of excluded user.
+            example: 123456
+          login:
+            type: String
+            description: Login of excluded user.
+            example: bad_buyer
+
