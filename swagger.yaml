@@ -16,9 +16,7 @@ info:
 tags:
   - name: Public offer information
   - name: Public user information
-
   - name: Categories and parameters
-
   - name: User's offer information
   - name: Offer management
   - name: Products
@@ -43,6 +41,7 @@ tags:
   - name: User information
   - name: Account information
   - name: Blacklist management
+  - name: Auctions and Bidding
 
 security:
   - bearer-token-for-user: []
@@ -4688,7 +4687,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-
   '/sale/blacklisted-users':
     get:
       tags:
@@ -4770,6 +4768,88 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
+  '/bidding/offers/{offerId}/bid':
+    put:
+      tags:
+      - Auctions and Bidding
+      operationId: placeBid
+      summary: '[BETA] Place a bid in an auction'
+      parameters:
+      - name: offerId
+        in: path
+        required: true
+        description: The offer ID.
+        schema:
+          type: string
+      requestBody:
+        content:
+          'application/vnd.allegro.beta.v1+json':
+            schema:
+              type: object
+              title: BidRequest
+              description: The bid request.
+              required:
+              - maxAmount
+              properties:
+                maxAmount:
+                  $ref: '#/components/schemas/MaxPrice'
+      responses:
+        '200':
+          description: Bid succesfully placed
+          content:
+            'application/vnd.allegro.beta.v1+json':
+              schema:
+                $ref: '#/components/schemas/MyBidResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: Auction not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+            description: If bidding was not allowed (see message for explanation).
+            content:
+              '*/*':
+                schema:
+                  $ref: '#/components/schemas/ErrorsHolder'
+    get:
+      tags:
+        - Auctions and Bidding
+      operationId: getBid
+      summary: "[BETA] Get current user's bid information"
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: The offer ID.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bid information succesfully found.
+          content:
+            'application/vnd.allegro.beta.v1+json':
+              schema:
+                $ref: '#/components/schemas/MyBidResponse'
+        '404':
+          description: Auction not found or user did not bid in the auction.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -7856,6 +7936,10 @@ components:
       allOf:
       - $ref: '#/components/schemas/Price'
       description: The current highest bid in auction format.
+    MaxPrice:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: Maximum amount that user is willing to pay for the auction.
     SellingModeFormat:
       type: string
       description: The selling format of the offer.
@@ -9588,4 +9672,33 @@ components:
             type: String
             description: Login of excluded user.
             example: bad_buyer
-
+    MyBidResponse:
+      type: object
+      description: bid response
+      title: MyBidResponse
+      required:
+        - maxAmount
+        - highBidder
+        - auction
+      properties:
+        maxAmount:
+          $ref: "#/components/schemas/MaxPrice"
+        minimalPriceMet:
+          type: boolean
+          description: >-
+            This indicates if the minimal price of the auction has been met or is not set at all. A minimal price can
+            be set by the seller and is the minimum amount the seller is willing to sell the item for.
+            If the highest bid is not higher than the minimal price when the auction ends, the listing ends and
+            the item is not sold.
+        highBidder:
+          type: boolean
+          description: Is this bid currently winning?
+        auction:
+          type: object
+          title: AuctionDetails
+          description: Auction details.
+          required:
+            - currentPrice
+          properties:
+            currentPrice:
+              $ref: "#/components/schemas/CurrentPrice"
