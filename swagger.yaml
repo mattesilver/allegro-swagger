@@ -928,7 +928,6 @@ paths:
                       offers:
                         - id: '1122334455'
                         - id: '2233445566'
-        description: request
         required: true
     get:
       tags:
@@ -1869,6 +1868,114 @@ paths:
           description: The category with the given ID does not exist.
           content:
             application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/categories/{categoryId}/product-parameters':
+    get:
+      tags:
+        - Products
+      summary: '[BETA] Get product parameters available in given category'
+      description: >-
+        Use this resource to get the list of product parameters available in given category.
+        You can use these parameters to create a new product.
+        <a href="../../productization" target="_blank">Read more</a>.
+      operationId: getFlatProductParametersUsingGET
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      parameters:
+        - name: categoryId
+          in: path
+          description: The category ID.
+          required: true
+          schema:
+            type: string
+            example: "709"
+      responses:
+        200:
+          description: '[BETA] The list of product parameters for the category returned successfully.'
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/CategoryProductParameterList'
+              examples:
+                integer:
+                  summary: Integer
+                  value:
+                    id: "202877"
+                    name: "Liczba rdzeni procesora"
+                    type: "integer"
+                    required: false
+                    unit: null
+                    restrictions:
+                      min: 0
+                      max: 1000000
+                      range: false
+                string_single:
+                  summary: String single
+                  value:
+                    id: "224017"
+                    name: "Kod producenta"
+                    type: "string"
+                    required: false
+                    unit: null
+                    restrictions:
+                      minLength: 2
+                      maxLength: 35
+                      allowedNumberOfValues: 1
+                dictionary:
+                  summary: Dictionary
+                  value:
+                    id: "11323"
+                    name: "Stan"
+                    type: "dictionary"
+                    required: false
+                    unit: null
+                    dictionary:
+                      - id: "11323_1"
+                        value: "Nowy"
+                      - id: "11323_2"
+                        value: "Używany"
+                      - id: "11323_238066"
+                        value: "Po zwrocie"
+                      - id: "11323_238058"
+                        value: "Powystawowy"
+                      - id: "11323_238062"
+                        value: "Uszkodzony"
+                      - id: "11323_246534"
+                        value: "Odnowiony przez producenta"
+                    restrictions:
+                      multipleChoices: false
+                float:
+                  summary: Float
+                  value:
+                    id: "17448"
+                    name: "Waga (z opakowaniem)"
+                    type: "float"
+                    required: false
+                    unit: "kg"
+                    restrictions:
+                      min: 0
+                      max: 1000000
+                      range: false
+                      precision: 3
+                float_range:
+                  summary: Float range
+                  value:
+                    id: "211966"
+                    name: "Zakres regulacji wysokości koszenia"
+                    type: "float"
+                    required: false
+                    unit: "cm"
+                    restrictions:
+                      min: 0
+                      max: 1000
+                      range: true
+                      precision: 2
+        404:
+          description: The category with the given ID does not exist.
+          content:
+            application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   /sale/offer-additional-services/definitions:
@@ -4235,6 +4342,41 @@ paths:
         '422':
           description: >-
             One of parameters have invalid value.
+    post:
+      tags:
+        - Products
+      summary: "Create a product"
+      description: >-
+        Use this resource to create a new product.
+      operationId: createSaleProduct
+      responses:
+        '201':
+          description: Product created successfully.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/CreateSaleProductResponse'
+        '303':
+          description: >-
+            Product already exists. Location and identifier of the existing product are provided in headers of the response.
+        '400':
+          description: Bad request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/CreateSaleProductRequest'
+        required: true
   '/sale/products/{productId}':
     get:
       tags:
@@ -5287,6 +5429,9 @@ components:
         offersWithProductPublicationEnabled:
           type: boolean
           description: Information whether the category supports assigning offers to a product.
+        productCreationEnabled:
+          type: boolean
+          description: Indicates wheter the category supports creating products.
       description: A list of the different options which can be used with this category.
     CompatibleProductsGroupsDto:
       type: object
@@ -6390,6 +6535,44 @@ components:
           example: "kg"
         options:
           $ref: '#/components/schemas/CategoryParameterOptions'
+    CategoryProductParameter:
+      type: object
+      required:
+        - type
+      discriminator:
+        propertyName: type
+        mapping:
+          integer: '#/components/schemas/IntegerCategoryParameter'
+          float: '#/components/schemas/FloatCategoryParameter'
+          string: '#/components/schemas/StringCategoryParameter'
+          dictionary: '#/components/schemas/DictionaryCategoryParameter'
+      properties:
+        id:
+          type: string
+          description: The ID of the parameter.
+          example: "11323"
+        name:
+          type: string
+          description: The name of the parameter in Polish.
+          example: "Numer katalogowy"
+        type:
+          type: string
+          description: >-
+            The type of the product parameter. Other fields in this structure may appear based on the type of the parameter.
+          enum:
+            - integer
+            - float
+            - string
+            - dictionary
+        required:
+          type: boolean
+          description: >-
+            Indicates whether the value of this parameter must be set in a product. Product without required parameters
+            set cannot be created.
+        unit:
+          type: string
+          description: The unit in which values of the parameter are used. May be `null`.
+          example: "kg"
     CategoryParameterOptions:
       type: object
       properties:
@@ -6527,6 +6710,14 @@ components:
           description: The list of parameters supported by the category.
           items:
             $ref: '#/components/schemas/CategoryParameter'
+    CategoryProductParameterList:
+      type: object
+      properties:
+        parameters:
+          type: array
+          description: The list of product parameters supported by the category.
+          items:
+            $ref: '#/components/schemas/CategoryProductParameter'
     Payment:
       type: object
       required:
@@ -9069,6 +9260,73 @@ components:
             id:
               type: string
               description: A "cursor" to the next set of results.
+    CreateSaleProductRequest:
+      type: object
+      required:
+        - name
+        - category
+        - parameters
+      properties:
+        name:
+          type: string
+          description: Suggested product name.
+          example: iPhone 5s
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/Category'
+        eans:
+          type: array
+          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
+          items:
+            type: string
+          example:
+            - "0019062113399"
+            - "0000007905193"
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageUrl'
+          description: List of product images.
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductParameter'
+          description: List of product parameters.
+    CreateSaleProductResponse:
+      type: object
+      required:
+        - id
+        - name
+        - category
+      properties:
+        id:
+          type: string
+          example: c9e39cae-9cb6-11e9-a2a3-2a2ae2dbcce4
+          description: Product id.
+        name:
+          type: string
+          description: Product name.
+          example: iPhone 5s
+        category:
+          $ref: '#/components/schemas/Category'
+        eans:
+          type: array
+          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
+          items:
+            type: string
+          example:
+            - "0019062113399"
+            - "0000007905193"
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageUrl'
+          description: List of product images.
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductParameter'
+          description: List of product parameters.
     SaleProductResponseDto:
       type: object
       required:
@@ -9101,7 +9359,6 @@ components:
           $ref: '#/components/schemas/OfferRequirements'
         compatibilityList:
           $ref: '#/components/schemas/CompatibilityList'
-      description: Product data
     SaleProductResponseCategoriesDto:
       properties:
         subcategories:
@@ -9125,7 +9382,7 @@ components:
           description: Category name.
         count:
           type: integer
-          description: Total number of products matching query criteria in this category
+          description: Total number of products matching query criteria in this category.
           format: int32
     ProductsCategoryPath:
       type: object
