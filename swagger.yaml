@@ -5802,7 +5802,7 @@ components:
       properties:
         additionalInfo:
           type: string
-          maxLength: 650
+          maxLength: 500
         handlingTime:
           type: string
           example: PDT12H30M5S
