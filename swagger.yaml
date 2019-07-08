@@ -5705,6 +5705,10 @@ components:
                             where ID version of compatible list is supported.
                             <a href="../../compatibility_list" target="_blank">Read more</a>.'
               example: '0006563f-f2b9-44ea-ae67-4678679be1f1'
+            text:
+              type: string
+              description: 'Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.'
+              example: 'CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW'
             additionalInfo:
               type: array
               items:
