@@ -9903,7 +9903,7 @@ components:
     BlackListPagedResponse:
       type: object
       properties:
-        entries:
+        blacklistedUsers:
           type: array
           items:
             $ref: '#/components/schemas/BlackListResponse'
