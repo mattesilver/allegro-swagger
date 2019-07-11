@@ -4356,19 +4356,23 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/CreateSaleProductResponse'
-        '303':
-          description: >-
-            Product already exists. Location and identifier of the existing product are provided in headers of the response.
         '400':
           description: Bad request
           content:
-            '*/*':
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '409':
+          description: >-
+            Product already exists. Url of the existing product is provided in the HTTP Location header field of the response.
+          content:
+            application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Unprocessable Entity
           content:
-            '*/*':
+            application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
@@ -8479,7 +8483,7 @@ components:
         phoneNumber:
           type: string
           description: Phone number
-          example: "+48999999999"
+          example: null
       description: Buyer data
     CheckoutFormPaymentReference:
       type: object
@@ -8568,11 +8572,11 @@ components:
         companyName:
           type: string
           description: Company name
-          example: "Allegro.pl sp. z o.o."
+          example: null
         phoneNumber:
           type: string
           description: Phone number
-          example: "+48999999999"
+          example: null
     CheckoutFormDeliveryMethod:
       type: object
       properties:
@@ -8663,9 +8667,11 @@ components:
         name:
           type: string
           description: Name of a company for which invoice should be issued
+          example: "Udix Sp. z o.o."
         taxId:
           type: string
           description: Tax id
+          example: null
     CheckoutFormInvoiceAddressNaturalPerson:
       type: object
       required:
@@ -8721,9 +8727,11 @@ components:
         definitionId:
           type: string
           description: Additional service id
+          example: "CARRY_IN"
         name:
           type: string
           description: Additional service name
+          example: "Wniesienie"
         price:
           $ref: '#/components/schemas/Price'
           description: Additional service price
@@ -9270,6 +9278,7 @@ components:
         - name
         - category
         - parameters
+        - images
       properties:
         name:
           type: string
@@ -9290,7 +9299,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ImageUrl'
-          description: List of product images.
+          description: List of product images. At least one image is required.
         parameters:
           type: array
           items:
