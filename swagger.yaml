@@ -20,7 +20,7 @@ tags:
   - name: User's offer information
   - name: Offer management
   - name: Products
-  - name: Compatible Products
+  - name: Compatibility List
   - name: Classifieds
   - name: Images and attachments
   - name: Pricing
@@ -934,34 +934,62 @@ paths:
         - Sets and rebates
       summary: "Get the user's list of promotions"
       description: >-
-        Get a list of promotions defined by the specified user. You can list
-        only your own promotions.
-        Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/#2" target="_blank">Bundles</a>
-        and <a href="../../news/2018-02-01-rabaty_ilosciowe/#2" target="_blank">Multipack</a>.
+        <p>Get a list of promotions defined by the authorized user.</p>
+
+        <p>Restrictions:</p>
+        <p>Sum of limit and offset must be equal to or lower than 50000. Limit must be equal to or lower than 5000.</p>
+        <p>Example:</p>
+        <p>offset = 49950 and limit = 50 will return promotions</p>
+        <p>offset = 49950 and limit = 51 will return 422 http error</p>
+        <p>offset = 0 and limit = 5000 will return promotions</p>
+        <p>offset = 0 and limit = 5001 will return 422 http error</p>
+
+        <p>Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/#2" target="_blank">Bundles</a>
+        and <a href="../../news/2018-02-01-rabaty_ilosciowe/#2" target="_blank">Multipack</a>.</p>
       operationId: listSellerPromotionsUsingGET_1
       parameters:
         - name: user.id
           in: query
-          description: user.id
+          description: The id of the user who is the owner of the promotions.
           required: true
           schema:
             type: string
+          example: "11111111"
         - name: limit
           in: query
-          description: limit
+          description: Limit of promotions per page.
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 1
+            maximum: 5000
             default: 50
         - name: offset
           in: query
-          description: offset
+          description: Distance between the beginning of the document and the point from which promotions are returned.
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 49999
             default: 0
+        - name: offer.id
+          in: query
+          description: Filter by offer id.
+          schema:
+            type: string
+          example: "8226673525"
+        - name: promotionType
+          in: query
+          description: Filter by promotion type.
+          schema:
+            type: string
+            enum:
+              - BUNDLE
+              - MULTIPACK
+              - CROSS_MULTIPACK
       responses:
         '200':
           description: Successfully returned the requested list of promotions
@@ -979,6 +1007,12 @@ paths:
                 $ref: '#/components/schemas/AuthError'
         '404':
           description: User id not found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Restrictions were not satisfied
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -4272,7 +4306,7 @@ paths:
     get:
       tags:
         - Products
-      summary: "Get search products results"
+      summary: "[BETA] Get search products results"
       description: >-
         Use this resource to get a list of products according to provided parameters.
         At least ean or phrase parameter is required. <a href="../../productization/#search" target="_blank">Read more</a>.
@@ -4345,7 +4379,7 @@ paths:
     post:
       tags:
         - Products
-      summary: "Create a product"
+      summary: "[BETA] Create a product"
       description: >-
         Use this resource to create a new product.
       operationId: createSaleProduct
@@ -4385,7 +4419,7 @@ paths:
     get:
       tags:
         - Products
-      summary: 'Get all data of the particular product'
+      summary: '[BETA] Get all data of the particular product'
       description: 'Use this resource to retrieve all data of the particular product. <a href="../../productization/#details" target="_blank">Read more</a>.'
       operationId: getSaleProduct
       parameters:
@@ -4406,10 +4440,25 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  '/sale/compatibility-list/supported-categories':
+    get:
+      tags:
+      - Compatibility List
+      summary: 'Get list of categories where compatibility list is supported'
+      description: 'Compatibility list is available in particular categories, this resource allows to get the list of these categories with additional details.'
+      responses:
+        '200':
+          description: 'Configuration of supported categories.'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CompatibilityListSupportedCategoriesDto'
+        '401':
+          description: 'Unauthorized'
   '/sale/compatible-products/groups':
     get:
       tags:
-      - Compatible Products
+      - Compatibility List
       summary: 'Get list of compatible product groups'
       description: 'Compatible products are organized in groups, this resource allows to browse these groups.'
       parameters:
@@ -4464,7 +4513,7 @@ paths:
   '/sale/compatible-products':
     get:
       tags:
-      - Compatible Products
+      - Compatibility List
       summary: 'Get list of compatible products'
       description: 'Resource allows to fetch compatible products of given type.'
       parameters:
@@ -5437,6 +5486,82 @@ components:
           type: boolean
           description: Indicates wheter the category supports creating products.
       description: A list of the different options which can be used with this category.
+    CompatibilityListSupportedCategoriesDto:
+      type: object
+      properties:
+        supportedCategories:
+          type: array
+          description: 'List with information about categories where compatibility list is supported. <a href=" https://developer.allegro.pl/compatibility_list/" target="_blank">Read more</a>.'
+          items:
+            type: object
+            properties:
+              categoryId:
+                type: string
+                description: 'Identifier of the category, where you can use
+                              the compatibility list in an offer listed in the category or
+                              in all subcategories, which belongs to returned category.'
+                example: '620'
+              name:
+                type: string
+                description: 'Name of supported category.'
+                example: 'Części samochodowe'
+              itemsType:
+                type: string
+                description: 'Type of the compatible item.'
+                example: 'CAR'
+              inputType:
+                type: string
+                enum: [TEXT, ID]
+                description: 'Type of the representation of compatible item.
+                              <ul>
+                                <li>`TEXT` - item on compatibility list has to be provided as plain text.</li>
+                                <li>`ID` - item on compatibility list has to be provided as identifier of compatible product.
+                                    To obtain it please use <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatible-products/get">compatible-products</a> resource together with `itemsType` supported in particular category.
+                                </li>
+                              </ul>
+                              '
+                example: 'TEXT'
+              validationRules:
+                type: object
+                description: 'Additional information about constraints assigned to the category.'
+                properties:
+                  maxRows:
+                    type: integer
+                    description: 'Maximum number of items allowed on compatibility list.'
+                    example: '2000'
+                  maxCharactersPerLine:
+                    type: integer
+                    description: 'Maximum length of single item on the list.'
+                    example: '160'
+          example:
+          - categoryId: '620'
+            name: 'Części samochodowe'
+            itemsType: 'CAR'
+            inputType: 'IDS'
+            validationRules:
+              maxRows: 2000
+              maxCharactersPerLine: null
+          - categoryId: '257358'
+            name: 'Pióra wycieraczek'
+            itemsType: 'CAR'
+            inputType: 'IDS'
+            validationRules:
+              maxRows: 2000
+              maxCharactersPerLine: null
+          - categoryId: '158'
+            name: 'Części motocyklowe'
+            itemsType: 'MOTORCYCLE'
+            inputType: 'IDS'
+            validationRules:
+              maxRows: 2000
+              maxCharactersPerLine: null
+          - categoryId: '9108'
+            name: 'Tusze'
+            itemsType: 'PRINTER'
+            inputType: 'TEXT'
+            validationRules:
+              maxRows: 200
+              maxCharactersPerLine: 100
     CompatibleProductsGroupsDto:
       type: object
       properties:
