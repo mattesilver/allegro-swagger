@@ -4272,7 +4272,7 @@ paths:
     get:
       tags:
         - Delivery
-      summary: "Get shipping rates assigned to an offer"
+      summary: "[BETA] Get shipping rates assigned to an offer"
       description: >-
         Use this resource to get the delivery methods and costs defined in the offer when there is no seller's shipping rates set attached to offer
       operationId: getOfferShippingRatesGET
@@ -4293,13 +4293,13 @@ paths:
         '401':
           description: Unauthorized action
           content:
-            application/vnd.allegro.public.v1+json:
+            application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '404':
           description: Not Found
           content:
-            application/vnd.allegro.public.v1+json:
+            application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   /sale/products:
@@ -4373,9 +4373,17 @@ paths:
                 $ref: '#/components/schemas/GetSaleProductsResponse'
         '401':
           description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '422':
           description: >-
             One of parameters have invalid value.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
     post:
       tags:
         - Products
@@ -4396,6 +4404,12 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '409':
           description: >-
             Product already exists. Url of the existing product is provided in the HTTP Location header field of the response.
@@ -4440,6 +4454,10 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/compatibility-list/supported-categories':
     get:
       tags:
