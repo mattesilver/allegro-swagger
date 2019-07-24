@@ -6219,6 +6219,9 @@ components:
         sizeTable:
           description: SizeTable modification
           $ref: '#/components/schemas/ModificationSizeTable'
+        publication:
+          description: Publication modification
+          $ref: '#/components/schemas/ModificationPublication'
       description: Contains fields to change
     ModificationDelivery:
       type: object
@@ -6226,6 +6229,30 @@ components:
         shippingRates:
           $ref: '#/components/schemas/ShippingRates'
       description: Contains shipping rates to change
+    ModificationPublication:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: 'Offer duration time provided in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.'
+          enum:
+            - PT72H
+            - PT120H
+            - PT168H
+            - PT240H
+            - PT480H
+            - PT720H
+            - P3D
+            - P5D
+            - P7D
+            - P10D
+            - P20D
+            - P30D
+        durationUnlimited:
+          type: boolean
+          example: false
+          description: 'Unlimited duration time.'
+      description: 'Allows you to change duration of offers. You can include only property in a request "duration" or "durationUnlimited".'
     ModificationPayments:
       type: object
       properties:
