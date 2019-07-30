@@ -4302,7 +4302,7 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  /sale/products:
+  '/sale/products':
     get:
       tags:
         - Products
@@ -4384,20 +4384,54 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-    post:
+  '/sale/products/{productId}':
+    get:
       tags:
         - Products
-      summary: "[BETA] Create a product"
-      description: >-
-        Use this resource to create a new product.
-      operationId: createSaleProduct
+      summary: '[BETA] Get all data of the particular product'
+      description: 'Use this resource to retrieve all data of the particular product. <a href="../../productization/#details" target="_blank">Read more</a>.'
+      operationId: getSaleProduct
+      parameters:
+        - name: productId
+          in: path
+          description: The product identifier.
+          required: true
+          schema:
+            type: string
       responses:
-        '201':
-          description: Product created successfully.
+        '200':
+          description: Product returned successfully
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
-                $ref: '#/components/schemas/CreateSaleProductResponse'
+                $ref: '#/components/schemas/SaleProductDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/product-proposals':
+    post:
+      tags:
+        - Products
+      summary: "[BETA] Propose a product"
+      description: >-
+        Use this resource to propose a product.
+      operationId: proposeSaleProduct
+      responses:
+        '201':
+          description: Product proposed successfully.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductDto'
         '400':
           description: Bad request
           content:
@@ -4410,6 +4444,12 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - User has to be verified.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
         '409':
           description: >-
             Product already exists. Url of the existing product is provided in the HTTP Location header field of the response.
@@ -4427,37 +4467,8 @@ paths:
         content:
           application/vnd.allegro.beta.v1+json:
             schema:
-              $ref: '#/components/schemas/CreateSaleProductRequest'
+              $ref: '#/components/schemas/ProposeSaleProductRequest'
         required: true
-  '/sale/products/{productId}':
-    get:
-      tags:
-        - Products
-      summary: '[BETA] Get all data of the particular product'
-      description: 'Use this resource to retrieve all data of the particular product. <a href="../../productization/#details" target="_blank">Read more</a>.'
-      operationId: getSaleProduct
-      parameters:
-        - name: productId
-          in: path
-          description: Product identifier
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Product returned successfully
-          content:
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/SaleProductResponseDto'
-        '401':
-          description: Unauthorized
-        '404':
-          description: Not Found
-          content:
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/compatibility-list/supported-categories':
     get:
       tags:
@@ -6481,7 +6492,7 @@ components:
         delivery:
           $ref: '#/components/schemas/Delivery'
         description:
-          $ref: '#/components/schemas/OfferDescription'
+          $ref: '#/components/schemas/StandardizedDescription'
         ean:
           type: string
           maxLength: 18
@@ -6660,14 +6671,6 @@ components:
           enum:
             - CONTAINS_OFFERS
       description: Contains offers criteria
-    OfferDescription:
-      type: object
-      description: The description section cannot have more than 40000 bytes in length.
-      properties:
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/DescriptionSection'
     OfferId:
       type: object
       properties:
@@ -7481,6 +7484,14 @@ components:
             When creating (Post) or updating (Put) a shipping rates set the field is ignored.
       required:
         - rates
+    StandardizedDescription:
+      type: object
+      description: The description section cannot have more than 40000 bytes in length.
+      properties:
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/DescriptionSection'
     Stock:
       type: object
       properties:
@@ -9521,7 +9532,7 @@ components:
             id:
               type: string
               description: A "cursor" to the next set of results.
-    CreateSaleProductRequest:
+    ProposeSaleProductRequest:
       type: object
       required:
         - name
@@ -9554,7 +9565,9 @@ components:
           items:
             $ref: '#/components/schemas/ProductParameter'
           description: List of product parameters.
-    CreateSaleProductResponse:
+        description:
+          $ref: '#/components/schemas/StandardizedDescription'
+    SaleProductDto:
       type: object
       required:
         - id
@@ -9589,6 +9602,8 @@ components:
           items:
             $ref: '#/components/schemas/ProductParameter'
           description: List of product parameters.
+        description:
+          $ref: '#/components/schemas/StandardizedDescription'
     SaleProductResponseDto:
       type: object
       required:
