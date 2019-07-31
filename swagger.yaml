@@ -32,7 +32,8 @@ tags:
   - name: After sale services
   - name: Offer variants
   - name: Sets and rebates
-  - name: Listing badges
+  - name: Promotion campaigns
+  - name: Badge campaigns
   - name: Delivery
   - name: Offer tags
   - name: Order management
@@ -1081,13 +1082,13 @@ paths:
   /sale/loyalty/promotion-campaigns:
     post:
       tags:
-        - Listing badges
+        - Promotion campaigns
       summary: "Create an application for a promotion campaign"
       description: >-
         For an additional fee, you can place a discount mark on a list of
         offers.
                 You have to define promotion id and campaign section giving LISTING_BADGE as the id.
-                Your promotion campaign application will be verified and you will be notified of the verification status via e-mail.
+                Your promotion campaign application will be verified and you will be notified about the verification status via e-mail.
                 Fees will be charged in accordance with Annex No. 1 to the Daily deals zone regulations.
                 <a href="../../offer_bundles/#11" target="_blank">Read more</a>.
 
@@ -1134,7 +1135,7 @@ paths:
         required: true
     get:
       tags:
-        - Listing badges
+        - Promotion campaigns
       summary: "Get the user's promotion campaigns"
       description: >-
         Use this resource to retrieve promotion campaigns. You can find promotion campaign by
@@ -1190,7 +1191,7 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
-        - Listing badges
+        - Promotion campaigns
       summary: "Delete a campaign in a promotion"
       description:
         'Use this resource to delete campaign from promotion by promotion id and campaign id.
@@ -1239,7 +1240,7 @@ paths:
   '/sale/loyalty/promotion-campaign-applications/{applicationId}':
     get:
       tags:
-        - Listing badges
+        - Promotion campaigns
       summary: "Get an application for promotion campaign"
       description:
         'Use this resource to retrieve promotion campaign application. You need to use its unique id.
@@ -1281,7 +1282,7 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
-        - Listing badges
+        - Promotion campaigns
       summary: "Delete an application for promotion campaign"
       description: >-
         Use this resource to delete promotion campaign application by application id. You need to
@@ -5152,6 +5153,615 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthError'
+  '/sale/badge-campaigns':
+    get:
+      tags:
+        - Badge campaigns
+      summary: "[BETA] Get a list of available badge campaigns"
+      description: |
+        Badge campaigns are another way to promote your offers.
+        You can apply for a badge, which - depending on a type - will be displayed on your offer page of on the list of offers.
+
+        First - use this resource to get a list of all available badge campaigns at the moment, then use *POST /sale/badges* to apply for badge.
+        <a href="/badge/#1" target="_blank">Read more</a>.
+      operationId: badgeCampaigns_get_all
+      responses:
+        '200':
+          description: List of available badge campaigns.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/GetBadgeCampaignsList'
+              examples:
+                badge-campaigns:
+                  summary: Badge campaigns
+                  value:
+                    badgeCampaigns:
+                      - id: 'BARGAIN'
+                        name: 'Strefa okazji'
+                        type: "DISCOUNT"
+                        eligibility:
+                          eligible: true
+                          refusalReasons: []
+                        application:
+                          type: 'ALWAYS'
+                          from: null
+                          to: null
+                        visibility:
+                          type: 'WITHIN'
+                          from: '2018-01-01T23:00:00Z'
+                          to: '2020-10-04T23:00:00Z'
+                        publication:
+                          type: 'UNTIL'
+                          from: null
+                          to": '2020-10-03T23:00:00Z'
+                      - id: 'HIT'
+                        name: 'Hit'
+                        type: 'STANDARD'
+                        eligibility:
+                          eligible: false
+                          refusalReasons:
+                            - code: 'BB1'
+                              messages:
+                                - text: 'Account does not meet the seller quality criteria'
+                                  link: null
+                        application:
+                          type: 'NEVER'
+                          from: null
+                          to: null
+                        visibility:
+                          type: 'ALWAYS'
+                          from: null
+                          to: null
+                        publication:
+                          type: 'SINCE'
+                          from: '2018-11-04T23:00:00Z'
+                          to": null
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Account is not a Company account type.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                not-business-account:
+                  summary: 'Account is not a Company account type.'
+                  value:
+                    errors:
+                      - code: 'BB2'
+                        details: null
+                        message: 'Account is not a Company account type'
+                        path: null
+                        userMessage: 'Account is not a Company account type'
+  '/sale/badges':
+    post:
+      tags:
+        - Badge campaigns
+      summary: "[BETA] Apply for badge in selected offer"
+      description: |
+        This resource allows you to apply for a badge. Most badges involves additional fee charged.
+
+        Your badge application will be verified and you will be notified about the verification status via e-mail.
+        You can use *Location* provided in header of the response to track your application status.
+        Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
+
+        Fees will be charged in accordance with Annex No. 1 to the
+          <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
+            target="_blank">Daily deals zone terms and conditions</a>.
+
+        By using this resource you agree to the
+          <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
+            target="_blank">Daily deals zone terms and conditions</a>
+        or
+          <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-yVek1rEwrFb"
+            target="_blank">Commission discount terms and conditions</a>.
+        <a href="/badge/#2" target="_blank">Read more</a>.
+      operationId: badges_post
+      responses:
+        '202':
+          description: Successfully applied for a badge.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BadgeApplication'
+              examples:
+                response:
+                  summary: 'Badge application'
+                  value:
+                    id: '01234567-89ab-0123-456789ab'
+                    createdAt: '2011-12-03T10:15:30Z'
+                    updatedAt: '2011-12-03T10:15:30Z'
+                    campaign:
+                      id: 'BARGAIN'
+                    offer:
+                      id: '987654321'
+                    prices:
+                      market:
+                        amount: '11.23'
+                        currency: 'PLN'
+                      bargain:
+                        amount: '10.00'
+                        currency: 'PLN'
+                    process:
+                      status: 'REQUESTED'
+                      rejectionReasons: []
+        '400':
+          description: Syntactically incorrect request.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Account is not a Company account type.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                not-business-account:
+                  summary: 'Account is not a Company account type.'
+                  value:
+                    errors:
+                      - code: 'BB2'
+                        details: null
+                        message: 'Account is not a Company account type'
+                        path: null
+                        userMessage: 'Account is not a Company account type'
+        '422':
+          description: Validation error. Invalid parameters provided in the request.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                unprocessable-request:
+                  summary: 'Amount is not a valid number.'
+                  value:
+                    errors:
+                      - code: 'BB5'
+                        details: null
+                        message: "Currency is not equal to 'PLN'"
+                        path: 'prices.bargain.currency'
+                        userMessage: "Currency is not equal to 'PLN'"
+                      - code: 'BB6'
+                        details: null
+                        message: 'Amount is not a valid number'
+                        path: 'prices.bargain.amount'
+                        userMessage: 'Amount is not a valid number'
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/BadgeApplicationRequest'
+            examples:
+              discount:
+                summary: 'Discount'
+                value:
+                  campaign:
+                    id: 'BARGAIN'
+                  offer:
+                    id: '12345678'
+                  prices:
+                    market:
+                      amount: '19.99'
+                      currency: 'PLN'
+                    bargain:
+                      amount: '9.99'
+                      currency: 'PLN'
+              standard:
+                summary: 'Standard'
+                value:
+                  campaign:
+                    id: 'HIT'
+                  offer:
+                    id: '12345678'
+              sourcing:
+                summary: 'Sourcing'
+                value:
+                  campaign:
+                    id: 'SOURCING_CAMPAIGN'
+                  offer:
+                    id: '12345678'
+                  prices:
+                    bargain:
+                      amount: '9.99'
+                      currency: 'PLN'
+    get:
+      tags:
+        - Badge campaigns
+      summary: '[BETA] Get a list of badges'
+      description: >-
+        Use this resource to get a list of badges in authorized seller's offers.
+        <a href="/badge/#5" target="_blank">Read more</a>.
+      operationId: badges_get_all
+      parameters:
+        - name: offer.id
+          in: query
+          description: 'Offer ID.'
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: 'Offset.'
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: 'The maximum number of badges returned in the response.'
+          required: false
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: Successfully returned list of badges.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BadgesList'
+              examples:
+                badges:
+                  summary: 'List of badges'
+                  value:
+                    badges:
+                      - offer:
+                          id: '123456'
+                        campaign:
+                          id: 'BARGAIN'
+                          name: 'Strefa okazji'
+                        publication: null
+                        prices:
+                          market:
+                            amount: '20.00'
+                            currency: 'PLN'
+                        process:
+                          status: 'IN_VERIFICATION'
+                          rejectionReasons: []
+                      - offer:
+                          id: '1234567'
+                        campaign:
+                          id: 'HIT'
+                          name: 'Hit'
+                        publication:
+                          type: 'WITHIN'
+                          from: '2019-05-08T05:54:46.966Z'
+                          to: '2025-05-01T10:00:00Z'
+                        prices: null
+                        process:
+                          status: 'FINISHED'
+                          rejectionReasons: []
+                      - offer:
+                          id: '1235567'
+                        campaign:
+                          id: 'NOVELTY'
+                          name: 'Nowość'
+                        publication: null
+                        prices: null
+                        process:
+                          status: 'DECLINED'
+                          rejectionReasons:
+                            - code: 'BA26'
+                              messages:
+                                - text: 'Offer does not meet requirements for this badge'
+                                  link:  null
+                                - text: 'See requirements'
+                                  link: 'https://allegro.pl/pomoc/dla-sprzedajacych/promowanie-ofert/specjalne-oznaczenia-ofert-na-listach-YL8zKmBRktz'
+        '400':
+          description: Invalid values supplied in the query parameters.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                invalid-parameters:
+                  summary: 'Invalid values supplied in the query parameters.'
+                  value:
+                    errors:
+                      - code: 'BB9'
+                        details: null
+                        message: 'Invalid limit parameter value'
+                        path: 'limit'
+                        userMessage: 'Invalid limit parameter value'
+                      - code: 'BB10'
+                        details: null
+                        message: 'Invalid offset parameter value'
+                        path: 'offset'
+                        userMessage: 'Invalid offset parameter value'
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Account is not a Company account type.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                not-business-account:
+                  summary: 'Account is not a Company account type.'
+                  value:
+                    errors:
+                      - code: 'BB2'
+                        details: null
+                        message: 'Account is not a Company account type'
+                        path: null
+                        userMessage: 'Account is not a Company account type'
+  '/sale/badge-applications/{applicationId}':
+    get:
+      tags:
+        - Badge campaigns
+      summary: '[BETA] Get a badge application details'
+      description: >-
+        Use this resource to get a badge application details.
+        <a href="/badge/#3" target="_blank">Read more</a>.
+      operationId: badgeApplications_get_one
+      parameters:
+        - name: applicationId
+          in: path
+          description: 'Badge application ID.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned badge application.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BadgeApplication'
+              examples:
+                processed:
+                  summary: Processed
+                  value:
+                    - id: '81ff5e67-d00b-4141-a79a-68636755df95'
+                      createdAt: '2019-05-16T12:49:17.347Z'
+                      updatedAt: '2019-05-16T12:49:17.530Z'
+                      campaign:
+                        id: 'BARGAIN'
+                      offer:
+                        id: '12345678'
+                      prices:
+                        bargain:
+                          amount: '14.00'
+                          currency: 'PLN'
+                        market":
+                          amount: '25.00'
+                          currency: 'PLN'
+                      process:
+                        status: 'PROCESSED'
+                        rejectionReasons: []
+                requested:
+                  summary: Requested
+                  value:
+                    - id: '34ff2a86-6d1a-4607-ae22-3a81de4c8dd1'
+                      createdAt: '2019-05-16T12:49:17.347Z'
+                      updatedAt: '2019-05-16T12:49:17.530Z'
+                      campaign:
+                        id: 'HIT'
+                      offer:
+                        id: '12345678'
+                      prices: null
+                      process:
+                        status: 'REQUESTED'
+                        rejectionReasons: []
+                declined:
+                  summary: Declined
+                  value:
+                    - id: '893d055c-ba0c-4996-94a0-93d593fdd483'
+                      createdAt: '2019-05-16T12:49:17.347Z'
+                      updatedAt: '2019-05-16T12:49:17.530Z'
+                      campaign:
+                        id: 'BARGAIN'
+                      offer:
+                        id: '12345678'
+                      prices:
+                        bargain: null
+                        market:
+                          amount: '19.90'
+                          currency: 'PLN'
+                      process:
+                        status: 'DECLINED'
+                        rejectionReasons:
+                          - code: 'BA2'
+                            messages:
+                              - text: 'Bargain price or suggested market price not defined'
+                                link: null
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Account is not a Company account type.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                not-business-account:
+                  summary: 'Account is not a Company account type'
+                  value:
+                    errors:
+                      - code: 'BB2'
+                        details: null
+                        message: 'Account is not a Company account type'
+                        path: null
+                        userMessage: 'Account is not a Company account type'
+        '404':
+          description: Badge application not found.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                application-not-found:
+                  summary: 'Badge application not found.'
+                  value:
+                    errors:
+                      - code: 'BB8'
+                        details: null
+                        message: 'Application not found'
+                        path: null
+                        userMessage: 'Application not found'
+  '/sale/badge-applications':
+    get:
+      tags:
+        - Badge campaigns
+      summary: '[BETA] Get a list of badge applications'
+      description: >-
+        Use this resource to get a list of badge applications.
+        <a href="/badge/#4" target="_blank">Read more</a>.
+      operationId: badgeApplications_get_all
+      parameters:
+        - name: campaign.id
+          in: query
+          description: 'Campaign ID.'
+          required: false
+          schema:
+            type: string
+        - name: offer.id
+          in: query
+          description: 'Offer ID.'
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: 'Offset.'
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: 'The maximum number of applications returned in the response.'
+          required: false
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: Successfully returned badge applications list.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/BadgeApplications'
+              examples:
+                badgeApplications:
+                  summary: "List of badge applications."
+                  value:
+                    badgeApplications:
+                      - id: '81ff5e67-d00b-4141-a79a-68636755df95'
+                        createdAt: '2019-05-16T12:49:17.347Z'
+                        updatedAt: '2019-05-16T12:49:17.530Z'
+                        campaign:
+                          id: 'BARGAIN'
+                        offer:
+                          id: '12345678'
+                        prices:
+                          bargain:
+                            amount: '14.00'
+                            currency: 'PLN'
+                          market":
+                            amount: '25.00'
+                            currency: 'PLN'
+                        process:
+                          status: 'PROCESSED'
+                          rejectionReasons: []
+                      - id: '34ff2a86-6d1a-4607-ae22-3a81de4c8dd1'
+                        createdAt: '2019-05-16T12:49:17.347Z'
+                        updatedAt: '2019-05-16T12:49:17.530Z'
+                        campaign:
+                          id: 'HIT'
+                        offer:
+                          id: '12345678'
+                        prices: null
+                        process:
+                          status: 'REQUESTED'
+                          rejectionReasons: []
+                      - id: '893d055c-ba0c-4996-94a0-93d593fdd483'
+                        createdAt: '2019-05-16T12:49:17.347Z'
+                        updatedAt: '2019-05-16T12:49:17.530Z'
+                        campaign:
+                          id: 'BARGAIN'
+                        offer:
+                          id: '12345678'
+                        prices:
+                          bargain: null
+                          market:
+                            amount: '19.90'
+                            currency: 'PLN'
+                        process:
+                          status: 'DECLINED'
+                          rejectionReasons:
+                            - code: 'BA2'
+                              messages:
+                                - text: 'Bargain price or suggested market price not defined'
+                                  link: null
+        '400':
+          description: Invalid values supplied in the query parameters.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                invalid-parameters:
+                  summary: 'Invalid values supplied in the query parameters.'
+                  value:
+                    errors:
+                      - code: 'BB9'
+                        details: null
+                        message: 'Invalid limit parameter value'
+                        path: 'limit'
+                        userMessage: 'Invalid limit parameter value'
+                      - code: 'BB10'
+                        details: null
+                        message: 'Invalid offset parameter value'
+                        path: 'offset'
+                        userMessage: 'Invalid offset parameter value'
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Account is not a Company account type.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                not-business-account:
+                  summary: 'Account is not a Company account type'
+                  value:
+                    errors:
+                      - code: 'BB2'
+                        details: null
+                        message: 'Account is not a Company account type'
+                        path: null
+                        userMessage: 'Account is not a Company account type'
 
 components:
   securitySchemes:
@@ -7089,7 +7699,7 @@ components:
         currency:
           type: string
           format: ISO 4217
-          description: The currency provided as a 3-letter code from ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+          description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
           example: 'PLN'
     ProcessingStatus:
       type: string
@@ -8067,7 +8677,7 @@ components:
         currency:
           type: string
           format: ISO 4217
-          description: The currency provided as a 3-letter code from ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+          description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
           example: 'PLN'
       description: >-
         The lowest shipping cost available. Lack of this entity means that the offer has no
@@ -8082,7 +8692,7 @@ components:
         currency:
           type: string
           format: ISO 4217
-          description: The currency provided as a 3-letter code from ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+          description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
           example: 'PLN'
       description: >-
         The price of the offer. It is the buy now price for *BUY_NOW* selling format and
@@ -8096,7 +8706,7 @@ components:
         currency:
           type: string
           format: ISO 4217
-          description: The currency provided as a 3-letter code from ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+          description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
           example: 'PLN'
       description: >-
         Fixed (buy now) price of the offer in case of *AUCTION* selling format
@@ -10302,3 +10912,416 @@ components:
     OfferPriceChangedEvent:
       allOf:
         - $ref: '#/components/schemas/OfferActivatedEvent'
+
+    GetBadgeCampaignsList:
+      type: object
+      required:
+      - badgeCampaigns
+      properties:
+        badgeCampaigns:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeCampaign'
+          description: 'List of badge campaigns.'
+      title: BadgeCampaigns
+    BadgeCampaign:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - eligibility
+        - application
+        - visibility
+        - publication
+      properties:
+        id:
+          type: string
+          description: 'Badge campaign ID.'
+          example: 'BARGAIN'
+        name:
+          type: string
+          description: 'Badge campaign name.'
+          example: 'Strefa Okazji'
+        type:
+          type: string
+          enum:
+            - DISCOUNT
+            - STANDARD
+            - SOURCING
+        eligibility:
+          $ref: '#/components/schemas/UserCampaignEligibility'
+          title: 'UserEligibility'
+        application:
+          $ref: '#/components/schemas/ApplicationTimePolicy'
+        visibility:
+          $ref: '#/components/schemas/VisibilityTimePolicy'
+        publication:
+          $ref: '#/components/schemas/PublicationTimePolicy'
+    UserCampaignEligibility:
+      type: object
+      description: 'Summary of user eligibility for participation in the campaign.'
+      required:
+        - eligible
+        - refusalReasons
+      properties:
+        eligible:
+          type: boolean
+          description: 'Information whether user is eligible to participate in this campaign.'
+        refusalReasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/CampaignRefusalReason'
+          title: 'RefusalReason'
+          description: 'Information why user is not able to participate in the campaign.'
+    CampaignRefusalReason:
+      type: object
+      required:
+        - code
+        - messages
+      properties:
+        code:
+          type: string
+          description: >-
+            Code corresponding to the message. For more information visit
+            <a href="/badge/#6" target="_blank">the list of available codes</a>.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefusalMessage'
+          title: 'RefusalMessage'
+          description: 'List of refusal messages.'
+    RefusalMessage:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Detailed message.'
+        link:
+          type: string
+          description: 'Optional link that redirects to page associated with refusal reason.'
+    ApplicationTimePolicy:
+      type: object
+      description: 'Time period when the campaign is open for applying for badge.'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - ALWAYS
+            - SINCE
+            - WITHIN
+            - UNTIL
+            - NEVER
+        from:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        to:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+      example:
+        type: UNTIL
+        from: null
+        to: '2012-12-03T10:15:30Z'
+    VisibilityTimePolicy:
+      type: object
+      description: >-
+        Time period when the campaign is visible in
+        <a href="https://allegro.pl/moje-allegro/sprzedaz/moje-oferty" target="_blank">My Allegro</a> and
+        <a href="https://ms.allegro.pl/seller-offers/" target="_blank">Sales Manager (Menedżer sprzedaży)</a>
+        (it is not equal to the time period when badges are displayed on the list of offers or on the offer page).
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - ALWAYS
+            - SINCE
+            - WITHIN
+            - UNTIL
+            - NEVER
+        from:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        to:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+      example:
+        type: UNTIL
+        from: null
+        to: '2012-12-03T10:15:30Z'
+    PublicationTimePolicy:
+      type: object
+      description: 'Time period when the badge is displayed on the list of offers or on the offer page.'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - ALWAYS
+            - SINCE
+            - WITHIN
+            - UNTIL
+            - NEVER
+        from:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        to:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+      example:
+        type: UNTIL
+        from: null
+        to: '2012-12-03T10:15:30Z'
+    BadgePublicationTimePolicy:
+      type: object
+      description: 'Time period when the badge is displayed on the list of offers or on the offer page.'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - ALWAYS
+            - SINCE
+            - WITHIN
+            - UNTIL
+            - NEVER
+        from:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        to:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+      example:
+        type: UNTIL
+        from: null
+        to: '2012-12-03T10:15:30Z'
+    BadgeApplicationRequest:
+      type: object
+      required:
+        - campaign
+        - offer
+      properties:
+        campaign:
+          $ref: '#/components/schemas/BadgeApplicationCampaign'
+        offer:
+          $ref: '#/components/schemas/BadgeApplicationOffer'
+        prices:
+          $ref: '#/components/schemas/BadgeApplicationPrices'
+    BadgeApplicationCampaign:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: 'Badge campaign ID.'
+          example: 'BARGAIN'
+      title: 'BadgeApplicationCampaign'
+    OfferBadgeCampaign:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: 'Badge campaign ID.'
+          example: 'BARGAIN'
+        name:
+          type: string
+          description: 'Badge campaign name.'
+          example: 'Strefa Okazji'
+      title: 'BadgeCampaign'
+    BadgeApplicationOffer:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: 'Offer ID.'
+          example: '987654321'
+      title: 'BadgeOffer'
+    BadgeApplicationPrices:
+      type: object
+      properties:
+        market:
+          $ref: '#/components/schemas/BadgeApplicationMarketPrice'
+        bargain:
+          $ref: '#/components/schemas/BadgeApplicationBargainPrice'
+      title: 'BadgePrices'
+      description: 'Required by DISCOUNT and SOURCING campaign.'
+    BadgeApplicationMarketPrice:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Positive number. Must be equal to or greater than 1.'
+          example: '1.23'
+        currency:
+          type: string
+          description: 'The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217). Only PLN values is supported.'
+          example: 'PLN'
+      title: Price
+      description: 'Suggested market price. Required by DISCOUNT campaign.'
+    BadgeApplicationBargainPrice:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Positive number. Must be equal to or greater than 1.'
+          example: '1.23'
+        currency:
+          type: string
+          description: 'The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217). Only PLN values is supported.'
+          example: 'PLN'
+      title: Price
+      description: 'Bargain price. Required by DISCOUNT and SOURCING campaign.'
+    BadgeApplications:
+      type: object
+      required:
+        - badgeApplications
+      properties:
+        badgeApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeApplication'
+    BadgeApplication:
+      type: object
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - campaign
+        - offer
+        - process
+      properties:
+        id:
+          type: string
+          description: 'Badge application ID.'
+          example: '01234567-89ab-0123-456789ab'
+        createdAt:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        updatedAt:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30Z'
+        campaign:
+          $ref: '#/components/schemas/BadgeApplicationCampaign'
+        offer:
+          $ref: '#/components/schemas/BadgeApplicationOffer'
+        prices:
+          $ref: '#/components/schemas/BadgeApplicationPrices'
+        process:
+          $ref: '#/components/schemas/BadgeApplicationProcess'
+    BadgeApplicationProcess:
+      type: object
+      required:
+        - status
+        - rejectionReasons
+      properties:
+        status:
+          type: string
+          enum:
+            - REQUESTED
+            - PROCESSED
+            - DECLINED
+        rejectionReasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeApplicationRejectionReason'
+          description: 'A list of rejection reasons for the badge application. Returned for process.status = DECLINED only.'
+      description: 'Information about processing of the application.'
+    BadgeApplicationRejectionReason:
+      type: object
+      required:
+        - code
+        - messages
+      properties:
+        code:
+          type: string
+          description: >-
+            Code corresponding to the message. For more information visit
+            <a href="/badge/#6" target="_blank">the list of available codes</a>.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeApplicationRejectionReasonMessage'
+          description: 'List of messages with rejection reasons.'
+      title: 'RejectionReason'
+    BadgeApplicationRejectionReasonMessage:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Detailed message.'
+          example: 'See requirements.'
+        link:
+          type: string
+          description: 'Optional link that redirects to page associated with rejection reason.'
+          example: 'https://allegro.pl/regulamin/pl'
+    BadgesList:
+      type: object
+      required:
+        - badges
+      properties:
+        badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/Badge'
+      description: 'List of badges'
+    Badge:
+      type: object
+      required:
+        - offer
+        - campaign
+        - process
+      properties:
+        offer:
+          $ref: '#/components/schemas/BadgeApplicationOffer'
+        campaign:
+          $ref: '#/components/schemas/OfferBadgeCampaign'
+        publication:
+          $ref: '#/components/schemas/BadgePublicationTimePolicy'
+        prices:
+          $ref: '#/components/schemas/BadgeApplicationPrices'
+        process:
+          $ref: '#/components/schemas/BadgeProcess'
+    BadgeProcess:
+      type: object
+      required:
+        - status
+        - rejectionReasons
+      properties:
+        status:
+          type: string
+          enum:
+            - IN_VERIFICATION
+            - WAITING_FOR_PUBLICATION
+            - ACTIVE
+            - FINISHED
+            - DECLINED
+        rejectionReasons:
+          type: array
+          description: 'A list of messages with rejection reasons. Returned for process.status = DECLINED only.'
+          items:
+            $ref: '#/components/schemas/BadgeApplicationRejectionReason'
+      description: 'Information about badge processing.'
