@@ -4504,11 +4504,13 @@ paths:
             example: 'Mon, 01 Dec 2018 10:00:00 GMT'
         - name: type
           in: query
-          description: 'Type of compatible products.'
+          description: 'Type of compatible products. You can find available types in the response
+                        for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource.
+                        You can use value provided in `itemsType`, for categories where `inputType=ID`.'
           required: true
           schema:
             type: string
-            enum: ['CAR', 'MOTORCYCLE']
+            example: 'CAR'
         - name: limit
           in: query
           description: 'The limit of returned items.'
@@ -4560,11 +4562,13 @@ paths:
           example: 'Mon, 01 Dec 2018 10:00:00 GMT'
       - name: type
         in: query
-        description: 'Type of compatible products.'
+        description: 'Type of compatible products. You can find available types in the response
+                     for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource.
+                     You can use value provided in `itemsType`, for categories where `inputType=ID`.'
         required: true
         schema:
           type: string
-          enum: ['CAR', 'MOTORCYCLE']
+          example: 'CAR'
       - name: group.id
         in: query
         description: 'Group identifier from `/sale/compatible-products/groups` resource.
@@ -4981,7 +4985,7 @@ paths:
           required: true
           schema:
             type: long
-      summary: "[BETA] Remove users from the blacklist."
+      summary: "[BETA] Remove users from the blacklist"
       description: "Use this resource to remove users from the blacklist on given account."
       operationId: doRemoveFromBlackList
       responses:
@@ -5762,6 +5766,150 @@ paths:
                         message: 'Account is not a Company account type'
                         path: null
                         userMessage: 'Account is not a Company account type'
+  '/payments/refunds':
+    post:
+      tags:
+        - Payments
+      summary: Initiate a refund of a payment
+      description: Use this endpoint to initiate a refund of a payment.
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/InitializeRefund'
+      responses:
+        '201':
+          description: Refund request created successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/RefundDetails'
+        '400':
+          description: Syntactically incorrect request.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '422':
+          description: Unprocessable Entity.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Payment not found.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+    get:
+      tags:
+        - Payments
+      summary: 'Get a list of refunded payments'
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Number of returned operations.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          description: Index of the first returned payment operation from all search results.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: id
+          in: query
+          description: ID of the refund.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: payment.id
+          in: query
+          description: ID of the payment.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: occurredAt.gte
+          in: query
+          description: Minimum date and time when the refund occurred provided in ISO 8601 format.
+          example: 2019-05-08T09:45:818Z
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: occurredAt.lte
+          in: query
+          description: Maximum date and time when the refund occurred provided in ISO 8601 format.
+          required: false
+          example: 2019-05-08T09:45:818Z
+          schema:
+            type: string
+            format: date-time
+        - name: status
+          in: query
+          description: Current status of payment refund.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - WAITING
+                - IN_PROGRESS
+                - SUCCESS
+                - CANCELED
+                - PARTIAL
+      responses:
+        '200':
+          description: List of payments refunds returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  refunds:
+                    type: array
+                    description: Collection of payments refunds.
+                    items:
+                      $ref: '#/components/schemas/RefundDetails'
+                  count:
+                    type: integer
+                    format: int32
+                    description: Number of payment operations returned in search result for the given parameters.
+                    example: 50
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: Total number of payment operations for the given parameters.
+                    example: 123
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '422':
+          description: Unprocessable Entity. Returned when any of the given search parameters have an invalid value.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
 
 components:
   securitySchemes:
@@ -5858,6 +6006,175 @@ components:
             format: binary
             description: File in a binary format
   schemas:
+    InitializeRefund:
+      required:
+        - payment
+        - reason
+      properties:
+        payment:
+          $ref: '#/components/schemas/RefundPayment'
+        reason:
+          type: string
+          description: Reason for a payment refund.
+          enum:
+            - "REFUND"
+            - "COMPLAINT"
+            - "PRODUCT_NOT_AVAILABLE"
+            - "PAID_VALUE_TOO_LOW"
+        lineItems:
+          type: array
+          description: List of order's line items which can be refunded.
+          items:
+            $ref: '#/components/schemas/RefundLineItem'
+        delivery:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundDeliveryValue'
+          description: Payment refund for delivery.
+        overpaid:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundOverpaidValue'
+          description: Payment refund for overpaid.
+        surcharges:
+          type: array
+          description: List of surcharges for payment which can be refunded.
+          items:
+            $ref: '#/components/schemas/PaymentsSurcharge'
+        additionalServices:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundAdditionalServicesValue'
+          description: Payment refund for additional services.
+    RefundDetails:
+      type: object
+      description: Detailed information about the refund.
+      required:
+        - id
+        - reason
+        - status
+        - createdAt
+        - totalValue
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The payment refund identifier.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+        payment:
+          $ref: '#/components/schemas/RefundPayment'
+        reason:
+          type: string
+          description: Reason for a payment refund.
+          enum:
+            - "REFUND"
+            - "COMPLAINT"
+            - "PRODUCT_NOT_AVAILABLE"
+            - "PAID_VALUE_TOO_LOW"
+        status:
+          type: string
+          description: Current status of payment refund.
+          enum:
+            - "SUCCESS"
+            - "CANCELED"
+            - "PARTIAL"
+            - "IN_PROGRESS"
+            - "VALIDATE_FAILED"
+            - "NEW"
+        createdAt:
+          type: string
+          format: date-time
+          example: '2017-05-17T08:36:57.292+02:00'
+          description: Date and time when the refund was created provided in ISO 8601 format.
+        totalValue:
+          $ref: '#/components/schemas/RefundTotalValue'
+        lineItems:
+          type: array
+          description: List of order's line items which can be refunded.
+          items:
+            $ref: '#/components/schemas/RefundLineItem'
+        delivery:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundDeliveryValue'
+          description: Payment refund for delivery.
+        overpaid:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundOverpaidValue'
+          description: Payment refund for overpaid.
+        surcharges:
+          type: array
+          description: List of surcharges for payment which can be refunded.
+          items:
+            $ref: '#/components/schemas/PaymentsSurcharge'
+        additionalServices:
+          type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/RefundAdditionalServicesValue'
+          description: Payment refund for additional services.
+    RefundLineItem:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The line-item identifier.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+        type:
+          type: string
+          description: Type for line items refund. QUANTITY is provided when you can refund one or more items. AMOUNT is provided when you can refund a partial price.
+          example: QUANTITY
+          enum:
+            - "AMOUNT"
+            - "QUANTITY"
+        quantity:
+          type: number
+          example: 5
+          description: This field is provided for QUANTITY type only. It specifies how many items will be refunded.
+        value:
+          required:
+            - amount
+            - currency
+          type: object
+          description: This field is available for AMOUNT type only and specifies the amount refunded to the customer.
+          example: null
+          properties:
+            amount:
+              type: string
+              description: The amount provided in a string format to avoid rounding errors.
+            currency:
+              type: string <ISO 4217>
+              description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+    RefundPayment:
+        type: object
+        description: Payment affected by refund operation.
+        title: Payment
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: The payment identifier.
+            example: a6bee8b2-8b4e-11e9-8918-07b31163120a
+    PaymentsSurcharge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The payment identifier.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+        value:
+          $ref: '#/components/schemas/RefundSurchargeValue'
     AdditionalServiceDefinitionRequest:
       type: object
       required:
@@ -6255,21 +6572,21 @@ components:
           - categoryId: '620'
             name: 'Części samochodowe'
             itemsType: 'CAR'
-            inputType: 'IDS'
+            inputType: 'ID'
             validationRules:
               maxRows: 2000
               maxCharactersPerLine: null
           - categoryId: '257358'
             name: 'Pióra wycieraczek'
             itemsType: 'CAR'
-            inputType: 'IDS'
+            inputType: 'ID'
             validationRules:
               maxRows: 2000
               maxCharactersPerLine: null
           - categoryId: '158'
             name: 'Części motocyklowe'
             itemsType: 'MOTORCYCLE'
-            inputType: 'IDS'
+            inputType: 'ID'
             validationRules:
               maxRows: 2000
               maxCharactersPerLine: null
@@ -6505,10 +6822,9 @@ components:
             $ref: '#/components/schemas/CompatibilityListItem'
           description: 'List of the compatible items.
                         Maximum number of elements on the list depends on type of included compatible items.
-                        <ul>
-                          <li>2000 - for compatible items of type ID and car TEXT compatible items</li>
-                          <li>200 - for other compatible items</li>
-                        </ul>'
+                        Configuration and details concerning the compatible items in selected category are provided in the response for GET
+                        <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">
+                        supported-categories</a> resource in `validationRules` object.'
       description: 'List of items compatible with offer.'
     CompatibilityListItem:
       type: object
@@ -6532,12 +6848,9 @@ components:
               type: string
               description: 'Text description of the compatible item.
                 Maximum length of the text depends on category where compatible item is used.
-                <ul>
-                  <li>160 - for compatible item describing car</li>
-                  <li>100 - for other compatible items</li>
-                </ul>
-                Should be used in categories where TEXT version of compatible list
-                is supported. <a href="../../compatibility_list" target="_blank">Read more</a>.'
+                Should be used in categories where TEXT version of compatible list is supported.
+                See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">
+                supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.'
               example: 'CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW'
     CompatibilityListIdItem:
       allOf:
@@ -6550,7 +6863,8 @@ components:
               type: string
               description: 'Id of the compatible item. Should be used in categories
                             where ID version of compatible list is supported.
-                            <a href="../../compatibility_list" target="_blank">Read more</a>.'
+                            See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">
+                            supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.'
               example: '0006563f-f2b9-44ea-ae67-4678679be1f1'
             text:
               type: string
@@ -10552,6 +10866,36 @@ components:
         - $ref: '#/components/schemas/Price'
         - type: object
       description: The operation value.
+    RefundDeliveryValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: Delivery amount for payment refund.
+    RefundOverpaidValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: Overpaid amount for payment refund.
+    RefundAdditionalServicesValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: Additional services amount for payment refund.
+    RefundSurchargeValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: Surcharge refund amount.
+    RefundTotalValue:
+      title: MonetaryAmount
+      allOf:
+        - $ref: '#/components/schemas/Price'
+        - type: object
+      description: Total amount for payment refund.
     CorrectionOperation:
       allOf:
         - $ref: '#/components/schemas/BaseOperation'
