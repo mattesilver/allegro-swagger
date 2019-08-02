@@ -9641,10 +9641,10 @@ components:
     CheckoutFormBuyerReference:
       type: object
       required:
+        - id
         - email
         - login
         - guest
-        - id
       properties:
         id:
           type: string
@@ -9656,6 +9656,18 @@ components:
         login:
           type: string
           example: "User_Login"
+        firstName:
+          type: string
+          description: Buyer's first name
+          example: "Jan"
+        lastName:
+          type: string
+          description: Buyer's last name
+          example: "Kowalski"
+        companyName:
+          type: string
+          description: Company name
+          example: null
         guest:
           type: boolean
           description: is a guest account?
@@ -9668,7 +9680,29 @@ components:
           type: string
           description: Phone number
           example: null
+        address:
+          $ref: '#/components/schemas/CheckoutFormBuyerAddressReference'
       description: Buyer data
+    CheckoutFormBuyerAddressReference:
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street
+          example: "Solna"
+        city:
+          type: string
+          description: City name
+          example: "Poznań"
+        postCode:
+          type: string
+          description: Postal code
+          example: "60-166"
+        countryCode:
+          type: string
+          description: Country code
+          example: "PL"
+      description: Buyer address
     CheckoutFormPaymentReference:
       type: object
       required:
