@@ -7489,39 +7489,66 @@ components:
       description: >-
         The way the offer price should be changed. One of three ways is possible:
         new price, increase/decrease price, percentage change and only one can be chosen at once.
+      required:
+        - type
+      discriminator:
+        propertyName: type
+        mapping:
+          FIXED_PRICE: '#/components/schemas/PriceModification.FixedPrice'
+          INCREASE_PRICE: '#/components/schemas/PriceModification.ValueChangeIncrease'
+          DECREASE_PRICE: '#/components/schemas/PriceModification.ValueChangeDecrease'
+          INCREASE_PERCENTAGE: '#/components/schemas/PriceModification.PercentageChangeIncrease'
+          DECREASE_PERCENTAGE: '#/components/schemas/PriceModification.PercentageChangeDecrease'
       properties:
         type:
-          description: modification type
           type: string
-          enum:
-            - 'FIXED_PRICE'
-            - 'INCREASE_PRICE'
-            - 'DECREASE_PRICE'
-            - 'INCREASE_PERCENTAGE'
-            - 'DECREASE_PERCENTAGE'
-        price:
-          $ref: '#/components/schemas/PriceModification.FixedPrice'
-        value:
-          $ref: '#/components/schemas/PriceModification.ValueChange'
-        percentage:
-          type: string
-          description: 'Percentage change of offer buy now price, related to types: INCREASE_PERCENTAGE, DECREASE_PERCENTAGE'
+          description: Type of the modification.
     PriceModification.FixedPrice:
-      type: object
-      description: New offer buy now price, related to type FIXED_PRICE
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
-    PriceModification.ValueChange:
-      type: object
-      description: 'Change of offer buy now price, related to types: INCREASE_PRICE, DECREASE_PRICE'
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
+      allOf:
+        - $ref: '#/components/schemas/PriceModification'
+        - type: object
+          properties:
+            price:
+              $ref: '#/components/schemas/PriceModification.FixedPriceHolder'
+    PriceModification.ValueChangeIncrease:
+      allOf:
+        - $ref: '#/components/schemas/PriceModification'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/PriceModification.ValueChangeHolder'
+    PriceModification.ValueChangeDecrease:
+      allOf:
+        - $ref: '#/components/schemas/PriceModification'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/PriceModification.ValueChangeHolder'
+    PriceModification.PercentageChangeIncrease:
+      allOf:
+        - $ref: '#/components/schemas/PriceModification'
+        - type: object
+          properties:
+            percentage:
+              $ref: '#/components/schemas/PriceModification.PercentageChangeHolder'
+    PriceModification.PercentageChangeDecrease:
+      allOf:
+        - $ref: '#/components/schemas/PriceModification'
+        - type: object
+          properties:
+            percentage:
+              $ref: '#/components/schemas/PriceModification.PercentageChangeHolder'
+    PriceModification.FixedPriceHolder:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: 'New offer buy now price, related to type FIXED_PRICE.'
+    PriceModification.ValueChangeHolder:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: 'Change of offer buy now price, related to types: INCREASE_PRICE, DECREASE_PRICE.'
+    PriceModification.PercentageChangeHolder:
+      type: string
+      description: 'Percentage change of offer buy now price, related to types: INCREASE_PERCENTAGE, DECREASE_PERCENTAGE. Provided in a string format to avoid rounding errors.'
     OfferQuantityChangeCommand:
       type: object
       properties:
@@ -8395,7 +8422,9 @@ components:
           type: string
           minLength: 1
           maxLength: 64
-          description: User defined name of the shipping rates set
+          description: >-
+            User defined name of the shipping rates set.
+            It may only contain: letters, numbers, hyphens, dots, commas and spaces.
         rates:
           type: array
           items:
@@ -10859,7 +10888,7 @@ components:
           CORRECTION: '#/components/schemas/CorrectionOperation'
           CONTRIBUTION: '#/components/schemas/ContributionOperation'
           PAYOUT: '#/components/schemas/PayoutOperation'
-          PAYOUT_CANCEL: '#/components/schemas/PayoutOperation'
+          PAYOUT_CANCEL: '#/components/schemas/PayoutOperationCancel'
           REFUND_INCREASE: '#/components/schemas/RefundIncreaseOperation'
           REFUND_CHARGE: '#/components/schemas/RefundChargeOperation'
           REFUND_CANCEL: '#/components/schemas/RefundCancelOperation'
@@ -10947,6 +10976,15 @@ components:
             participant:
               $ref: '#/components/schemas/BuyerParticipant'
     PayoutOperation:
+      required:
+        - payout
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            payout:
+              $ref: '#/components/schemas/Payout'
+    PayoutOperationCancel:
       required:
         - payout
       allOf:
@@ -11290,7 +11328,6 @@ components:
     OfferPriceChangedEvent:
       allOf:
         - $ref: '#/components/schemas/OfferActivatedEvent'
-
     GetBadgeCampaignsList:
       type: object
       required:
