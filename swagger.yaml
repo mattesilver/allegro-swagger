@@ -5106,6 +5106,7 @@ paths:
           schema:
             type: string
             example: "MTEzMjQzODU3NA"
+            maxLength: 256
         - in: query
           name: limit
           required: false
@@ -5144,6 +5145,16 @@ paths:
                     type: "OFFER_ACTIVATED"
                     offer:
                       id: "2865624934"
+                offerEndedEvent:
+                  summary: offer ended event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "OFFER_ENDED"
+                    offer:
+                      id: "2865624934"
+                      endedBy: "USER"
+                      endedAt: "2019-07-30T12:11:00Z"
         '400':
           description: >-
             Invalid parameters supplied in the request.
@@ -8141,16 +8152,18 @@ components:
         endedBy:
           type: string
           enum:
-            - USER
-            - ADMIN
-            - EXPIRATION
-            - ERROR
-          description: >
-            The types of ended by can be as follows:</br>
-            - `USER` - offer ended by user.</br>
-            - `ADMIN` - offer ended by admin.</br>
-            - `EXPIRATION` - offer ended due to available items had sold out or offer duration had expired (valid for offers with specified duration).</br>
-            - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with success status, but further processing failed.
+          - USER
+          - ADMIN
+          - EXPIRATION
+          - ERROR
+          description: >-
+            Indicates the reason for ending the offer:
+             - `USER` - offer ended by the seller.
+             - `ADMIN` - offer ended by an admin.
+             - `EXPIRATION` - offer ended because all available items had been sold out or offer duration had expired (valid for
+               offers with specified duration).
+             - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
+               success status, but further processing failed.
         republish:
           type: boolean
           example: false
@@ -11284,6 +11297,7 @@ components:
           type: string
           description: The ID of the event. It can be used in the `from` parameter of the query.
           example: "MTEzMjQzODU3NA"
+          maxLength: 256
         occurredAt:
           type: string
           format: date-time
@@ -11309,25 +11323,71 @@ components:
             - offer
           properties:
             offer:
-              type: object
-              description: The data of the offer, for which the event occurred.
-              properties:
-                id:
-                  type: string
-                  example: "2865624934"
-                  description: The offer ID.
+              $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferChangedEvent:
       allOf:
         - $ref: '#/components/schemas/OfferActivatedEvent'
     OfferEndedEvent:
       allOf:
-        - $ref: '#/components/schemas/OfferActivatedEvent'
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            offer:
+              $ref: '#/components/schemas/OfferEventEndedOffer'
     OfferStockChangedEvent:
       allOf:
         - $ref: '#/components/schemas/OfferActivatedEvent'
     OfferPriceChangedEvent:
       allOf:
         - $ref: '#/components/schemas/OfferActivatedEvent'
+    OfferEventBaseOffer:
+      type: object
+      description: The data of the offer, for which the event occurred.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "2865624934"
+          description: The offer ID.
+    OfferEventEndedOffer:
+      allOf:
+        - $ref: '#/components/schemas/OfferEventBaseOffer'
+        - type: object
+          required:
+            - publication
+          properties:
+            publication:
+              type: object
+              description: Information about publication of the given offer.
+              required:
+                - endedBy
+              properties:
+                endedBy:
+                  type: string
+                  enum:
+                  - USER
+                  - ADMIN
+                  - EXPIRATION
+                  - ERROR
+                  - UNKNOWN
+                  description: >-
+                    Indicates the reason for ending the offer:
+                     - `USER` - offer ended by the seller.
+                     - `ADMIN` - offer ended by an admin.
+                     - `EXPIRATION` - offer ended because all available items had been sold out or offer duration had expired (valid for
+                       offers with specified duration).
+                     - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
+                       success status, but further processing failed.
+                     - `UNKNOWN` - in rare cases the reason might be unknown.
+                endedAt:
+                  type: string
+                  format: date-time
+                  description: >-
+                    Offer publication ending date and time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format in UTC - `yyyy-MM-ddTHH:mm:ssZ`.
+                  example: "2019-07-30T12:10:11Z"
     GetBadgeCampaignsList:
       type: object
       required:
