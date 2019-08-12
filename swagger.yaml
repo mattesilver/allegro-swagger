@@ -5260,7 +5260,7 @@ paths:
         - Badge campaigns
       summary: "[BETA] Apply for badge in selected offer"
       description: |
-        This resource allows you to apply for a badge. Most badges involves additional fee charged.
+        This resource allows you to apply for a badge. Most badges involve additional fee charged.
 
         Your badge application will be verified and you will be notified about the verification status via e-mail.
         You can use *Location* provided in header of the response to track your application status.
@@ -5274,7 +5274,7 @@ paths:
           <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
             target="_blank">Daily deals zone terms and conditions</a>
         or
-          <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-yVek1rEwrFb"
+          <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-0KPkAE7wkcv"
             target="_blank">Commission discount terms and conditions</a>.
         <a href="/badge/#2" target="_blank">Read more</a>.
       operationId: badges_post
@@ -10406,7 +10406,6 @@ components:
             - RUCH
             - POCZTA_POLSKA
             - DPD
-            - POCZTEX
             - FEDEX
             - TNT_EXPRESS
             - DB_SCHENKER
@@ -10466,7 +10465,6 @@ components:
             - GLS
             - RUCH
             - POCZTA_POLSKA
-            - POCZTEX
             - FEDEX
             - DPD
             - TNT_EXPRESS
