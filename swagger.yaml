@@ -1937,76 +1937,81 @@ paths:
                 integer:
                   summary: Integer
                   value:
-                    id: "202877"
-                    name: "Liczba rdzeni procesora"
-                    type: "integer"
-                    required: false
-                    unit: null
-                    restrictions:
-                      min: 0
-                      max: 1000000
-                      range: false
+                    parameters:
+                      - id: "202877"
+                        name: "Liczba rdzeni procesora"
+                        type: "integer"
+                        required: false
+                        unit: null
+                        restrictions:
+                          min: 0
+                          max: 1000000
+                          range: false
                 string_single:
                   summary: String single
                   value:
-                    id: "224017"
-                    name: "Kod producenta"
-                    type: "string"
-                    required: false
-                    unit: null
-                    restrictions:
-                      minLength: 2
-                      maxLength: 35
-                      allowedNumberOfValues: 1
+                    parameters:
+                      - id: "224017"
+                        name: "Kod producenta"
+                        type: "string"
+                        required: false
+                        unit: null
+                        restrictions:
+                          minLength: 2
+                          maxLength: 35
+                          allowedNumberOfValues: 1
                 dictionary:
                   summary: Dictionary
                   value:
-                    id: "11323"
-                    name: "Stan"
-                    type: "dictionary"
-                    required: false
-                    unit: null
-                    dictionary:
-                      - id: "11323_1"
-                        value: "Nowy"
-                      - id: "11323_2"
-                        value: "Używany"
-                      - id: "11323_238066"
-                        value: "Po zwrocie"
-                      - id: "11323_238058"
-                        value: "Powystawowy"
-                      - id: "11323_238062"
-                        value: "Uszkodzony"
-                      - id: "11323_246534"
-                        value: "Odnowiony przez producenta"
-                    restrictions:
-                      multipleChoices: false
+                    parameters:
+                      - id: "11323"
+                        name: "Stan"
+                        type: "dictionary"
+                        required: false
+                        unit: null
+                        dictionary:
+                          - id: "11323_1"
+                            value: "Nowy"
+                          - id: "11323_2"
+                            value: "Używany"
+                          - id: "11323_238066"
+                            value: "Po zwrocie"
+                          - id: "11323_238058"
+                            value: "Powystawowy"
+                          - id: "11323_238062"
+                            value: "Uszkodzony"
+                          - id: "11323_246534"
+                            value: "Odnowiony przez producenta"
+                        restrictions:
+                          multipleChoices: false
                 float:
                   summary: Float
                   value:
-                    id: "17448"
-                    name: "Waga (z opakowaniem)"
-                    type: "float"
-                    required: false
-                    unit: "kg"
-                    restrictions:
-                      min: 0
-                      max: 1000000
-                      range: false
-                      precision: 3
+                    parameters:
+                      - id: "17448"
+                        name: "Waga (z opakowaniem)"
+                        type: "float"
+                        required: false
+                        unit: "kg"
+                        restrictions:
+                          min: 0
+                          max: 1000000
+                          range: false
+                          precision: 3
                 float_range:
                   summary: Float range
                   value:
-                    id: "211966"
-                    name: "Zakres regulacji wysokości koszenia"
-                    type: "float"
-                    required: false
-                    unit: "cm"
-                    restrictions:
-                      min: 0
-                      max: 1000
-                      range: true
-                      precision: 2
+                    parameters:
+                      - id: "211966"
+                        name: "Zakres regulacji wysokości koszenia"
+                        type: "float"
+                        required: false
+                        unit: "cm"
+                        restrictions:
+                          min: 0
+                          max: 1000
+                          range: true
+                          precision: 2
         404:
           description: The category with the given ID does not exist.
           content:
@@ -7764,10 +7769,10 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          integer: '#/components/schemas/IntegerCategoryParameter'
-          float: '#/components/schemas/FloatCategoryParameter'
-          string: '#/components/schemas/StringCategoryParameter'
-          dictionary: '#/components/schemas/DictionaryCategoryParameter'
+          integer: '#/components/schemas/IntegerCategoryProductParameter'
+          float: '#/components/schemas/FloatCategoryProductParameter'
+          string: '#/components/schemas/StringCategoryProductParameter'
+          dictionary: '#/components/schemas/DictionaryCategoryProductParameter'
       properties:
         id:
           type: string
@@ -7795,6 +7800,114 @@ components:
           type: string
           description: The unit in which values of the parameter are used. May be `null`.
           example: "kg"
+    DictionaryCategoryProductParameter:
+      allOf:
+        - $ref: '#/components/schemas/CategoryProductParameter'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: dictionary
+            restrictions:
+              type: object
+              description: The restrictions on values of this parameter.
+              properties:
+                multipleChoices:
+                  type: boolean
+                  description: Indicates whether this parameter can have more than one value.
+            dictionary:
+              type: array
+              description: Defines the values accepted for this parameter.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: >-
+                      The ID of the dictionary value. Use it to set the value in an offer or in a product.
+                    example: "11323_1"
+                  value:
+                    type: string
+                    description: The label of the dictionary value in Polish.
+                    example: "Nowy"
+    IntegerCategoryProductParameter:
+      allOf:
+        - $ref: '#/components/schemas/CategoryProductParameter'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: integer
+            restrictions:
+              type: object
+              description: The restrictions on values of this parameter.
+              properties:
+                min:
+                  type: integer
+                  description: The minimum value of this parameter.
+                  example: 8
+                max:
+                  type: integer
+                  description: The maximum value of this parameter.
+                  example: 128
+                range:
+                  type: boolean
+                  description: >-
+                    Indicates whether this is a range parameter. If this is `true`, then you have to provide two values
+                    for this parameter - `from` and `to`. Both these values have to be between the `min` and `max`.
+    FloatCategoryProductParameter:
+      allOf:
+        - $ref: '#/components/schemas/CategoryProductParameter'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: float
+            restrictions:
+              type: object
+              description: The restrictions on values of this parameter.
+              properties:
+                min:
+                  type: number
+                  description: The minimum value of this parameter.
+                  example: 0.0
+                max:
+                  type: number
+                  description: The maximum value of this parameter.
+                  example: 10000.0
+                range:
+                  type: boolean
+                  description: >-
+                    Indicates whether this is a range parameter. If this is `true`, then you have to provide two values
+                    for this parameter - `from` and `to`. Both these values have to be between the `min` and `max`.
+                precision:
+                  type: integer
+                  description: Number of digits you can provide after a comma that can be transferred in the parameter value.
+                  example: 3
+    StringCategoryProductParameter:
+      allOf:
+        - $ref: '#/components/schemas/CategoryProductParameter'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: string
+            restrictions:
+              type: object
+              description: The restrictions on values of this parameter.
+              properties:
+                minLength:
+                  type: integer
+                  description: The minimum length of the parameter value.
+                  example: 3
+                maxLength:
+                  type: integer
+                  description: The maximum length of the parameter value.
+                  example: 250
+                allowedNumberOfValues:
+                  type: integer
+                  description: Indicates how many different values can be provided for this parameter.
+                  example: 5
     CategoryParameterOptions:
       type: object
       properties:
@@ -7815,21 +7928,21 @@ components:
               default: dictionary
             restrictions:
               type: object
-              description: The restrictions of values for this parameter.
+              description: The restrictions on values of this parameter.
               properties:
                 multipleChoices:
                   type: boolean
                   description: Indicates whether this parameter can have more than one value.
             dictionary:
               type: array
-              description: Defines the values that this parameter can accept.
+              description: Defines the values accepted for this parameter.
               items:
                 type: object
                 properties:
                   id:
                     type: string
                     description: >-
-                      The ID of the dictionary value. This should be used when setting parameters in an offer.
+                      The ID of the dictionary value. Use it to set the value in an offer or in a product.
                     example: "11323_1"
                   value:
                     type: string
@@ -7845,7 +7958,7 @@ components:
               default: integer
             restrictions:
               type: object
-              description: The restrictions of values for this parameter.
+              description: The restrictions on values of this parameter.
               properties:
                 min:
                   type: integer
@@ -7870,7 +7983,7 @@ components:
               default: float
             restrictions:
               type: object
-              description: The restrictions of values for this parameter.
+              description: The restrictions on values of this parameter.
               properties:
                 min:
                   type: number
@@ -7887,7 +8000,7 @@ components:
                     for this parameter - `from` and `to`. Both these values have to be between the `min` and `max`.
                 precision:
                   type: integer
-                  description: Indicates what precision you can use when providing float values.
+                  description: Number of digits you can provide after a comma that can be transferred in the parameter value.
                   example: 3
     StringCategoryParameter:
       allOf:
@@ -7899,7 +8012,7 @@ components:
               default: string
             restrictions:
               type: object
-              description: The restrictions of values for this parameter.
+              description: The restrictions on values of this parameter.
               properties:
                 minLength:
                   type: integer
@@ -9791,6 +9904,8 @@ components:
           $ref: '#/components/schemas/CheckoutFormDeliveryPickupPoint'
         cost:
           $ref: '#/components/schemas/Price'
+        time:
+          $ref: '#/components/schemas/CheckoutFormDeliveryTime'
         smart:
           type: boolean
           description: Buyer used a SMART option
@@ -9880,6 +9995,25 @@ components:
           type: string
           description: City name
           example: "Poznań"
+    CheckoutFormDeliveryTime:
+      type: object
+      properties:
+        guaranteed:
+          $ref: '#/components/schemas/CheckoutFormDeliveryTimeGuaranteed'
+    CheckoutFormDeliveryTimeGuaranteed:
+      type: object
+      description: Guaranteed date when first delivery attempt takes place. This is always filled for X-press Couriers delivery method.
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: ISO date when the earliest delivery attempt can take place.
+          example: "2018-01-01T16:00:00Z"
+        to:
+          type: string
+          format: date-time
+          description: ISO date when the latest delivery attempt can take place.
+          example: "2018-01-01T18:00:00Z"
     CheckoutFormInvoiceInfo:
       type: object
       required:
