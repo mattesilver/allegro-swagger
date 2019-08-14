@@ -197,6 +197,13 @@ paths:
             items:
               type: string
               maxLength: 100
+        - name: delivery.shippingRates.id
+          in: query
+          description: >-
+            The ID of shipping rates. Returns offers with given shipping rates ID.
+          schema:
+            type: string
+            format: uuid
         - name: sort
           in: query
           description: >-
@@ -2573,16 +2580,16 @@ paths:
                                   type: number
                                   format: double
                                   description: Lower limit for the rate.
-                                  minimum: "0.00"
-                                  maximum: "100000000.00"
-                                  example: "0.00"
+                                  minimum: 0.00
+                                  maximum: 100000000.00
+                                  example: 0.00
                                 max:
                                   type: number
                                   format: double
                                   description: Upper limit for the rate.
-                                  minimum: "0.00"
-                                  maximum: "100000000.00"
-                                  example: "8.99"
+                                  minimum: 0.00
+                                  maximum: 100000000.00
+                                  example: 8.99
                                 currency:
                                   type: string
                                   description: ISO 4217 currency code.
@@ -2595,16 +2602,16 @@ paths:
                                   type: number
                                   format: double
                                   description: Lower limit for the rate.
-                                  minimum: "0.00"
-                                  maximum: "100000000.00"
-                                  example: "0.00"
+                                  minimum: 0.00
+                                  maximum: 100000000.00
+                                  example: 0.00
                                 max:
                                   type: number
                                   format: double
                                   description: Upper limit for the rate.
-                                  minimum: "0.00"
-                                  maximum: "100000000.00"
-                                  example: "8.99"
+                                  minimum: 0.00
+                                  maximum: 100000000.00
+                                  example: 8.99
                                 currency:
                                   type: string
                                   description: ISO 4217 currency code.
@@ -4882,7 +4889,8 @@ paths:
         - in: query
           name: paymentId
           schema:
-            type: uuid
+            type: string
+            format: uuid
             description: The payment ID compatible with RestAPI.
         - in: query
           name: transactionId
@@ -4989,7 +4997,8 @@ paths:
           description: Remove users from the blacklist.
           required: true
           schema:
-            type: long
+            type: integer
+            format: int64
       summary: "[BETA] Remove users from the blacklist"
       description: "Use this resource to remove users from the blacklist on given account."
       operationId: doRemoveFromBlackList
@@ -6169,7 +6178,7 @@ components:
               type: string
               description: The amount provided in a string format to avoid rounding errors.
             currency:
-              type: string <ISO 4217>
+              type: string
               description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
     RefundPayment:
         type: object
@@ -9438,6 +9447,8 @@ components:
           $ref: '#/components/schemas/OfferAdditionalServices'
         external:
           $ref: '#/components/schemas/ExternalId'
+        delivery:
+          $ref: '#/components/schemas/OfferListingDtoV1.Delivery'
     OfferListingDto.Image:
       type: object
       description: The image used as a thumbnail on the listings.
@@ -9485,6 +9496,12 @@ components:
         - 'BUY_NOW'
         - 'AUCTION'
         - 'ADVERTISEMENT'
+    OfferListingDtoV1.Delivery:
+      type: object
+      description: Delivery information.
+      properties:
+        shippingRates:
+          $ref: '#/components/schemas/ShippingRates'
     OfferListingDtoV1.SaleInfo:
       type: object
       description: Additional information about offers in auction format.
@@ -11336,11 +11353,11 @@ components:
         user:
           $ref: '#/components/schemas/BlacklistUser'
         note:
-          type: String
+          type: string
           description: Note about reason of blacklisting.
           example: Rude person
         createdAt:
-          type: String
+          type: string
           format: date-time
           description: Date and time of the creation in ISO 8601 format.
           example: 2019-05-08T09:45:818Z
@@ -11363,7 +11380,7 @@ components:
         user:
           $ref: '#/components/schemas/BlacklistUser'
         note:
-          type: String
+          type: string
           description: Note about reason of blacklisting.
           example: Rude person
     BlacklistUser:
@@ -11374,7 +11391,7 @@ components:
             description: Id of excluded user.
             example: 123456
           login:
-            type: String
+            type: string
             description: Login of excluded user.
             example: bad_buyer
     MyBidResponse:
