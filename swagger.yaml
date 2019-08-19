@@ -4933,14 +4933,14 @@ paths:
     get:
       tags:
         - Blacklist management
-      summary: "[BETA] Get list of blacklisted users"
+      summary: "Get list of blacklisted users"
       description: "Use this resource to get a list of blacklisted users created on given account."
       operationId: doGetBlackListUsers
       responses:
         '200':
           description: List of blacklisted users returned successfully
           content:
-            application/vnd.allegro.public.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/BlackListPagedResponse'
         '401':
@@ -4952,14 +4952,14 @@ paths:
     post:
       tags:
         - Blacklist management
-      summary: "[BETA] Add a users to the blacklist"
+      summary: "Add a users to the blacklist"
       description: "Use this resource to add new users to the blacklist on given account. At least one of id or login is required."
       operationId: doAddToBlackList
       responses:
         '201':
           description: Users successfully added to the blacklist.
           content:
-            application/vnd.allegro.public.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/BlackListResponse'
         '401':
@@ -4999,7 +4999,7 @@ paths:
           schema:
             type: integer
             format: int64
-      summary: "[BETA] Remove users from the blacklist"
+      summary: "Remove users from the blacklist"
       description: "Use this resource to remove users from the blacklist on given account."
       operationId: doRemoveFromBlackList
       responses:
@@ -7519,59 +7519,59 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          FIXED_PRICE: '#/components/schemas/PriceModification.FixedPrice'
-          INCREASE_PRICE: '#/components/schemas/PriceModification.ValueChangeIncrease'
-          DECREASE_PRICE: '#/components/schemas/PriceModification.ValueChangeDecrease'
-          INCREASE_PERCENTAGE: '#/components/schemas/PriceModification.PercentageChangeIncrease'
-          DECREASE_PERCENTAGE: '#/components/schemas/PriceModification.PercentageChangeDecrease'
+          FIXED_PRICE: '#/components/schemas/PriceModificationFixedPrice'
+          INCREASE_PRICE: '#/components/schemas/PriceModificationValueChangeIncrease'
+          DECREASE_PRICE: '#/components/schemas/PriceModificationValueChangeDecrease'
+          INCREASE_PERCENTAGE: '#/components/schemas/PriceModificationPercentageChangeIncrease'
+          DECREASE_PERCENTAGE: '#/components/schemas/PriceModificationPercentageChangeDecrease'
       properties:
         type:
           type: string
           description: Type of the modification.
-    PriceModification.FixedPrice:
+    PriceModificationFixedPrice:
       allOf:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
             price:
-              $ref: '#/components/schemas/PriceModification.FixedPriceHolder'
-    PriceModification.ValueChangeIncrease:
+              $ref: '#/components/schemas/PriceModificationFixedPriceHolder'
+    PriceModificationValueChangeIncrease:
       allOf:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
             value:
-              $ref: '#/components/schemas/PriceModification.ValueChangeHolder'
-    PriceModification.ValueChangeDecrease:
+              $ref: '#/components/schemas/PriceModificationValueChangeHolder'
+    PriceModificationValueChangeDecrease:
       allOf:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
             value:
-              $ref: '#/components/schemas/PriceModification.ValueChangeHolder'
-    PriceModification.PercentageChangeIncrease:
+              $ref: '#/components/schemas/PriceModificationValueChangeHolder'
+    PriceModificationPercentageChangeIncrease:
       allOf:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
             percentage:
-              $ref: '#/components/schemas/PriceModification.PercentageChangeHolder'
-    PriceModification.PercentageChangeDecrease:
+              $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
+    PriceModificationPercentageChangeDecrease:
       allOf:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
             percentage:
-              $ref: '#/components/schemas/PriceModification.PercentageChangeHolder'
-    PriceModification.FixedPriceHolder:
+              $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
+    PriceModificationFixedPriceHolder:
       allOf:
         - $ref: '#/components/schemas/Price'
       description: 'New offer buy now price, related to type FIXED_PRICE.'
-    PriceModification.ValueChangeHolder:
+    PriceModificationValueChangeHolder:
       allOf:
         - $ref: '#/components/schemas/Price'
       description: 'Change of offer buy now price, related to types: INCREASE_PRICE, DECREASE_PRICE.'
-    PriceModification.PercentageChangeHolder:
+    PriceModificationPercentageChangeHolder:
       type: string
       description: 'Percentage change of offer buy now price, related to types: INCREASE_PERCENTAGE, DECREASE_PERCENTAGE. Provided in a string format to avoid rounding errors.'
     OfferQuantityChangeCommand:
@@ -9430,17 +9430,17 @@ components:
         category:
           $ref: '#/components/schemas/OfferCategory'
         primaryImage:
-          $ref: '#/components/schemas/OfferListingDto.Image'
+          $ref: '#/components/schemas/OfferListingDtoImage'
         sellingMode:
           $ref: '#/components/schemas/SellingMode'
         saleInfo:
-          $ref: '#/components/schemas/OfferListingDtoV1.SaleInfo'
+          $ref: '#/components/schemas/OfferListingDtoV1SaleInfo'
         stock:
-          $ref: '#/components/schemas/OfferListingDtoV1.Stock'
+          $ref: '#/components/schemas/OfferListingDtoV1Stock'
         stats:
-          $ref: '#/components/schemas/OfferListingDtoV1.Stats'
+          $ref: '#/components/schemas/OfferListingDtoV1Stats'
         publication:
-          $ref: '#/components/schemas/OfferListingDtoV1.Publication'
+          $ref: '#/components/schemas/OfferListingDtoV1Publication'
         afterSalesServices:
           $ref: '#/components/schemas/AfterSalesServices'
         additionalServices:
@@ -9448,8 +9448,8 @@ components:
         external:
           $ref: '#/components/schemas/ExternalId'
         delivery:
-          $ref: '#/components/schemas/OfferListingDtoV1.Delivery'
-    OfferListingDto.Image:
+          $ref: '#/components/schemas/OfferListingDtoV1Delivery'
+    OfferListingDtoImage:
       type: object
       description: The image used as a thumbnail on the listings.
       properties:
@@ -9496,13 +9496,13 @@ components:
         - 'BUY_NOW'
         - 'AUCTION'
         - 'ADVERTISEMENT'
-    OfferListingDtoV1.Delivery:
+    OfferListingDtoV1Delivery:
       type: object
       description: Delivery information.
       properties:
         shippingRates:
           $ref: '#/components/schemas/ShippingRates'
-    OfferListingDtoV1.SaleInfo:
+    OfferListingDtoV1SaleInfo:
       type: object
       description: Additional information about offers in auction format.
       properties:
@@ -9512,7 +9512,7 @@ components:
           type: integer
           description: The number of bidders.
           example: 4
-    OfferListingDtoV1.Stock:
+    OfferListingDtoV1Stock:
       type: object
       description: Information on the offer's stock.
       properties:
@@ -9524,7 +9524,7 @@ components:
           type: integer
           description: The number of sold items in the last 30 days.
           example: 3
-    OfferListingDtoV1.Stats:
+    OfferListingDtoV1Stats:
       type: object
       description: The offer's statistics.
       properties:
@@ -9535,7 +9535,7 @@ components:
         visitsCount:
           type: integer
           description: The number of unique users viewing this offer in the past 30 days.
-    OfferListingDtoV1.Publication:
+    OfferListingDtoV1Publication:
       type: object
       description: Information on the offer's publication status and dates.
       properties:
