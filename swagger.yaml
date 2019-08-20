@@ -6183,7 +6183,7 @@ components:
     RefundPayment:
         type: object
         description: Payment affected by refund operation.
-        title: Payment
+        title: RefundPayment
         properties:
           id:
             type: string
@@ -6419,7 +6419,7 @@ components:
       properties:
         type:
           type: string
-          description: type of benefit
+          description: Type of benefit.
       required:
         - type
       discriminator:
@@ -6434,6 +6434,9 @@ components:
           required:
             - price
           properties:
+            type:
+              type: string
+              default: 'ORDER_FIXED_DISCOUNT'
             value:
               $ref: '#/components/schemas/Price'
     MultiPackBenefitSpecification:
@@ -6444,9 +6447,12 @@ components:
             - configuration
             - trigger
           properties:
+            type:
+              type: string
+              default: 'UNIT_PERCENTAGE_DISCOUNT'
             configuration:
               type: object
-              description: what rebate will be given
+              description: What rebate will be given.
               required:
                 - percentage
               properties:
@@ -6455,7 +6461,7 @@ components:
                   example: 100
                   description: discount percentage
             trigger:
-              description: describes what will cause the rebate
+              description: Describes what will cause the rebate.
               type: object
               required:
                 - forEachQuantity
@@ -6464,11 +6470,11 @@ components:
                 forEachQuantity:
                   type: number
                   description: >-
-                    for every pack of this quantity new rebate will be given
+                    For every pack of this quantity new rebate will be given.
                   example: 3
                 discountedNumber:
                   type: number
-                  description: how many offers in pack should be discounted by discount percentage?
+                  description: Describes how many offers in pack should be discounted by discount percentage.
                   example: 1
     Caption:
       type: object
@@ -6856,7 +6862,6 @@ components:
       properties:
         type:
           type: string
-          default: 'TEXT'
       discriminator:
         propertyName: type
         mapping:
@@ -6869,6 +6874,9 @@ components:
           required:
             - text
           properties:
+            type:
+              type: string
+              default: "TEXT"
             text:
               type: string
               description: 'Text description of the compatible item.
@@ -6884,6 +6892,9 @@ components:
           required:
             - id
           properties:
+            type:
+              type: string
+              default: "ID"
             id:
               type: string
               description: 'Id of the compatible item. Should be used in categories
@@ -7533,6 +7544,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'FIXED_PRICE'
             price:
               $ref: '#/components/schemas/PriceModificationFixedPriceHolder'
     PriceModificationValueChangeIncrease:
@@ -7540,6 +7554,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'INCREASE_PRICE'
             value:
               $ref: '#/components/schemas/PriceModificationValueChangeHolder'
     PriceModificationValueChangeDecrease:
@@ -7547,6 +7564,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DECREASE_PRICE'
             value:
               $ref: '#/components/schemas/PriceModificationValueChangeHolder'
     PriceModificationPercentageChangeIncrease:
@@ -7554,6 +7574,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'INCREASE_PERCENTAGE'
             percentage:
               $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
     PriceModificationPercentageChangeDecrease:
@@ -7561,6 +7584,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DECREASE_PERCENTAGE'
             percentage:
               $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
     PriceModificationFixedPriceHolder:
@@ -11125,6 +11151,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
+          properties:
+            type:
+              type: string
+              default: 'CORRECTION'
     ContributionOperation:
       required:
         - payment
@@ -11133,6 +11163,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'CONTRIBUTION'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11144,6 +11177,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'PAYOUT'
             payout:
               $ref: '#/components/schemas/Payout'
     PayoutOperationCancel:
@@ -11153,6 +11189,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'PAYOUT_CANCEL'
             payout:
               $ref: '#/components/schemas/Payout'
     RefundIncreaseOperation:
@@ -11163,6 +11202,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_INCREASE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11174,6 +11216,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_CANCEL'
             payment:
               $ref: '#/components/schemas/OperationPayment'
     RefundChargeOperation:
@@ -11184,6 +11229,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_CHARGE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11197,6 +11245,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'SURCHARGE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             surcharge:
@@ -11210,6 +11261,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DEDUCTION_CHARGE'
             deduction:
               $ref: '#/components/schemas/Deduction'
     DeductionIncreaseOperation:
@@ -11219,11 +11273,14 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DEDUCTION_INCREASE'
             deduction:
               $ref: '#/components/schemas/Deduction'
     OperationPayment:
       type: object
-      title: Payment
+      title: OperationPayment
       description: Payment.
       required:
         - id
@@ -11260,7 +11317,7 @@ components:
         address:
           $ref: '#/components/schemas/OperationParticipantAddress'
     SellerParticipant:
-      title: Participant
+      title: SellerParticipant
       description: The seller's data.
       allOf:
         - $ref: '#/components/schemas/Participant'
@@ -11270,7 +11327,7 @@ components:
               type: string
               description: The seller's ID.
     BuyerParticipant:
-      title: Participant
+      title: BuyerParticipant
       description: The buyer's data.
       allOf:
         - $ref: '#/components/schemas/Participant'
@@ -11471,11 +11528,23 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_ACTIVATED'
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferChangedEvent:
       allOf:
-        - $ref: '#/components/schemas/OfferActivatedEvent'
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: 'OFFER_CHANGED'
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferEndedEvent:
       allOf:
         - $ref: '#/components/schemas/SellerOfferBaseEvent'
@@ -11483,14 +11552,35 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_ENDED'
             offer:
               $ref: '#/components/schemas/OfferEventEndedOffer'
     OfferStockChangedEvent:
       allOf:
-        - $ref: '#/components/schemas/OfferActivatedEvent'
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: 'OFFER_STOCK_CHANGED'
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferPriceChangedEvent:
       allOf:
-        - $ref: '#/components/schemas/OfferActivatedEvent'
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: 'OFFER_PRICE_CHANGED'
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferEventBaseOffer:
       type: object
       description: The data of the offer, for which the event occurred.
@@ -11769,7 +11859,7 @@ components:
           type: string
           description: 'Badge campaign name.'
           example: 'Strefa Okazji'
-      title: 'BadgeCampaign'
+      title: OfferBadgeCampaign
     BadgeApplicationOffer:
       type: object
       required:
@@ -11800,7 +11890,7 @@ components:
           type: string
           description: 'The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217). Only PLN values is supported.'
           example: 'PLN'
-      title: Price
+      title: BadgeApplicationMarketPrice
       description: 'Suggested market price. Required by DISCOUNT campaign.'
     BadgeApplicationBargainPrice:
       type: object
@@ -11813,7 +11903,7 @@ components:
           type: string
           description: 'The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217). Only PLN values is supported.'
           example: 'PLN'
-      title: Price
+      title: BadgeApplicationBargainPrice
       description: 'Bargain price. Required by DISCOUNT and SOURCING campaign.'
     BadgeApplications:
       type: object
