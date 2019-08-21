@@ -6819,7 +6819,7 @@ components:
       properties:
         field:
           type: string
-          description: Modified field as JSON path
+          description: Modified field as JSON path.
         finishedAt:
           type: string
           format: date-time
@@ -6828,9 +6828,9 @@ components:
             yyyy-MM-dd'T'HH:mm:ss.SSSZ
         message:
           type: string
-          description: Fail reason description
+          description: General fail reason. You should check the errors structure to get more detailed information of the encountered errors.
         offer:
-          description: Offer identifier
+          description: Offer identifier.
           $ref: '#/components/schemas/OfferId'
         scheduledAt:
           type: string
@@ -6841,7 +6841,12 @@ components:
         status:
           type: string
           description: 'Available statuses: NEW, SUCCESS, FAIL'
-      description: Status of single command task
+        errors:
+          description: The list of error objects explaining the problems with command processing for the given offer.
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      description: Status of single command task.
     CompatibilityList:
       type: object
       required:
