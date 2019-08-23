@@ -5016,7 +5016,7 @@ paths:
       tags:
       - Auctions and Bidding
       operationId: placeBid
-      summary: '[BETA] Place a bid in an auction'
+      summary: 'Place a bid in an auction'
       parameters:
       - name: offerId
         in: path
@@ -5026,7 +5026,7 @@ paths:
           type: string
       requestBody:
         content:
-          'application/vnd.allegro.beta.v1+json':
+          'application/vnd.allegro.public.v1+json':
             schema:
               type: object
               title: BidRequest
@@ -5040,7 +5040,7 @@ paths:
         '200':
           description: Bid succesfully placed
           content:
-            'application/vnd.allegro.beta.v1+json':
+            'application/vnd.allegro.public.v1+json':
               schema:
                 $ref: '#/components/schemas/MyBidResponse'
         '400':
@@ -5058,20 +5058,20 @@ paths:
         '404':
           description: Auction not found.
           content:
-            '*/*':
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
             description: If bidding was not allowed (see message for explanation).
             content:
-              '*/*':
+              application/vnd.allegro.public.v1+json:
                 schema:
                   $ref: '#/components/schemas/ErrorsHolder'
     get:
       tags:
         - Auctions and Bidding
       operationId: getBid
-      summary: "[BETA] Get current user's bid information"
+      summary: "Get current user's bid information"
       parameters:
         - name: offerId
           in: path
@@ -5083,13 +5083,13 @@ paths:
         '200':
           description: Bid information succesfully found.
           content:
-            'application/vnd.allegro.beta.v1+json':
+            'application/vnd.allegro.public.v1+json':
               schema:
                 $ref: '#/components/schemas/MyBidResponse'
         '404':
           description: Auction not found or user did not bid in the auction.
           content:
-            '*/*':
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   '/sale/offer-events':
