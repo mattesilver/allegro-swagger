@@ -5106,6 +5106,7 @@ paths:
           - OFFER_ENDED - offer is no longer available for purchase, occurs when offer status changes from ACTIVE to ENDED.
           - OFFER_STOCK_CHANGED - stock in an offer was changed either via purchase or by seller.
           - OFFER_PRICE_CHANGED - occurs when price in an offer was changed.
+          - OFFER_ARCHIVED - offer is no longer available on listing and has been archived.
 
         Returned events may occur by actions made via browser or API.
         The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status.
@@ -5143,6 +5144,7 @@ paths:
               - OFFER_ENDED
               - OFFER_STOCK_CHANGED
               - OFFER_PRICE_CHANGED
+              - OFFER_ARCHIVED
       responses:
         '200':
           description: The list of offer events returned successfully.
@@ -11529,6 +11531,7 @@ components:
           OFFER_ENDED: '#/components/schemas/OfferEndedEvent'
           OFFER_STOCK_CHANGED: '#/components/schemas/OfferStockChangedEvent'
           OFFER_PRICE_CHANGED: '#/components/schemas/OfferPriceChangedEvent'
+          OFFER_ARCHIVED: '#/components/schemas/OfferArchivedEvent'
     OfferActivatedEvent:
       allOf:
         - $ref: '#/components/schemas/SellerOfferBaseEvent'
@@ -11587,6 +11590,18 @@ components:
             type:
               type: string
               default: 'OFFER_PRICE_CHANGED'
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
+    OfferArchivedEvent:
+      allOf:
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: "OFFER_ARCHIVED"
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferEventBaseOffer:
