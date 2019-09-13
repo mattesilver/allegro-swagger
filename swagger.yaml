@@ -2250,6 +2250,59 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/delivery-settings':
+    get:
+      tags:
+        - Delivery
+      summary: "Get the user's delivery settings"
+      description:
+        "Use this resource to get the delivery settings declared by the seller."
+      operationId: getSaleDeliverySettings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/DeliverySettingsDto'
+        '401':
+          description: Authentication required.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - not allowed to access user data.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+    put:
+      tags:
+        - Delivery
+      summary: "Modify the user's delivery settings"
+      description:
+        "Use this resource to modify the delivery settings declared by the seller."
+      operationId: putSaleDeliverySettings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/DeliverySettingsDto'
+        '401':
+          description: Authentication required.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - not allowed to access user data.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   '/points-of-service':
     post:
       tags:
@@ -3495,9 +3548,9 @@ paths:
     get:
       tags:
         - Order management
-      summary: '[BETA] Get order events'
+      summary: 'Get order events'
       description: >-
-        [BETA] Use this resource to return events that allow you to monitor actions which clients perform, i.e.
+        Use this resource to return events that allow you to monitor actions which clients perform, i.e.
         making a purchase, filling in the checkout form (FOD), finishing payment process, making a surcharge.
         <a href="/orders/#02" target="_blank">Read more</a>.
       operationId: getOrderEventsUsingGET
@@ -3533,7 +3586,7 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/OrderEventsList'
         '401':
@@ -3542,9 +3595,9 @@ paths:
     get:
       tags:
         - Order management
-      summary: '[BETA] Get order events statistics'
+      summary: 'Get order events statistics'
       description: >-
-        [BETA] Use this resource to returns object that contains event id and occurrence date of the latest event.
+        Use this resource to returns object that contains event id and occurrence date of the latest event.
         It gives you current starting point for reading events.
         <a href="/orders/#02" target="_blank">Read more</a>.
       operationId: getOrderEventsStatisticsUsingGET
@@ -3552,7 +3605,7 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/OrderEventStats'
         '401':
@@ -3561,9 +3614,9 @@ paths:
     get:
       tags:
         - Order management
-      summary: "[BETA] Get the user's orders"
+      summary: "Get the user's orders"
       description: >-
-        [BETA] Use this resource to get an order list.
+        Use this resource to get an order list.
         <a href="/orders/#03" target="_blank">Read more</a>.
       operationId: getListOfOrdersUsingGET
       parameters:
@@ -3618,7 +3671,7 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CheckoutForms'
         '400':
@@ -3633,9 +3686,9 @@ paths:
     get:
       tags:
         - Order management
-      summary: "[BETA] Get an order's details"
+      summary: "Get an order's details"
       description: >-
-        [BETA] Use this resource to get an order details.
+        Use this resource to get an order details.
         <a href="/orders/#04" target="_blank">Read more</a>.
       operationId: getOrdersDetailsUsingGET
       parameters:
@@ -3651,7 +3704,7 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CheckoutForm'
         '401':
@@ -3988,9 +4041,9 @@ paths:
     get:
       tags:
         - Order management
-      summary: "[BETA] Get mapping for line item id"
+      summary: "Get mapping for line item id"
       description:
-        "[BETA] Allows mapping identifiers from dealId to lineItemId and vice-versa. One of defined query parameters
+        "Allows mapping identifiers from dealId to lineItemId and vice-versa. One of defined query parameters
          has to be provided."
       operationId: "findMapping"
       parameters:
@@ -4011,7 +4064,7 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/LineItemIdMappings'
         '401':
@@ -4458,7 +4511,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '403':
-          description: Forbidden - User has to be verified.
+          description: Forbidden - not allowed to access.
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
@@ -6762,9 +6815,9 @@ components:
                   type: string
                   example: "AUDI"
           example:
-          - id: 'BRAND'
-            values:
-            - 'AUDI'
+            - id: 'BRAND'
+              values:
+                - 'AUDI'
     Cells:
       type: object
       required:
@@ -8608,6 +8661,54 @@ components:
             When creating (Post) or updating (Put) a shipping rates set the field is ignored.
       required:
         - rates
+    DeliverySettingsDto:
+      type: object
+      properties:
+        freeDelivery:
+          type: object
+          description: A minimum total order amount required to qualify for free delivery.
+          properties:
+            amount:
+              type: string
+              description: The amount provided in a string format to avoid rounding errors.
+              example: '123.45'
+            currency:
+              type: string
+              format: ISO 4217
+              description: The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217).
+              example: 'PLN'
+        joinPolicy:
+          type: object
+          description: Policy of calculating delivery costs.
+          properties:
+            strategy:
+              type: string
+              description: >-
+                Strategy used to calculate delivery cost for items from offers with different delivery costs.
+
+                The possible values:
+                  * `MAX` - The buyer will pay for the most expensive delivery
+                  * `MIN` - The buyer will pay for the cheapest delivery
+                  * `SUM` - Items will be sent in separate parcels and delivery costs will be sum of delivery costs for each item.
+              enum:
+                - MIN
+                - MAX
+                - SUM
+        customCost:
+          description: Policy of custom delivery cost.
+          type: object
+          properties:
+            allowed:
+              type: boolean
+              example: false
+              description: >-
+                If true the customer can enter a custom shipping cost.
+        updatedAt:
+          type: string
+          description: >-
+            Date and time of the last modification of the set in UTC
+            ISO 8601 format.
+            When updating (Put) settings the field is ignored.
     StandardizedDescription:
       type: object
       description: The description section cannot have more than 40000 bytes in length.
@@ -9519,7 +9620,7 @@ components:
       description: The starting price for offers in auction format.
     CurrentPrice:
       allOf:
-      - $ref: '#/components/schemas/Price'
+        - $ref: '#/components/schemas/Price'
       description: The current highest bid in auction format.
     MaxPrice:
       allOf:
@@ -11453,14 +11554,14 @@ components:
     BlacklistUser:
       type: object
       properties:
-          id:
-            type: number
-            description: Id of excluded user.
-            example: 123456
-          login:
-            type: string
-            description: Login of excluded user.
-            example: bad_buyer
+        id:
+          type: number
+          description: Id of excluded user.
+          example: 123456
+        login:
+          type: string
+          description: Login of excluded user.
+          example: bad_buyer
     MyBidResponse:
       type: object
       description: bid response
