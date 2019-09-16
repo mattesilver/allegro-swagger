@@ -8397,11 +8397,6 @@ components:
       description: Publication modification command payload
     Rates:
       type: object
-      required:
-        - delivery
-        - deliveryCost
-        - description
-        - service
       properties:
         delivery:
           type: integer
