@@ -4936,7 +4936,7 @@ paths:
       summary: Mapping of payment identifiers
       description: >-
         Use this endpoint to get payment identifiers compatible with RestAPI and WebAPI.
-        Querying is allowed only by paymentId or transactionId.
+        Querying is allowed only by paymentId or transactionId. Identifiers are returned for payments created in last 3 months.
       operationId: getPaymentIdMapping
       parameters:
         - in: query
@@ -6907,19 +6907,58 @@ components:
       description: Status of single command task.
     CompatibilityList:
       type: object
-      required:
-        - items
       properties:
-        items:
-          type: array
+        type:
+          type: string
+          default: 'MANUAL'
+          description: 'Type of the compatibility list, two values are acceptable: `MANUAL`, `PRODUCT_BASED`.
+                        <ul>
+                          <li>`MANUAL` -  for offers not associated with product - compatibility list is created with
+                                          items provided by user directly in the body of the request.</li>
+                          <li>`PRODUCT_BASED` - for offers associated with product - if compatibility list is provided in
+                                                the product details (GET/sale/products/{productId}), it needs to
+                                                be included in the offer in unchanged form.
+                          </li>
+                        </ul>'
+      discriminator:
+        propertyName: type
+        mapping:
+          MANUAL: '#/components/schemas/CompatibilityListManual'
+          PRODUCT_BASED: '#/components/schemas/CompatibilityListProductBased'
+    CompatibilityListManual:
+      allOf:
+      - $ref: '#/components/schemas/CompatibilityList'
+      - type: object
+        required:
+        - items
+        properties:
           items:
-            $ref: '#/components/schemas/CompatibilityListItem'
-          description: 'List of the compatible items.
-                        Maximum number of elements on the list depends on type of included compatible items.
-                        Configuration and details concerning the compatible items in selected category are provided in the response for GET
-                        <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">
-                        supported-categories</a> resource in `validationRules` object.'
-      description: 'List of items compatible with offer.'
+            type: array
+            items:
+              $ref: '#/components/schemas/CompatibilityListItem'
+            description: 'List of the compatible items.
+                         Maximum number of elements on the list depends on type of included compatible items.
+                         Configuration and details concerning the compatible items in selected category are provided in the response for GET
+                         <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">
+                         supported-categories</a> resource in `validationRules` object.'
+        description: 'List of items compatible with offer.'
+    CompatibilityListProductBased:
+      allOf:
+      - $ref: '#/components/schemas/CompatibilityList'
+      - type: object
+        required:
+        - id
+        properties:
+          id:
+            type: string
+            description: 'Id of product-based compatibility list.'
+            example: '460b2511-b786-47b9-9d7e-1f868728cfd6-f103931434fbf4aa06764f3df74d371df23aa138a9cd46dbe570f51af79db1c4-2'
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/CompatibilityListItemProductBased'
+            description: 'Text representation of the compatibility list items. Provided for informational purposes only -
+                            ignored when creating (Post) or updating (Put) compatibility list in the offer.'
     CompatibilityListItem:
       type: object
       properties:
@@ -6930,6 +6969,13 @@ components:
         mapping:
           TEXT: '#/components/schemas/CompatibilityListTextItem'
           ID: '#/components/schemas/CompatibilityListIdItem'
+    CompatibilityListItemProductBased:
+      type: object
+      properties:
+        text:
+          type: string
+          description: "Text description of the compatible item."
+          example: "AUDI 90 (89, 89Q, 8A, B3) 1988/06-1991/09 2.3 E 20V quattro 170KM/125kW 1501"
     CompatibilityListTextItem:
       allOf:
         - $ref: '#/components/schemas/CompatibilityListItem'
@@ -7551,6 +7597,8 @@ components:
           $ref: '#/components/schemas/JustId'
         stock:
           $ref: '#/components/schemas/Stock'
+        tecdocSpecification:
+          $ref: '#/components/schemas/TecdocSpecification'
         updatedAt:
           type: string
           format: date-time
@@ -10883,6 +10931,12 @@ components:
           items:
             $ref: '#/components/schemas/ProductParameter'
           description: List of product parameters.
+        offerRequirements:
+          $ref: '#/components/schemas/OfferRequirements'
+        compatibilityList:
+          $ref: '#/components/schemas/SaleProductCompatibilityList'
+        tecdocSpecification:
+          $ref: '#/components/schemas/TecdocSpecification'
         description:
           $ref: '#/components/schemas/StandardizedDescription'
     SaleProductResponseDto:
@@ -10913,10 +10967,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductParameter'
-        offerRequirements:
-          $ref: '#/components/schemas/OfferRequirements'
-        compatibilityList:
-          $ref: '#/components/schemas/CompatibilityList'
+    SaleProductCompatibilityList:
+      type: object
+      required:
+      - id
+      - type
+      description: "Compatibility list assigned to this product, based on information from TecDoc database."
+      properties:
+        id:
+          type: string
+          description: 'Id of product-based compatibility list.'
+          example: '460b2511-b786-47b9-9d7e-1f868728cfd6-f103931434fbf4aa06764f3df74d371df23aa138a9cd46dbe570f51af79db1c4-2'
+        type:
+          type: string
+          description: 'Type of compatibility list.'
+          default: "PRODUCT_BASED"
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibilityListItemProductBased'
+          description: "List of the compatible items."
     SaleProductResponseCategoriesDto:
       properties:
         subcategories:
@@ -10981,7 +11051,7 @@ components:
                 type: boolean
       description: Product's parameter
     OfferRequirements:
-      description: Requirements for creating offer related to this product. For future use.
+      description: 'Conditions which an offer must meet to be assigned with the product, i.e. Condition parameter must be set to New.'
       properties:
         parameters:
           type: array
@@ -11510,6 +11580,39 @@ components:
           type: string
           description: The transaction ID compatible with WebAPI.
           example: 1016873349
+    TecdocSpecification:
+      type: object
+      required:
+        - id
+      description: 'Contains additional information describing products from automotive categories.
+                    Technical specification is created based on TecDoc database and can only be
+                    used while creating offer with assigned product to it.
+                    <a href="../../productization" target="_blank">Read more</a>.'
+      properties:
+        id:
+          type: string
+          description: 'Identifier of technical specification.'
+          example: '470b8513-b786-b7b9-9e7e-2f848729cfd6'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TecdocSpecificationItem'
+          description: 'Text representation of the technical specification. Provided for informational purposes only -
+                        ignored when creating (Post) or updating (Put) compatibility list in the offer.'
+    TecdocSpecificationItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Technical specification property name.'
+          example: 'Wersja TecDoc'
+        values:
+          type: array
+          items:
+            type: string
+          description: 'Technical specification property values.'
+          example:
+            - '0319'
     BlackListResponse:
       type: object
       properties:
