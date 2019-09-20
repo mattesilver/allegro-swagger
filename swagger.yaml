@@ -3480,19 +3480,19 @@ paths:
                 	"type": "MULTI",
                 	"name": "Stan",
                 	"values": [{
-                			"value": "1",
+                			"value": "11323_1",
                 			"name": "nowe",
                 			"count": 21,
                 			"selected": false
                 		},
                 		{
-                			"value": "2",
+                			"value": "11323_2",
                 			"name": "używane",
                 			"count": 157,
                 			"selected": false
                 		},
                 		{
-                			"value": "238066",
+                			"value": "11323_238066",
                 			"name": "po zwrocie",
                 			"count": 1,
                 			"selected": false
@@ -3500,7 +3500,7 @@ paths:
                 	]
                 }
               ````
-            You can use 'Stan' filter to query results, i.e.: parameter.11323=1 (for "nowe"), parameter.11323=2 (for "używane") or parameter.11323=238066 (for "po zwrocie")
+            You can use 'Stan' filter to query results, i.e.: parameter.11323=11323_1 (for "nowe"), parameter.11323=11323_2 (for "używane") or parameter.11323=11323_238066 (for "po zwrocie")
           example: 127448=2
           required: false
           schema:
@@ -7345,7 +7345,7 @@ components:
       properties:
         city:
           type: string
-          maxLength: 50
+          maxLength: 35
         countryCode:
           type: string
         postCode:
