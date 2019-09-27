@@ -39,8 +39,7 @@ tags:
   - name: Order management
   - name: Payments
   - name: Disputes
-  - name: User information
-  - name: Account information
+  - name: Information about user
   - name: Blacklist management
   - name: Auctions and Bidding
 
@@ -659,7 +658,7 @@ paths:
   /sale/user-ratings:
     get:
       tags:
-        - User information
+        - Information about user
       summary: "Get the user's ratings"
       description:
         'Use this resource to receive your sales score. <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">Read more</a>.'
@@ -713,6 +712,33 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+  /me:
+    get:
+      tags:
+        - Information about user
+      summary: "Get basic information about user"
+      description:
+        'Use this resource when you need basic information about authenticated user.'
+      operationId: meGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - when token is without user context
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/offer-additional-services/groups:
     post:
       tags:
@@ -4697,7 +4723,7 @@ paths:
   '/account/additional-emails/':
     get:
       tags:
-        - Account information
+        - Information about user
       summary: "Get user's additional emails"
       description: "Use this resource to get a list of all additional email addresses assigned to account."
       operationId: getListOfAdditionalEmailsUsingGET
@@ -4716,7 +4742,7 @@ paths:
                 $ref: '#/components/schemas/AuthError'
     post:
       tags:
-        - Account information
+        - Information about user
       summary: "Add a new additional email address to user's account"
       description: "Use this resource to add a new additional email address to account."
       operationId: addAdditionalEmailUsingPOST
@@ -4755,7 +4781,7 @@ paths:
   '/account/additional-emails/{emailId}':
     get:
       tags:
-        - Account information
+        - Information about user
       summary: "Get information about a particular additional email"
       description: "Use this resource to retrieve a single additional email."
       operationId: getAdditionalEmailUsingGET
@@ -4787,7 +4813,7 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
     delete:
       tags:
-        - Account information
+        - Information about user
       summary: "Delete an additional email address"
       description: "Use this resource to delete one of additional emails"
       operationId: deleteAdditionalEmailUsingDELETE
@@ -11652,14 +11678,42 @@ components:
     BlacklistUser:
       type: object
       properties:
+          id:
+            type: number
+            description: Id of excluded user.
+            example: 123456
+          login:
+            type: string
+            description: Login of excluded user.
+            example: bad_buyer
+    MeResponse:
+      type: object
+      properties:
         id:
-          type: number
-          description: Id of excluded user.
-          example: 123456
+          type: string
+          description: User Id.
+          example: "46968690"
         login:
           type: string
-          description: Login of excluded user.
-          example: bad_buyer
+          description: User login.
+          example: "Client:46968690"
+        firstName:
+          type: string
+          description: User's first name.
+          example: "Amadeusz"
+        lastName:
+          type: string
+          description: User's last name.
+          example: "Iksiński"
+        company:
+            $ref: '#/components/schemas/Company'
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User's company name.
+          example: "Allegro.pl sp. z o.o."
     MyBidResponse:
       type: object
       description: bid response
