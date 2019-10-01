@@ -1847,91 +1847,96 @@ paths:
                 integer:
                   summary: Integer
                   value:
-                    id: "202877"
-                    name: "Liczba rdzeni procesora"
-                    type: "integer"
-                    required: false
-                    unit: null
-                    options:
-                      variantsAllowed: true
-                      variantsEqual: false
-                    restrictions:
-                      min: 0
-                      max: 1000000
-                      range: false
+                    parameters:
+                      - id: "202877"
+                        name: "Liczba rdzeni procesora"
+                        type: "integer"
+                        required: false
+                        unit: null
+                        options:
+                          variantsAllowed: true
+                          variantsEqual: false
+                        restrictions:
+                          min: 0
+                          max: 1000000
+                          range: false
                 string_single:
                   summary: String single
                   value:
-                    id: "224017"
-                    name: "Kod producenta"
-                    type: "string"
-                    required: false
-                    unit: null
-                    options:
-                      variantsAllowed: false
-                      variantsEqual: false
-                    restrictions:
-                      minLength: 2
-                      maxLength: 35
-                      allowedNumberOfValues: 1
+                    parameters:
+                      - id: "224017"
+                        name: "Kod producenta"
+                        type: "string"
+                        required: false
+                        unit: null
+                        options:
+                          variantsAllowed: false
+                          variantsEqual: false
+                        restrictions:
+                          minLength: 2
+                          maxLength: 35
+                          allowedNumberOfValues: 1
                 dictionary:
                   summary: Dictionary
                   value:
-                    id: "11323"
-                    name: "Stan"
-                    type: "dictionary"
-                    required: false
-                    unit: null
-                    options:
-                      variantsAllowed: false
-                      variantsEqual: true
-                    dictionary:
-                      - id: "11323_1"
-                        value: "Nowy"
-                      - id: "11323_2"
-                        value: "Używany"
-                      - id: "11323_238066"
-                        value: "Po zwrocie"
-                      - id: "11323_238058"
-                        value: "Powystawowy"
-                      - id: "11323_238062"
-                        value: "Uszkodzony"
-                      - id: "11323_246534"
-                        value: "Odnowiony przez producenta"
-                    restrictions:
-                      multipleChoices: false
+                    parameters:
+                      - id: "11323"
+                        name: "Stan"
+                        type: "dictionary"
+                        required: false
+                        unit: null
+                        options:
+                          variantsAllowed: false
+                          variantsEqual: true
+                        dictionary:
+                          - id: "11323_1"
+                            value: "Nowy"
+                          - id: "11323_2"
+                            value: "Używany"
+                          - id: "11323_238066"
+                            value: "Po zwrocie"
+                          - id: "11323_238058"
+                            value: "Powystawowy"
+                          - id: "11323_238062"
+                            value: "Uszkodzony"
+                          - id: "11323_246534"
+                            value: "Odnowiony przez producenta"
+                        restrictions:
+                          multipleChoices: false
                 float:
                   summary: Float
                   value:
-                    id: "17448"
-                    name: "Waga (z opakowaniem)"
-                    type: "float"
-                    required: false
-                    unit: "kg"
-                    options:
-                      variantsAllowed: false
-                      variantsEqual: false
-                    restrictions:
-                      min: 0
-                      max: 1000000
-                      range: false
-                      precision: 3
+                    parameters:
+                      - id: "17448"
+                        name: "Waga (z opakowaniem)"
+                        type: "float"
+                        required: false
+                        unit: "kg"
+                        options:
+                          variantsAllowed: false
+                          variantsEqual: false
+                        restrictions:
+                          min: 0
+                          max: 1000000
+                          range: false
+                          precision: 3
                 float_range:
                   summary: Float range
                   value:
-                    id: "211966"
-                    name: "Zakres regulacji wysokości koszenia"
-                    type: "float"
-                    required: false
-                    unit: "cm"
-                    options:
-                      variantsAllowed: false
-                      variantsEqual: false
-                    restrictions:
-                      min: 0
-                      max: 1000
-                      range: true
-                      precision: 2
+                    parameters:
+                      - id: "211966"
+                        name: "Zakres regulacji wysokości koszenia"
+                        type: "float"
+                        required: false
+                        unit: "cm"
+                        options:
+                          variantsAllowed: false
+                          variantsEqual: false
+                        restrictions:
+                          min: 0
+                          max: 1000
+                          range: true
+                          precision: 2
         404:
           description: The category with the given ID does not exist.
           content:
@@ -2656,19 +2661,15 @@ paths:
                               description: Rules for the shipping cost for the first item in the parcel.
                               properties:
                                 min:
-                                  type: number
-                                  format: double
+                                  type: string
                                   description: Lower limit for the rate.
-                                  minimum: 0.00
-                                  maximum: 100000000.00
-                                  example: 0.00
+                                  example: "0.00"
+                                  maxLength: 15
                                 max:
-                                  type: number
-                                  format: double
+                                  type: string
                                   description: Upper limit for the rate.
-                                  minimum: 0.00
-                                  maximum: 100000000.00
-                                  example: 8.99
+                                  example: "8.99"
+                                  maxLength: 15
                                 currency:
                                   type: string
                                   description: ISO 4217 currency code.
@@ -2678,19 +2679,15 @@ paths:
                               description: Rules for the shipping cost of another item in the parcel.
                               properties:
                                 min:
-                                  type: number
-                                  format: double
+                                  type: string
                                   description: Lower limit for the rate.
-                                  minimum: 0.00
-                                  maximum: 100000000.00
-                                  example: 0.00
+                                  example: "0.00"
+                                  maxLength: 15
                                 max:
-                                  type: number
-                                  format: double
+                                  type: string
                                   description: Upper limit for the rate.
-                                  minimum: 0.00
-                                  maximum: 100000000.00
-                                  example: 8.99
+                                  example: "8.99"
+                                  maxLength: 15
                                 currency:
                                   type: string
                                   description: ISO 4217 currency code.
@@ -2717,27 +2714,28 @@ paths:
               examples:
                 response:
                   value:
-                    - id: 758fcd59-fbfa-4453-ae07-4800d72c2ca5
-                      name: List polecony priorytetowy
-                      paymentPolicy: IN_ADVANCE
-                      allegroEndorsed: false
-                      shippingRatesConstraints:
-                        allowed: true
-                        maxQuantityPerPackage:
-                          max: 999999
-                        firstItemRate:
-                          min: '0.00'
-                          max: '100000000.00'
-                          currency: PLN
-                        nextItemRate:
-                          min: '0.00'
-                          max: '100000000.00'
-                          currency: PLN
-                        shippingTime:
-                          default:
-                            from: PT24H
-                            to: PT48H
-                          customizable: true
+                    deliveryMethods:
+                      - id: 758fcd59-fbfa-4453-ae07-4800d72c2ca5
+                        name: List polecony priorytetowy
+                        paymentPolicy: IN_ADVANCE
+                        allegroEndorsed: false
+                        shippingRatesConstraints:
+                          allowed: true
+                          maxQuantityPerPackage:
+                            max: 999999
+                          firstItemRate:
+                            min: '0.00'
+                            max: '100000000.00'
+                            currency: PLN
+                          nextItemRate:
+                            min: '0.00'
+                            max: '100000000.00'
+                            currency: PLN
+                          shippingTime:
+                            default:
+                              from: PT24H
+                              to: PT48H
+                            customizable: true
         '401':
           description: Authentication required.
           content:
