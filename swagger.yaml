@@ -3739,7 +3739,7 @@ paths:
     get:
       tags:
         - Order management
-      summary: "[BETA] Get a list of parcel tracking numbers"
+      summary: "Get a list of parcel tracking numbers"
       description: >-
         Get a list of parcel tracking numbers currently assigned to the order.
         Orders can be retrieved using REST API resource GET /order/checkout-forms.
@@ -3758,7 +3758,7 @@ paths:
           description: >-
             Returns a list of parcel tracking numbers (shipments)
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CheckoutFormOrderWaybillResponse'
         '401':
@@ -3768,7 +3768,7 @@ paths:
     post:
       tags:
         - Order management
-      summary: "[BETA] Add a parcel tracking number"
+      summary: "Add a parcel tracking number"
       description: >-
         Add a parcel tracking number (shipment) to given order line items.
       operationId: createOrderShipmentsUsingPOST
@@ -3781,7 +3781,7 @@ paths:
             type: string
       requestBody:
         content:
-          application/vnd.allegro.beta.v1+json:
+          application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/CheckoutFormAddWaybillRequest'
         description: request
@@ -3790,13 +3790,13 @@ paths:
         '201':
           description: The request is OK and the parcel tracking number will be assigned to the order
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CheckoutFormAddWaybillCreated'
         '400':
           description: Missing required field or invalid value in the request (e.g. unknown carrier id, carrier name too long)
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
@@ -3806,7 +3806,7 @@ paths:
         '422':
           description: Some of the provided data is invalid, e.g. line item doesn’t belong to the order
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   '/sale/disputes':
