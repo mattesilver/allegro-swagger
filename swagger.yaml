@@ -1947,7 +1947,7 @@ paths:
     get:
       tags:
         - Products
-      summary: '[BETA] Get product parameters available in given category'
+      summary: 'Get product parameters available in given category'
       description: >-
         Use this resource to get the list of product parameters available in given category.
         You can use these parameters to create a new product.
@@ -1966,9 +1966,9 @@ paths:
             example: "709"
       responses:
         200:
-          description: '[BETA] The list of product parameters for the category returned successfully.'
+          description: 'The list of product parameters for the category returned successfully.'
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CategoryProductParameterList'
               examples:
@@ -2053,7 +2053,7 @@ paths:
         404:
           description: The category with the given ID does not exist.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   /sale/offer-additional-services/definitions:
@@ -4396,7 +4396,7 @@ paths:
     get:
       tags:
         - Products
-      summary: "[BETA] Get search products results"
+      summary: "Get search products results"
       description: >-
         Use this resource to get a list of products according to provided parameters.
         At least ean or phrase parameter is required. <a href="../../productization/#search" target="_blank">Read more</a>.
@@ -4458,27 +4458,27 @@ paths:
         '200':
           description: Successful operation.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/GetSaleProductsResponse'
         '401':
           description: Unauthorized
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '422':
           description: >-
             One of parameters have invalid value.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   '/sale/products/{productId}':
     get:
       tags:
         - Products
-      summary: '[BETA] Get all data of the particular product'
+      summary: 'Get all data of the particular product'
       description: 'Use this resource to retrieve all data of the particular product. <a href="../../productization/#details" target="_blank">Read more</a>.'
       operationId: getSaleProduct
       parameters:
@@ -4492,26 +4492,26 @@ paths:
         '200':
           description: Product returned successfully
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/SaleProductDto'
         '401':
           description: Unauthorized
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '404':
           description: Not Found
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
   '/sale/product-proposals':
     post:
       tags:
         - Products
-      summary: "[BETA] Propose a product"
+      summary: "Propose a product"
       description: >-
         Use this resource to propose a product.
       operationId: proposeSaleProduct
@@ -4519,43 +4519,43 @@ paths:
         '201':
           description: Product proposed successfully.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/SaleProductDto'
         '400':
           description: Bad request
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden - not allowed to access.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '409':
           description: >-
             Product already exists. Url of the existing product is provided in the HTTP Location header field of the response.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Unprocessable Entity
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
-          application/vnd.allegro.beta.v1+json:
+          application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ProposeSaleProductRequest'
         required: true
