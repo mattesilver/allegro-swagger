@@ -10131,6 +10131,11 @@ components:
           type: boolean
           description: Buyer used a SMART option
           example: true
+        calculatedNumberOfPackages:
+          type: integer
+          format: int32
+          description: Calculated number of packages.
+          example: 1
     CheckoutFormDeliveryAddress:
       type: object
       required:
