@@ -42,6 +42,7 @@ tags:
   - name: Information about user
   - name: Blacklist management
   - name: Auctions and Bidding
+  - name: Billing
 
 security:
   - bearer-token-for-user: []
@@ -6010,6 +6011,161 @@ paths:
                 $ref: '#/components/schemas/AuthError'
         '422':
           description: Unprocessable Entity. Returned when any of the given search parameters have an invalid value.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/billing/billing-entries':
+    get:
+      tags:
+        - Billing
+      summary: 'Get a list of billing entries'
+      description: The billing entries are sorted in a descending order (newest first) by date on which they occurred.
+      parameters:
+        - name: occurredAt.gte
+          in: query
+          required: false
+          description: Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
+          example: 2019-05-08T09:45:818Z
+          schema:
+            type: string
+            format: date-time
+        - name: occurredAt.lte
+          in: query
+          required: false
+          description: Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
+          example: 2019-05-08T09:45:818Z
+          schema:
+            type: string
+            format: date-time
+        - name: type.id
+          in: query
+          required: false
+          description: List of billing types by which billing entries are filtered.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: offer.id
+          in: query
+          required: false
+          description: Offer IDs by which billing entries are filtered.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Number of returned operations.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 100
+        - name: offset
+          in: query
+          required: false
+          description: Index of the first returned payment operation from all search results.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 1000
+            default: 0
+      responses:
+        '200':
+          description: List of billing entries returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: ID of the returned billing entry.
+                    example: '09f0b4cc-7880-11e9-8f9e-2a86e4085a59'
+                  occurredAt:
+                    type: string
+                    format: date-time
+                    description: Date of billing entry.
+                    example: '2019-05-08T09:45:818Z'
+                  type:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Three-letter code of the billing type of the returned billing entry.
+                        example: 'LIS'
+                      name:
+                        type: string
+                        description: Billing type of the returned billing entry.
+                          This type is translated based on the value of the "Accept-Language" header.
+                          By default a message in English is returned.
+                        example: 'Listing fee'
+                  offer:
+                    type: object
+                    description: Offer associated with the returned billing entry.
+                    properties:
+                      id:
+                        type: string
+                        description: ID of the offer associated with the billing entry.
+                        example: '12345678'
+                      name:
+                        type: string
+                        description: Name of the offer associated with the billing entry.
+                        example: 'offer name'
+                  value:
+                    type: object
+                    description: Money value of the returned billing entry.
+                    properties:
+                      amount:
+                        type: string
+                        description: Monetary amount of the returned billing entry.
+                        example: '100.00'
+                      currency:
+                        type: string
+                        description: Three-letter currency code (ISO-4217) of the returned billing entry.
+                        example: 'PLN'
+                  tax:
+                    type: object
+                    description: Tax rate applied to the returned billing entry.
+                      Optional field annotation is present if the returned billing entry
+                      is exempt from tax or tax is not applicable; possible values are "EXEMPT" and "NOT_APPLICABLE".
+                    properties:
+                      percentage:
+                        type: string
+                        description: Tax rate shown as a number in the range 0-100.
+                        example: '0'
+                      annotation:
+                        type: string
+                        description: Optional annotation explaining the tax rate.
+                        example: 'EXEMPT'
+                  balance:
+                    type: object
+                    description: User account balance calculated on billing date.
+                    properties:
+                      amount:
+                        type: string
+                        description: Monetary amount of the balance calculated for the returned billing entry.
+                        example: '100.00'
+                      currency:
+                        type: string
+                        description: Three-letter currency code (ISO-4217) of the balance of the returned billing entry.
+                        example: 'PLN'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '406':
+          description: Not Acceptable
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Unprocessable Entity
           content:
             application/vnd.allegro.public.v1+json:
               schema:
