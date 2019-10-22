@@ -6049,7 +6049,7 @@ paths:
         - name: offer.id
           in: query
           required: false
-          description: Offer IDs by which billing entries are filtered.
+          description: Offer ID by which billing entries are filtered.
           schema:
             type: string
         - name: limit
