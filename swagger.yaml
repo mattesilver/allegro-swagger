@@ -3304,9 +3304,10 @@ paths:
         - Images and attachments
       summary: "Create an offer attachment"
       description: |
-        You can upload PDF attachments to your offers.
+        You can attach PDF files to your offers.
         We will present them under the offer description in the Additional information section.
-        You can upload up to 7 attachments – one per item from the list:
+
+        You can attach up to 7 files to one offer – one per each type from the list:
           * \- Guide (MANUAL)
           * \- Special offer terms (SPECIAL_OFFER_RULES)
           * \- Competition terms (COMPETITION_RULES)
@@ -3318,7 +3319,7 @@ paths:
         Uploading attachments flow:
           1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
           2. Use the upload URL to submit the PDF file (*PUT /sale/offer-attachments/{attachmentId}*),
-          3. Add the attachment to the offer (*PUT /sale/offers/{offerId}*).
+          3. Add attachments to the offer (*PUT /sale/offers/{offerId}*).
 
       operationId: createOfferAttachmentUsingPOST
       responses:
@@ -6576,6 +6577,13 @@ components:
           format: uuid
           description: The ID of the warranty definition.
           example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of an attachment received in a response from *POST /sale/offer-attachments*
+          example: 1928302_MANUAL_45d7a0f543e1b0d05e12a1aef5642efe63389a1d419fe9286d0f158044391fdce
     Answer:
       type: object
       required:
@@ -7726,6 +7734,11 @@ components:
           $ref: '#/components/schemas/JustId'
         afterSalesServices:
           $ref: '#/components/schemas/AfterSalesServices'
+        attachments:
+          type: array
+          description: List of offer attachments. You can attach up to 7 files to the offer – one per each attachment type as described in <a href="/documentation/#operation/createOfferAttachmentUsingPOST" target="_blank">uploading offer attachments flow</a>.
+          items:
+            $ref: '#/components/schemas/Attachment'
         category:
           $ref: '#/components/schemas/Category'
         compatibilityList:
