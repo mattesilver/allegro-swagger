@@ -6261,11 +6261,6 @@ components:
             type: string
             format: binary
             description: File in a binary format
-        image/gif:
-          schema:
-            type: string
-            format: binary
-            description: File in a binary format
   schemas:
     InitializeRefund:
       required:
