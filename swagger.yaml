@@ -12,6 +12,9 @@ info:
   version: 'latest'
   title: Allegro REST API
   termsOfService: 'https://developer.allegro.pl/rules/'
+  contact:
+    name: "API Support"
+    url: 'https://github.com/allegro/allegro-api/issues'
 
 tags:
   - name: Public offer information
@@ -262,7 +265,7 @@ paths:
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -297,7 +300,7 @@ paths:
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -326,7 +329,7 @@ paths:
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -350,7 +353,7 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -391,7 +394,7 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -420,20 +423,20 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -667,13 +670,13 @@ paths:
       parameters:
         - name: user.id
           in: query
-          description: 'Filter by user id, you are allowed to get your ratings only'
+          description: Filter by user id, you are allowed to get your ratings only.
           required: true
           schema:
             type: string
         - name: recommended
           in: query
-          description: Filter by recommended
+          description: Filter by recommended.
           required: false
           schema:
             type: string
@@ -682,7 +685,7 @@ paths:
               - 'false'
         - name: offset
           in: query
-          description: Offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -692,7 +695,7 @@ paths:
             default: 0
         - name: limit
           in: query
-          description: Limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
@@ -772,7 +775,7 @@ paths:
       parameters:
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -780,7 +783,7 @@ paths:
             default: 0
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
@@ -788,7 +791,7 @@ paths:
             default: 1000
         - name: user.id
           in: query
-          description: User ID
+          description: User identifier.
           required: true
           schema:
             type: string
@@ -808,7 +811,7 @@ paths:
       tags:
         - Sets and rebates
       summary: "Create a new promotion"
-      description: |
+      description: >-
         This endpoint creates a new promotion. You can define the following types of promotions:
 
         1. Bundle
@@ -1065,7 +1068,7 @@ paths:
       parameters:
         - name: promotionId
           in: path
-          description: promotionId
+          description: Promotion identifier.
           required: true
           schema:
             type: string
@@ -1094,7 +1097,7 @@ paths:
       parameters:
         - name: promotionId
           in: path
-          description: promotionId
+          description: Promotion identifier.
           required: true
           schema:
             type: string
@@ -1178,13 +1181,13 @@ paths:
       parameters:
         - name: promotion.id
           in: query
-          description: The promotion unique id
+          description: The promotion unique id.
           required: false
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
@@ -1192,7 +1195,7 @@ paths:
             default: 50
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -1234,13 +1237,13 @@ paths:
       parameters:
         - name: promotion.id
           in: query
-          description: The promotion unique id
+          description: The promotion unique id.
           required: true
           schema:
             type: string
         - name: campaign.id
           in: query
-          description: The campaign unique id
+          description: The campaign unique id.
           required: true
           schema:
             type: string
@@ -1283,7 +1286,7 @@ paths:
       parameters:
         - name: applicationId
           in: path
-          description: The application unique id
+          description: The application unique id.
           required: true
           schema:
             type: string
@@ -1325,7 +1328,7 @@ paths:
       parameters:
         - name: applicationId
           in: path
-          description: The application unique id
+          description: The application unique id.
           required: true
           schema:
             type: string
@@ -1454,7 +1457,7 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1495,7 +1498,7 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1524,20 +1527,20 @@ paths:
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -1561,10 +1564,11 @@ paths:
         - Batch offer modification
       summary: "Batch offer price modification"
       operationId: priceModificationCommandUsingPUT
+      description: "Change price of offers."
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1594,11 +1598,12 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change price command summary"
+      description: "Returns status and summary of particular command execution."
       operationId: getPriceModificationCommandStatusUsingGET
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1618,25 +1623,25 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change price command detailed report"
-      description: 'Defaults: limit = 100, offset = 0'
+      description: 'Defaults: limit = 100, offset = 0.'
       operationId: getPriceModificationCommandTasksStatusesUsingGET
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -1657,11 +1662,12 @@ paths:
       tags:
         - Batch offer modification
       summary: "Batch offer quantity modification"
+      description: "Change quantity of multiple offers."
       operationId: quantityModificationCommandUsingPUT
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1691,11 +1697,12 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change quantity command summary"
+      description: "Returns status and summary of the command."
       operationId: getQuantityModificationCommandStatusUsingGET
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
@@ -1715,25 +1722,25 @@ paths:
       tags:
         - Batch offer modification
       summary: 'Change quantity command detailed report'
-      description: 'Defaults: limit = 100, offset = 0'
+      description: 'Defaults: limit = 100, offset = 0.'
       operationId: getQuantityModificationCommandTasksStatusesUsingGET
       parameters:
         - name: commandId
           in: path
-          description: commandId
+          description: Command identifier.
           required: true
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -2068,7 +2075,7 @@ paths:
       parameters:
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -2076,7 +2083,7 @@ paths:
             default: 0
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
@@ -2084,7 +2091,7 @@ paths:
             default: 100
         - name: user.id
           in: query
-          description: User ID
+          description: User identifier.
           required: true
           schema:
             type: string
@@ -2110,7 +2117,7 @@ paths:
       parameters:
         - name: seller.id
           in: query
-          description: id of shipping rates owner
+          description: Shipping rates owner identifier.
           required: true
           schema:
             type: string
@@ -2194,7 +2201,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: id of shipping rates set
+          description: Shipping rates set identifier.
           required: true
           schema:
             type: string
@@ -2252,7 +2259,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: id of shipping rates set
+          description: Shipping rates set identifier.
           required: true
           schema:
             type: string
@@ -2372,7 +2379,7 @@ paths:
       parameters:
         - name: seller.id
           in: query
-          description: User ID
+          description: User identifier.
           required: true
           schema:
             type: string
@@ -2403,7 +2410,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Point of service ID
+          description: Point of service ID.
           required: true
           schema:
             type: string
@@ -2469,7 +2476,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Point of service ID
+          description: Point of service ID.
           required: true
           schema:
             type: string
@@ -2522,7 +2529,7 @@ paths:
       parameters:
         - name: seller.id
           in: query
-          description: id of contacts owner
+          description: Contacts owner identifier.
           required: true
           schema:
             type: string
@@ -2548,7 +2555,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Contact id
+          description: Contact identifier.
           required: true
           schema:
             type: string
@@ -2575,7 +2582,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Contact id
+          description: Contact identifier.
           required: true
           schema:
             type: string
@@ -2754,7 +2761,7 @@ paths:
       parameters:
         - name: groupId
           in: path
-          description: Additional Service Group ID
+          description: Additional Service Group ID.
           required: true
           schema:
             type: string
@@ -2779,7 +2786,7 @@ paths:
       parameters:
         - name: groupId
           in: path
-          description: additional service group ID
+          description: Additional service group ID.
           required: true
           schema:
             type: string
@@ -2807,7 +2814,7 @@ paths:
       parameters:
         - name: tableId
           in: path
-          description: tableId
+          description: Table identifier.
           required: true
           schema:
             type: string
@@ -2841,14 +2848,14 @@ paths:
             type: string
         - name: limit
           in: query
-          description: Limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: Offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -2879,7 +2886,7 @@ paths:
       parameters:
         - name: user.id
           in: query
-          description: user.id
+          description: User identifier.
           required: true
           schema:
             type: string
@@ -2913,14 +2920,14 @@ paths:
             type: string
         - name: limit
           in: query
-          description: Limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: Offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -2954,13 +2961,14 @@ paths:
       operationId: offerQuotesPublicUsingGET
       parameters:
         - name: name
+          description: Offer quote name.
           in: query
           required: false
           schema:
             type: string
         - name: offer.id
           in: query
-          description: 'List of offer ids, maximum 20 values'
+          description: 'List of offer Ids, maximum 20 values.'
           required: true
           allowEmptyValue: false
           explode: true
@@ -3006,14 +3014,14 @@ paths:
             type: string
         - name: limit
           in: query
-          description: Limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: Offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -3135,7 +3143,7 @@ paths:
       parameters:
         - name: setId
           in: path
-          description: Variant set id
+          description: Variant set identifier.
           required: true
           schema:
             type: string
@@ -3160,7 +3168,7 @@ paths:
       parameters:
         - name: setId
           in: path
-          description: setId
+          description: Variant set identifier.
           required: true
           schema:
             type: string
@@ -3189,7 +3197,7 @@ paths:
       parameters:
         - name: setId
           in: path
-          description: Variant set id
+          description: Variant set identifier.
           required: true
           schema:
             type: string
@@ -3259,11 +3267,8 @@ paths:
       tags:
         - Images and attachments
       summary: "Upload an offer image"
-      description: |
+      description: >-
         Upload image to our servers.
-
-        More information about rules for photos in an offer's gallery and description you will find
-        <a href="https://allegro.pl/dla-sprzedajacych/nowe-zasady-dla-zdjec-w-galerii-i-w-opisie-YLlAAa2oXf7" target="_blank">here</a>.
 
         You can choose from two upload options:
           * \- provide a link and we will download an image for you
@@ -3272,6 +3277,9 @@ paths:
         **Important!** Remember to use dedicated domain for upload, i.e.
           * \- https://upload.allegro.pl for Production
           * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
+
+        More information about rules for photos in an offer's gallery and description you will find
+        <a href="https://allegro.pl/dla-sprzedajacych/nowe-zasady-dla-zdjec-w-galerii-i-w-opisie-YLlAAa2oXf7" target="_blank">here</a>.
       operationId: uploadOfferImageUsingPOST
       servers:
         - url: https://upload.{environment}
@@ -3303,7 +3311,7 @@ paths:
       tags:
         - Images and attachments
       summary: "Create an offer attachment"
-      description: |
+      description: >-
         You can attach PDF files to your offers.
         We will present them under the offer description in the Additional information section.
 
@@ -3344,7 +3352,7 @@ paths:
       tags:
         - Images and attachments
       summary: "Upload an offer attachment"
-      description: |
+      description: >-
         Upload an offer attachment.
 
         This operation should be used after creating an offer attachment with *POST /sale/offer-attachments*
@@ -3526,7 +3534,7 @@ paths:
                 	]
                 }
               ````
-            You can use 'Stan' filter to query results, i.e.: parameter.11323=11323_1 (for "nowe"), parameter.11323=11323_2 (for "używane") or parameter.11323=11323_238066 (for "po zwrocie")
+            You can use 'Stan' filter to query results, i.e.: parameter.11323=11323_1 (for "nowe"), parameter.11323=11323_2 (for "używane") or parameter.11323=11323_238066 (for "po zwrocie").
           example: 127448=2
           required: false
           schema:
@@ -3583,7 +3591,7 @@ paths:
       parameters:
         - name: from
           in: query
-          description: 'You can use the event ID to retrieve subsequent chunks of events'
+          description: 'You can use the event ID to retrieve subsequent chunks of events.'
           required: false
           schema:
             type: string
@@ -3602,7 +3610,7 @@ paths:
               type: string
         - name: limit
           in: query
-          description: 'Limit in the range of 1-1000'
+          description: 'Limit in the range of 1-1000.'
           required: false
           schema:
             type: integer
@@ -3664,13 +3672,13 @@ paths:
           in: query
           schema:
             type: string
-          description: >
+          description: >-
             Specify status value that checkout-forms must have to be included in the output.
             Allowed values are:
-              * `BOUGHT`: purchase without checkout form filled in
-              * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
+              * `BOUGHT`: purchase without checkout form filled in.
+              * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change.
               * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
-              * `ALL`: return all checkout-forms
+              * `ALL`: return all checkout-forms.
         - name: lineItems.boughtAt.lte
           in: query
           schema:
@@ -3720,7 +3728,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Checkout Form id
+          description: Checkout form identifier.
           required: true
           schema:
             type: string
@@ -3751,7 +3759,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Order identifier
+          description: Order identifier.
           required: true
           schema:
             type: string
@@ -3777,7 +3785,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Order identifier
+          description: Order identifier.
           required: true
           schema:
             type: string
@@ -3823,7 +3831,7 @@ paths:
       parameters:
         - name: checkoutForm.id
           in: query
-          description: CheckoutForm id
+          description: Checkout form identifier.
           required: false
           schema:
             type: string
@@ -3851,7 +3859,7 @@ paths:
       parameters:
         - name: disputeId
           in: path
-          description: Id of the dispute
+          description: Dispute identifier.
           required: true
           schema:
             type: string
@@ -3880,7 +3888,7 @@ paths:
       parameters:
         - name: disputeId
           in: path
-          description: Id of the dispute
+          description: Dispute identifier.
           required: true
           schema:
             type: string
@@ -3905,7 +3913,7 @@ paths:
       parameters:
         - name: disputeId
           in: path
-          description: Id of the dispute
+          description: Dispute identifier.
           required: true
           schema:
             type: string
@@ -3964,7 +3972,7 @@ paths:
       tags:
         - Disputes
       summary: "Upload a dispute message attachment"
-      description: |
+      description: >-
         Upload a dispute message attachment.
 
         This operation should be used after creating an attachment declaration with *POST /sale/dispute-attachments*
@@ -3978,7 +3986,7 @@ paths:
         - name: attachmentId
           in: path
           required: true
-          description: The attachment ID
+          description: Attachment identifier.
           schema:
             type: string
             format: uuid
@@ -4044,7 +4052,7 @@ paths:
       parameters:
         - name: attachmentId
           in: path
-          description: Id of the attachment resource
+          description: Attachment identifier.
           required: true
           schema:
             type: string
@@ -4075,14 +4083,14 @@ paths:
       parameters:
         - in: "query"
           name: "lineItemId"
-          description: "line item id"
+          description: Line item identifier.
           required: false
           schema:
             type: string
             format: uuid
         - in: "query"
           name: "dealId"
-          description: "dealId"
+          description: Deal identifier.
           required: false
           schema:
             type: string
@@ -4104,7 +4112,7 @@ paths:
       tags:
         - Offer tags
       summary: "Create a tag"
-      description: |
+      description: >-
         Use this resource to create a new tag. <a href="../../news/2018-09-24-tagi-zalaczniki/#DodajDoKonta" target="_blank">Read more</a>.
       operationId: createTagPOST_1
       responses:
@@ -4158,20 +4166,20 @@ paths:
       parameters:
         - name: user.id
           in: query
-          description: user.id
+          description: User identifier.
           required: true
           schema:
             type: string
         - name: limit
           in: query
-          description: limit
+          description: The limit of elements in the response.
           required: false
           schema:
             type: integer
             format: int32
         - name: offset
           in: query
-          description: offset
+          description: The offset of elements in the response.
           required: false
           schema:
             type: integer
@@ -4207,7 +4215,7 @@ paths:
       parameters:
         - name: tagId
           in: path
-          description: tagId
+          description: Tag identifier.
           required: true
           schema:
             type: string
@@ -4242,7 +4250,7 @@ paths:
       parameters:
         - name: tagId
           in: path
-          description: tagId
+          description: Tag identifier.
           required: true
           schema:
             type: string
@@ -4281,13 +4289,13 @@ paths:
       tags:
         - Offer tags
       summary: "Assign tags to an offer"
-      description: |
+      description: >-
         Use this resource to assign a tag to offer. <a href="../../news/2018-09-24-tagi-zalaczniki/#PrzypiszTagiDoOferty" target="_blank">Read more</a>.
       operationId: assignTagToOfferPOST
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -4337,7 +4345,7 @@ paths:
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -4366,12 +4374,12 @@ paths:
         - Delivery
       summary: "[BETA] Get shipping rates assigned to an offer"
       description: >-
-        Use this resource to get the delivery methods and costs defined in the offer when there is no seller's shipping rates set attached to offer
+        Use this resource to get the delivery methods and costs defined in the offer when there is no seller's shipping rates set attached to offer.
       operationId: getOfferShippingRatesGET
       parameters:
         - name: offerId
           in: path
-          description: offerId
+          description: Offer identifier.
           required: true
           schema:
             type: string
@@ -4445,7 +4453,7 @@ paths:
                 ]
               }
               ````
-            You can use 'Kolor' filter to query results, i.e.: 127448=2 (for "biały") or 127448=1 (for "czarny")
+            You can use 'Kolor' filter to query results, i.e.: 127448=2 (for "biały") or 127448=1 (for "czarny").
           example: 127448=2
           required: false
           schema:
@@ -4567,6 +4575,7 @@ paths:
       - Compatibility List
       summary: 'Get list of categories where compatibility list is supported'
       description: 'Compatibility list is available in particular categories, this resource allows to get the list of these categories with additional details.'
+      operationId: "getCategoriesThatSupportCompatibilityList"
       responses:
         '200':
           description: 'Configuration of supported categories.'
@@ -4582,6 +4591,7 @@ paths:
       - Compatibility List
       summary: 'Get list of compatible product groups'
       description: 'Compatible products are organized in groups, this resource allows to browse these groups.'
+      operationId: 'getCompatibleProductsGroups'
       parameters:
         - name: If-Modified-Since
           in: header
@@ -4639,6 +4649,7 @@ paths:
       - Compatibility List
       summary: 'Get list of compatible products'
       description: 'Resource allows to fetch compatible products of given type.'
+      operationId: "getCompatibleProducts"
       parameters:
       - name: If-Modified-Since
         in: header
@@ -4720,7 +4731,7 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: 'Unauthorized'
-  '/account/additional-emails/':
+  '/account/additional-emails':
     get:
       tags:
         - Information about user
@@ -4788,7 +4799,7 @@ paths:
       parameters:
         - name: emailId
           in: path
-          description: Id of the additional email
+          description: Id of the additional email.
           required: true
           schema:
             type: string
@@ -4815,12 +4826,12 @@ paths:
       tags:
         - Information about user
       summary: "Delete an additional email address"
-      description: "Use this resource to delete one of additional emails"
+      description: "Use this resource to delete one of additional emails."
       operationId: deleteAdditionalEmailUsingDELETE
       parameters:
         - name: emailId
           in: path
-          description: Id of the additional email to be deleted
+          description: Id of the additional email to be deleted.
           required: true
           schema:
             type: string
@@ -4849,10 +4860,10 @@ paths:
       parameters:
         - name: wallet.type
           in: query
-          description: |
+          description: >-
             Type of the wallet:
-            * AVAILABLE - operations available for payout
-            * WAITING - operations temporarily suspended for payout
+            * AVAILABLE - operations available for payout.
+            * WAITING - operations temporarily suspended for payout.
           required: false
           schema:
             type: string
@@ -4862,10 +4873,10 @@ paths:
               - WAITING
         - name: wallet.paymentOperator
           in: query
-          description: |
+          description: >-
             Payment operator:
-            * PAYU - operations processed by PAYU operator
-            * P24 - operations processed by PRZELEWY24 operator
+            * PAYU - operations processed by PAYU operator.
+            * P24 - operations processed by PRZELEWY24 operator.
           required: false
           schema:
             type: string
@@ -4890,7 +4901,7 @@ paths:
         - name: occurredAt.gte
           in: query
           description: The minimum date and time of operation occurrence in ISO 8601 format.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:20.818Z"
           required: false
           schema:
             type: string
@@ -4899,17 +4910,17 @@ paths:
           in: query
           description: The maximum date and time of operation occurrence in ISO 8601 format.
           required: false
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:20.818Z"
           schema:
             type: string
             format: date-time
         - name: group
           in: query
-          description: |
+          description: >-
             Group of operation types:
-            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE
-            * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE
-            * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION
+            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE.
+            * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE.
+            * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION.
           required: false
           schema:
             type: array
@@ -4967,12 +4978,14 @@ paths:
       parameters:
         - in: query
           name: paymentId
+          description: Payment identifier.
           schema:
             type: string
             format: uuid
             description: The payment ID compatible with RestAPI.
         - in: query
           name: transactionId
+          description: Transaction identifier.
           schema:
             type: string
             description: The payment ID compatible with WebAPI.
@@ -5096,6 +5109,7 @@ paths:
       - Auctions and Bidding
       operationId: placeBid
       summary: 'Place a bid in an auction'
+      description: "Place a bid in an auction."
       parameters:
       - name: offerId
         in: path
@@ -5151,6 +5165,7 @@ paths:
         - Auctions and Bidding
       operationId: getBid
       summary: "Get current user's bid information"
+      description: "Get current user's bid information."
       parameters:
         - name: offerId
           in: path
@@ -5176,7 +5191,7 @@ paths:
       tags:
         - User's offer information
       summary: "[BETA] Get events about the seller's offers"
-      description: |
+      description: >-
         Use this endpoint to get events concerning changes in the authorized seller's offers.
 
         At present we support the following events:
@@ -5268,7 +5283,7 @@ paths:
       tags:
         - Badge campaigns
       summary: "[BETA] Get a list of available badge campaigns"
-      description: |
+      description: >-
         Badge campaigns are another way to promote your offers.
         You can apply for a badge, which - depending on a type - will be displayed on your offer page of on the list of offers.
 
@@ -5295,15 +5310,12 @@ paths:
                           refusalReasons: []
                         application:
                           type: 'ALWAYS'
-                          from: null
-                          to: null
                         visibility:
                           type: 'WITHIN'
                           from: '2018-01-01T23:00:00Z'
                           to: '2020-10-04T23:00:00Z'
                         publication:
                           type: 'UNTIL'
-                          from: null
                           to": '2020-10-03T23:00:00Z'
                       - id: 'HIT'
                         name: 'Hit'
@@ -5317,16 +5329,11 @@ paths:
                                   link: null
                         application:
                           type: 'NEVER'
-                          from: null
-                          to: null
                         visibility:
                           type: 'ALWAYS'
-                          from: null
-                          to: null
                         publication:
                           type: 'SINCE'
                           from: '2018-11-04T23:00:00Z'
-                          to": null
         '401':
           description: Unauthorized.
           content:
@@ -5354,7 +5361,7 @@ paths:
       tags:
         - Badge campaigns
       summary: "[BETA] Apply for badge in selected offer"
-      description: |
+      description: >-
         This resource allows you to apply for a badge. Most badges involve additional fee charged.
 
         Your badge application will be verified and you will be notified about the verification status via e-mail.
@@ -5372,7 +5379,7 @@ paths:
           <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-0KPkAE7wkcv"
             target="_blank">Commission discount terms and conditions</a>.
         <a href="/badge/#2" target="_blank">Read more</a>.
-      operationId: badges_post
+      operationId: postBadges
       responses:
         '202':
           description: Successfully applied for a badge.
@@ -5495,7 +5502,7 @@ paths:
       description: >-
         Use this resource to get a list of badges in authorized seller's offers.
         <a href="/badge/#5" target="_blank">Read more</a>.
-      operationId: badges_get_all
+      operationId: getBadges
       parameters:
         - name: offer.id
           in: query
@@ -5878,6 +5885,7 @@ paths:
         - Payments
       summary: Initiate a refund of a payment
       description: Use this endpoint to initiate a refund of a payment.
+      operationId: "initiateRefund"
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -5918,6 +5926,8 @@ paths:
       tags:
         - Payments
       summary: 'Get a list of refunded payments'
+      description: 'Get a list of refunded payments.'
+      operationId: 'getRefundedPayments'
       parameters:
         - name: limit
           in: query
@@ -5955,7 +5965,7 @@ paths:
         - name: occurredAt.gte
           in: query
           description: Minimum date and time when the refund occurred provided in ISO 8601 format.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:43.818Z"
           required: false
           schema:
             type: string
@@ -5964,7 +5974,7 @@ paths:
           in: query
           description: Maximum date and time when the refund occurred provided in ISO 8601 format.
           required: false
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:32.818Z"
           schema:
             type: string
             format: date-time
@@ -6022,12 +6032,13 @@ paths:
         - Billing
       summary: 'Get a list of billing entries'
       description: The billing entries are sorted in a descending order (newest first) by date on which they occurred.
+      operationId: "getBillingEntries"
       parameters:
         - name: occurredAt.gte
           in: query
           required: false
           description: Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:32.818Z"
           schema:
             type: string
             format: date-time
@@ -6035,7 +6046,7 @@ paths:
           in: query
           required: false
           description: Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:32.818Z"
           schema:
             type: string
             format: date-time
@@ -6089,7 +6100,7 @@ paths:
                     type: string
                     format: date-time
                     description: Date of billing entry.
-                    example: '2019-05-08T09:45:818Z'
+                    example: '2019-05-08T09:45:32.818Z'
                   type:
                     type: object
                     properties:
@@ -6193,7 +6204,6 @@ components:
       description: For more information, see https://developer.allegro.pl/auth/#clientCredentialsFlow
       flows:
         clientCredentials:
-          authorizationUrl: ""
           tokenUrl: https://allegro.pl/auth/oauth/token
           scopes: {}
   requestBodies:
@@ -6581,6 +6591,7 @@ components:
           example: 1928302_MANUAL_45d7a0f543e1b0d05e12a1aef5642efe63389a1d419fe9286d0f158044391fdce
     Answer:
       type: object
+      description: 'Seller''s answer, if null seller did not publish answer'
       required:
         - createdAt
         - message
@@ -6835,40 +6846,37 @@ components:
                   maxRows:
                     type: integer
                     description: 'Maximum number of items allowed on compatibility list.'
-                    example: '2000'
+                    example: 2000
                   maxCharactersPerLine:
                     type: integer
                     description: 'Maximum length of single item on the list.'
-                    example: '160'
+                    example: 160
           example:
-          - categoryId: '620'
-            name: 'Części samochodowe'
-            itemsType: 'CAR'
-            inputType: 'ID'
-            validationRules:
-              maxRows: 2000
-              maxCharactersPerLine: null
-          - categoryId: '257358'
-            name: 'Pióra wycieraczek'
-            itemsType: 'CAR'
-            inputType: 'ID'
-            validationRules:
-              maxRows: 2000
-              maxCharactersPerLine: null
-          - categoryId: '158'
-            name: 'Części motocyklowe'
-            itemsType: 'MOTORCYCLE'
-            inputType: 'ID'
-            validationRules:
-              maxRows: 2000
-              maxCharactersPerLine: null
-          - categoryId: '9108'
-            name: 'Tusze'
-            itemsType: 'PRINTER'
-            inputType: 'TEXT'
-            validationRules:
-              maxRows: 200
-              maxCharactersPerLine: 100
+              - categoryId: '620'
+                name: 'Części samochodowe'
+                itemsType: 'CAR'
+                inputType: 'ID'
+                validationRules:
+                  maxRows: 2000
+              - categoryId: '257358'
+                name: 'Pióra wycieraczek'
+                itemsType: 'CAR'
+                inputType: 'ID'
+                validationRules:
+                  maxRows: 2000
+              - categoryId: '158'
+                name: 'Części motocyklowe'
+                itemsType: 'MOTORCYCLE'
+                inputType: 'ID'
+                validationRules:
+                  maxRows: 2000
+              - categoryId: '9108'
+                name: 'Tusze'
+                itemsType: 'PRINTER'
+                inputType: 'TEXT'
+                validationRules:
+                  maxRows: 200
+                  maxCharactersPerLine: 100
     CompatibleProductsGroupsDto:
       type: object
       properties:
@@ -7071,7 +7079,6 @@ components:
           type: string
           description: General fail reason. You should check the errors structure to get more detailed information of the encountered errors.
         offer:
-          description: Offer identifier.
           $ref: '#/components/schemas/OfferId'
         scheduledAt:
           type: string
@@ -7458,7 +7465,6 @@ components:
           description: 'Commission fee name.'
           example: 'Prowizja od sprzedaży'
         fee:
-          type: object
           $ref: '#/components/schemas/Price'
     QuoteResponse:
       type: object
@@ -7468,14 +7474,12 @@ components:
           description: 'Quote fee name.'
           example: 'Opłata za wystawienie.'
         fee:
-          type: object
           $ref: '#/components/schemas/Price'
         cycleDuration:
           type: string
           description: 'Duration in ISO 8601 format.'
           example: 'PT240H'
         classifiedsPackage:
-          type: object
           $ref: '#/components/schemas/ClassifiedPackage'
     GeneralReport:
       type: object
@@ -7484,7 +7488,6 @@ components:
           type: string
           description: Command ID
         taskCount:
-          description: Tasks information
           $ref: '#/components/schemas/TaskCount'
       description: Command execution summary
     Header:
@@ -7548,21 +7551,16 @@ components:
       type: object
       properties:
         additionalServicesGroup:
-          description: AdditionalServicesGroup modification
           $ref: '#/components/schemas/AdditionalServicesGroup'
         delivery:
           $ref: '#/components/schemas/ModificationDelivery'
         payments:
-          description: Payments modification
           $ref: '#/components/schemas/ModificationPayments'
         promotion:
-          description: Promotion modification
           $ref: '#/components/schemas/ModificationPromotion'
         sizeTable:
-          description: SizeTable modification
           $ref: '#/components/schemas/ModificationSizeTable'
         publication:
-          description: Publication modification
           $ref: '#/components/schemas/ModificationPublication'
       description: Contains fields to change
     ModificationDelivery:
@@ -7745,7 +7743,7 @@ components:
           format: date-time
           description: >-
             Creation date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
-            Cannot be modified
+            Cannot be modified.
         delivery:
           $ref: '#/components/schemas/Delivery'
         description:
@@ -7795,12 +7793,11 @@ components:
             Cannot be modified
         validation:
           $ref: '#/components/schemas/Validation'
-      description: Single offer data
+      description: Single offer data.
     OfferChangeCommand:
       type: object
       properties:
         modification:
-          description: Fields to change
           $ref: '#/components/schemas/Modification'
         offerCriteria:
           type: array
@@ -8055,7 +8052,7 @@ components:
           type: array
           items:
             type: string
-      description: Offer's parameter
+      description: Offer's parameter.
     CategoryParameter:
       type: object
       required:
@@ -8628,7 +8625,6 @@ components:
           items:
             $ref: '#/components/schemas/OfferCriterium'
         publication:
-          description: Fields to change
           $ref: '#/components/schemas/Publication_modification'
       description: Publication modification command payload
     Rates:
@@ -8694,10 +8690,10 @@ components:
           example: '2017-05-17T08:36:57.292+02:00'
           description: Date until a removal request can be submitted in ISO 8601 format
         request:
-          description: 'Submitted removal request, null if removal was not requested'
           $ref: '#/components/schemas/RemovalRequest'
     RemovalRequest:
       type: object
+      description: 'Submitted removal request, null if removal was not requested'
       required:
         - createdAt
         - message
@@ -9011,10 +9007,8 @@ components:
         - recommended
       properties:
         answer:
-          description: 'Seller''s answer, if null seller did not publish answer'
           $ref: '#/components/schemas/Answer'
         buyer:
-          description: Buyer who created rating
           $ref: '#/components/schemas/User'
         comment:
           type: string
@@ -9034,17 +9028,14 @@ components:
           type: string
           description: Rating id
         order:
-          description: Rated order
           $ref: '#/components/schemas/Order'
         rates:
-          description: Given rates
           $ref: '#/components/schemas/Rates'
         recommended:
           type: boolean
           example: false
           description: Whether buyer recommends the order
         removal:
-          description: Data regarding removal of rating
           $ref: '#/components/schemas/Removal'
     UserRatingListResponse:
       type: object
@@ -9185,7 +9176,6 @@ components:
         - unitPrice
       properties:
         category:
-          description: Leaf category id
           $ref: '#/components/schemas/Category'
         condition:
           type: string
@@ -9347,8 +9337,8 @@ components:
           - id: '5'
             colorPattern: blue
         parameters:
-          - 'color/pattern'
-          - '21'
+          - id: 'color/pattern'
+          - id: '21'
     VariantSet_Offer:
       type: object
       required:
@@ -10075,7 +10065,6 @@ components:
       properties:
         latestEvent:
           $ref: '#/components/schemas/LatestOrderEvent'
-          description: Latest event
       description: Event statistics, currently contains only basic information about the latest event.
     LatestOrderEvent:
       type: object
@@ -10261,7 +10250,7 @@ components:
         finishedAt:
           type: string
           format: date-time
-          example: '2018-10-12T10:12:32.321'
+          example: '2018-10-12T10:12:32.321Z'
           description: 'Date when the event occurred'
         paidAmount:
           $ref: '#/components/schemas/Price'
@@ -10503,7 +10492,7 @@ components:
           type: string
           format: date-time
           description: ISO date when offer was bought
-          example: "2018-01-01T10:23:43.123"
+          example: "2018-01-01T10:23:43.123Z"
       description: Order item
     CheckoutFormAdditionalService:
       type: object
@@ -10518,7 +10507,6 @@ components:
           example: "Wniesienie"
         price:
           $ref: '#/components/schemas/Price'
-          description: Additional service price
         quantity:
           type: integer
           format: int32
@@ -10548,8 +10536,10 @@ components:
         - totalToPay
       properties:
         totalToPay:
-          description: Total to pay including additional services and delivery
-          $ref: '#/components/schemas/Price'
+          allOf:
+            - $ref: '#/components/schemas/Price'
+            - type: object
+              description: Total to pay including additional services and delivery
     DisputeListResponse:
       type: object
       properties:
@@ -10565,7 +10555,6 @@ components:
           description: Identifier of the dispute
         subject:
           $ref: '#/components/schemas/Subject'
-          description: Subject of the dispute
         status:
           type: string
           enum:
@@ -10594,6 +10583,7 @@ components:
         - messagesCount
     Subject:
       type: object
+      description: Subject of the dispute
       properties:
         name:
           type: string
@@ -10622,10 +10612,8 @@ components:
         text:
           type: string
         attachment:
-          type: object
           $ref: '#/components/schemas/DisputeAttachment'
         author:
-          type: object
           $ref: '#/components/schemas/DisputeAuthor'
         createdAt:
           type: string
@@ -10644,10 +10632,8 @@ components:
         text:
           type: string
         attachment:
-          type: object
           $ref: '#/components/schemas/DisputeAttachment'
         author:
-          type: object
           $ref: '#/components/schemas/DisputeMessageAuthor'
         createdAt:
           type: string
@@ -10740,7 +10726,6 @@ components:
           type: string
           maxLength: 20000
         attachment:
-          type: object
           $ref: '#/components/schemas/DisputeAttachmentId'
         type:
           type: string
@@ -10811,7 +10796,7 @@ components:
               dealId:
                 type: string
                 description: WebAPI deal id
-                example: 12345678
+                example: "12345678"
               lineItemId:
                 type: string
                 format: uuid
@@ -11235,6 +11220,8 @@ components:
           type: array
           items:
             type: string
+        unit:
+          type: string
         options:
           type: array
           items:
@@ -11397,9 +11384,6 @@ components:
           type: array
           description: Collection of payment operations.
           items:
-            type: object
-            required:
-              - type
             $ref: '#/components/schemas/BaseOperation'
         count:
           type: integer
@@ -11427,9 +11411,9 @@ components:
           type: string
           description: The group to which the given operation type belongs.
           enum:
-            - INCOME
-            - OUTCOME
-            - REFUND
+            - "INCOME"
+            - "OUTCOME"
+            - "REFUND"
         wallet:
           $ref: '#/components/schemas/Wallet'
         value:
@@ -11438,7 +11422,7 @@ components:
           type: string
           format: date-time
           description: Date and time of the operation in ISO 8601 format.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:00.818Z"
       discriminator:
         propertyName: type
         mapping:
@@ -11768,11 +11752,11 @@ components:
           type: string
           format: uuid
           description: The payment ID compatible with RestAPI.
-          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
+          example: "2e2fe432-2115-32f9-82ae-e350e7aa9ed0"
         transactionId:
           type: string
           description: The transaction ID compatible with WebAPI.
-          example: 1016873349
+          example: "1016873349"
     TecdocSpecification:
       type: object
       required:
@@ -11819,7 +11803,7 @@ components:
           type: string
           format: date-time
           description: Date and time of the creation in ISO 8601 format.
-          example: 2019-05-08T09:45:818Z
+          example: "2019-05-08T09:45:43.818Z"
     BlackListPagedResponse:
       type: object
       properties:
@@ -12108,7 +12092,6 @@ components:
             - SOURCING
         eligibility:
           $ref: '#/components/schemas/UserCampaignEligibility'
-          title: 'UserEligibility'
         application:
           $ref: '#/components/schemas/ApplicationTimePolicy'
         visibility:
@@ -12182,8 +12165,7 @@ components:
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
           example: '2011-12-03T10:15:30Z'
       example:
-        type: UNTIL
-        from: null
+        type: "UNTIL"
         to: '2012-12-03T10:15:30Z'
     VisibilityTimePolicy:
       type: object
@@ -12212,8 +12194,7 @@ components:
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
           example: '2011-12-03T10:15:30Z'
       example:
-        type: UNTIL
-        from: null
+        type: "UNTIL"
         to: '2012-12-03T10:15:30Z'
     PublicationTimePolicy:
       type: object
@@ -12238,8 +12219,7 @@ components:
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
           example: '2011-12-03T10:15:30Z'
       example:
-        type: UNTIL
-        from: null
+        type: "UNTIL"
         to: '2012-12-03T10:15:30Z'
     BadgePublicationTimePolicy:
       type: object
@@ -12250,23 +12230,22 @@ components:
         type:
           type: string
           enum:
-            - ALWAYS
-            - SINCE
-            - WITHIN
-            - UNTIL
-            - NEVER
+            - "ALWAYS"
+            - "SINCE"
+            - "WITHIN"
+            - "UNTIL"
+            - "NEVER"
         from:
           type: string
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
-          example: '2011-12-03T10:15:30Z'
+          example: "2011-12-03T10:15:30.000Z"
         to:
           type: string
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
-          example: '2011-12-03T10:15:30Z'
+          example: "2011-12-03T10:15:30.000Z"
       example:
-        type: UNTIL
-        from: null
-        to: '2012-12-03T10:15:30Z'
+        type: "UNTIL"
+        to: "2012-12-03T10:15:30.000Z"
     BadgeApplicationRequest:
       type: object
       required:
