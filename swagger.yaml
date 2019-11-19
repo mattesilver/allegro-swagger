@@ -5388,8 +5388,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadgeApplication'
               examples:
-                response:
-                  summary: 'Badge application'
+                discountResponse:
+                  summary: 'Discount badge application'
                   value:
                     id: '01234567-89ab-0123-456789ab'
                     createdAt: '2011-12-03T10:15:30Z'
@@ -5405,6 +5405,30 @@ paths:
                       bargain:
                         amount: '10.00'
                         currency: 'PLN'
+                    process:
+                      status: 'REQUESTED'
+                      rejectionReasons: []
+                limitResponse:
+                  summary: 'Discount badge application with purchase limit'
+                  value:
+                    id: '01234567-89ab-0123-456789ab'
+                    createdAt: '2011-12-03T10:15:30Z'
+                    updatedAt: '2011-12-03T10:15:30Z'
+                    campaign:
+                      id: 'BARGAIN'
+                    offer:
+                      id: '987654321'
+                    prices:
+                      market:
+                        amount: '11.23'
+                        currency: 'PLN'
+                      bargain:
+                        amount: '10.00'
+                        currency: 'PLN'
+                    purchaseConstraints:
+                      limit:
+                        perUser:
+                          maxItems: '1'
                     process:
                       status: 'REQUESTED'
                       rejectionReasons: []
@@ -5495,6 +5519,25 @@ paths:
                     bargain:
                       amount: '9.99'
                       currency: 'PLN'
+              limit:
+                summary: 'Discount with purchase limit'
+                value:
+                  campaign:
+                    id: 'BARGAIN'
+                  offer:
+                    id: '12345678'
+                  prices:
+                    market:
+                      amount: '19.99'
+                      currency: 'PLN'
+                    bargain:
+                      amount: '9.99'
+                      currency: 'PLN'
+                  purchaseConstraints:
+                    limit:
+                      perUser:
+                        maxItems: '1'
+
     get:
       tags:
         - Badge campaigns
@@ -12142,6 +12185,8 @@ components:
           $ref: '#/components/schemas/BadgeApplicationOffer'
         prices:
           $ref: '#/components/schemas/BadgeApplicationPrices'
+        purchaseConstraints:
+          $ref: '#/components/schemas/BadgeApplicationPurchaseConstraints'
     BadgeApplicationCampaign:
       type: object
       required:
@@ -12211,6 +12256,28 @@ components:
           example: 'PLN'
       title: BadgeApplicationBargainPrice
       description: 'Bargain price. Required by DISCOUNT and SOURCING campaign.'
+    BadgeApplicationPurchaseConstraints:
+      type: object
+      properties:
+        limit:
+          $ref: '#/components/schemas/BadgeApplicationPurchaseConstraintsLimit'
+      description: 'Constraints of purchase of this offer while it participates in the campaign. Optional for all campaigns types.'
+    BadgeApplicationPurchaseConstraintsLimit:
+      type: object
+      properties:
+        perUser:
+          $ref: '#/components/schemas/BadgeApplicationPurchaseConstraintsLimitPerUser'
+      description: 'Limits of purchase of this offer while it participates in the campaign.'
+    BadgeApplicationPurchaseConstraintsLimitPerUser:
+      type: object
+      properties:
+        maxItems:
+          type: integer
+          format: int32
+          minimum: 1
+          description: 'Maximum number of items that one user can buy of this offer, while it participates in the campaign.'
+          example: 1
+      description: 'Limits of purchase of this offer per user while it participates in the campaign.'
     BadgeApplications:
       type: object
       required:
@@ -12250,6 +12317,8 @@ components:
           $ref: '#/components/schemas/BadgeApplicationPrices'
         process:
           $ref: '#/components/schemas/BadgeApplicationProcess'
+        purchaseConstraints:
+          $ref: '#/components/schemas/BadgeApplicationPurchaseConstraints'
     BadgeApplicationProcess:
       type: object
       required:
