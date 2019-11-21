@@ -5201,6 +5201,8 @@ paths:
           - OFFER_STOCK_CHANGED - stock in an offer was changed either via purchase or by seller.
           - OFFER_PRICE_CHANGED - occurs when price in an offer was changed.
           - OFFER_ARCHIVED - offer is no longer available on listing and has been archived.
+          - OFFER_BID_PLACED - bid was placed on the offer
+          - OFFER_BID_CANCELED - bid for offer was canceled
 
         Returned events may occur by actions made via browser or API.
         The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status.
@@ -5229,16 +5231,20 @@ paths:
           name: type
           required: false
           description: >-
-            The type of events that will be returned in the response. All types of events are returned by default.
+            The types of events that will be returned in the response. All types of events are returned by default.
           schema:
-            type: string
-            enum:
-              - OFFER_ACTIVATED
-              - OFFER_CHANGED
-              - OFFER_ENDED
-              - OFFER_STOCK_CHANGED
-              - OFFER_PRICE_CHANGED
-              - OFFER_ARCHIVED
+            type: array
+            items:
+              type: string
+              enum:
+                - OFFER_ACTIVATED
+                - OFFER_CHANGED
+                - OFFER_ENDED
+                - OFFER_STOCK_CHANGED
+                - OFFER_PRICE_CHANGED
+                - OFFER_ARCHIVED
+                - OFFER_BID_PLACED
+                - OFFER_BID_CANCELED
       responses:
         '200':
           description: The list of offer events returned successfully.
@@ -5265,6 +5271,22 @@ paths:
                       id: "2865624934"
                       endedBy: "USER"
                       endedAt: "2019-07-30T12:11:00Z"
+                offerBidPlaced:
+                  summary: offer bid placed event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "OFFER_BID_PLACED"
+                    offer:
+                      id: "2865624934"
+                offerBidCanceled:
+                  summary: offer bid canceled event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "OFFER_BID_CANCELED"
+                    offer:
+                      id: "2865624934"
         '400':
           description: >-
             Invalid parameters supplied in the request.
@@ -11881,6 +11903,8 @@ components:
           OFFER_STOCK_CHANGED: '#/components/schemas/OfferStockChangedEvent'
           OFFER_PRICE_CHANGED: '#/components/schemas/OfferPriceChangedEvent'
           OFFER_ARCHIVED: '#/components/schemas/OfferArchivedEvent'
+          OFFER_BID_PLACED: '#/components/schemas/OfferBidPlacedEvent'
+          OFFER_BID_CANCELED: '#/components/schemas/OfferBidCanceledEvent'
     OfferActivatedEvent:
       allOf:
         - $ref: '#/components/schemas/SellerOfferBaseEvent'
@@ -11933,6 +11957,30 @@ components:
           required:
             - offer
           properties:
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
+    OfferBidPlacedEvent:
+      allOf:
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: "OFFER_BID_PLACED"
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
+    OfferBidCanceledEvent:
+      allOf:
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+          properties:
+            type:
+              type: string
+              default: "OFFER_BID_CANCELED"
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferEventBaseOffer:
