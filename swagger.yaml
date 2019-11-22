@@ -3837,6 +3837,23 @@ paths:
             type: string
             format: uuid
           example: "29738e61-7f6a-11e8-ac45-09db60ede9d6"
+        - name: limit
+          in: query
+          description: The maximum number of disputes in a response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: offset
+          in: query
+          description: Index of first returned dispute.
+          required: false
+          schema:
+            type: integer
+            format: int32
       responses:
         '200':
           description: OK
@@ -3893,6 +3910,23 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: limit
+          in: query
+          description: The maximum number of messages within dispute returned in a response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: offset
+          in: query
+          description: Index of first returned message within dispute.
+          required: false
+          schema:
+            type: integer
+            format: int32
       responses:
         '200':
           description: OK
@@ -10165,6 +10199,10 @@ components:
             $ref: '#/components/schemas/CheckoutFormDiscount'
         summary:
           $ref: '#/components/schemas/CheckoutFormSummary'
+        updatedAt:
+          type: string
+          description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
+          example: '2011-12-03T10:15:30.133Z'
     CheckoutFormBuyerReference:
       type: object
       required:
