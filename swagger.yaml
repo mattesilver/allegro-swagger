@@ -3684,13 +3684,13 @@ paths:
           schema:
             type: string
             format: date-time
-          description: The upper bound of date time range from which checkout forms will be taken.
+          description: Latest line item bought date. The upper bound of date time range from which checkout forms will be taken.
         - name: lineItems.boughtAt.gte
           in: query
           schema:
             type: string
             format: date-time
-          description: The lower bound of date time range from which checkout forms will be taken.
+          description: Latest line item bought date. The lower bound of date time range from which checkout forms will be taken.
         - name: payment.id
           in: query
           schema:
@@ -3701,6 +3701,41 @@ paths:
           schema:
             type: string
           description: Find checkout-forms having specified surcharge id.
+        - name: delivery.method.id
+          in: query
+          schema:
+            type: string
+          description: Find checkout-forms having specified delivery method id.
+        - name: buyer.login
+          in: query
+          schema:
+            type: string
+          description: Find checkout-forms having specified buyer login.
+        - name: updatedAt.lte
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Checkout form last modification date. The upper bound of date time range from which checkout forms will be taken.
+        - name: updatedAt.gte
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Checkout form last modification date. The lower bound of date time range from which checkout forms will be taken.
+        - name: sort
+          in: query
+          description: >-
+            The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order.
+            If you don't provide the sort parameter, the list is sorted by line item boughtAt date, descending.
+          required: false
+          schema:
+            type: string
+            enum:
+              - lineItems.boughtAt
+              - -lineItems.boughtAt
+              - updatedAt
+              - -updatedAt
       responses:
         '200':
           description: OK
