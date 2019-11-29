@@ -207,6 +207,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: delivery.shippingRates.id.empty
+          in: query
+          description: Allow to filter offers by existence of shipping rates ID.
+          schema:
+            type: boolean
         - name: sort
           in: query
           description: >-
