@@ -5,8 +5,8 @@ servers:
       environment:
         default: allegro.pl
         enum:
-          - allegro.pl         # Production server
-          - allegro.pl.allegrosandbox.pl     # Sandbox server
+          - allegro.pl                    # Production server
+          - allegro.pl.allegrosandbox.pl  # Sandbox server
 info:
   description: 'https://developer.allegro.pl/about'
   version: 'latest'
@@ -6822,6 +6822,9 @@ components:
           required:
             - price
           properties:
+            type:
+              type: string
+              default: 'ORDER_FIXED_DISCOUNT'
             value:
               $ref: '#/components/schemas/Price'
     MultiPackBenefitSpecification:
@@ -6832,6 +6835,9 @@ components:
             - configuration
             - trigger
           properties:
+            type:
+              type: string
+              default: 'UNIT_PERCENTAGE_DISCOUNT'
             configuration:
               type: object
               description: What rebate will be given.
@@ -7306,6 +7312,9 @@ components:
           required:
             - text
           properties:
+            type:
+              type: string
+              default: "TEXT"
             text:
               type: string
               description: 'Text description of the compatible item.
@@ -7321,6 +7330,9 @@ components:
           required:
             - id
           properties:
+            type:
+              type: string
+              default: "ID"
             id:
               type: string
               description: 'Id of the compatible item. Should be used in categories
@@ -7466,6 +7478,9 @@ components:
         - $ref: '#/components/schemas/DescriptionSectionItem'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'TEXT'
             content:
               type: string
     DescriptionSectionItemImage:
@@ -7473,6 +7488,9 @@ components:
         - $ref: '#/components/schemas/DescriptionSectionItem'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'IMAGE'
             url:
               type: string
     EmailRequest:
@@ -7961,6 +7979,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'FIXED_PRICE'
             price:
               $ref: '#/components/schemas/PriceModificationFixedPriceHolder'
     PriceModificationValueChangeIncrease:
@@ -7968,6 +7989,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'INCREASE_PRICE'
             value:
               $ref: '#/components/schemas/PriceModificationValueChangeHolder'
     PriceModificationValueChangeDecrease:
@@ -7975,6 +7999,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DECREASE_PRICE'
             value:
               $ref: '#/components/schemas/PriceModificationValueChangeHolder'
     PriceModificationPercentageChangeIncrease:
@@ -7982,6 +8009,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'INCREASE_PERCENTAGE'
             percentage:
               $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
     PriceModificationPercentageChangeDecrease:
@@ -7989,6 +8019,9 @@ components:
         - $ref: '#/components/schemas/PriceModification'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DECREASE_PERCENTAGE'
             percentage:
               $ref: '#/components/schemas/PriceModificationPercentageChangeHolder'
     PriceModificationFixedPriceHolder:
@@ -8232,6 +8265,9 @@ components:
         - $ref: '#/components/schemas/CategoryProductParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: dictionary
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8259,6 +8295,9 @@ components:
         - $ref: '#/components/schemas/CategoryProductParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: integer
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8281,6 +8320,9 @@ components:
         - $ref: '#/components/schemas/CategoryProductParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: float
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8307,6 +8349,9 @@ components:
         - $ref: '#/components/schemas/CategoryProductParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: string
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8338,6 +8383,9 @@ components:
         - $ref: '#/components/schemas/CategoryParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: dictionary
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8365,6 +8413,9 @@ components:
         - $ref: '#/components/schemas/CategoryParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: integer
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8387,6 +8438,9 @@ components:
         - $ref: '#/components/schemas/CategoryParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: float
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -8413,6 +8467,9 @@ components:
         - $ref: '#/components/schemas/CategoryParameter'
         - type: object
           properties:
+            type:
+              type: string
+              default: string
             restrictions:
               type: object
               description: The restrictions on values of this parameter.
@@ -11580,6 +11637,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
+          properties:
+            type:
+              type: string
+              default: 'CORRECTION'
     ContributionOperation:
       required:
         - payment
@@ -11588,6 +11649,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'CONTRIBUTION'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11599,6 +11663,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'PAYOUT'
             payout:
               $ref: '#/components/schemas/Payout'
     PayoutOperationCancel:
@@ -11608,6 +11675,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'PAYOUT_CANCEL'
             payout:
               $ref: '#/components/schemas/Payout'
     RefundIncreaseOperation:
@@ -11618,6 +11688,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_INCREASE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11629,6 +11702,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_CANCEL'
             payment:
               $ref: '#/components/schemas/OperationPayment'
     RefundChargeOperation:
@@ -11639,6 +11715,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'REFUND_CHARGE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             participant:
@@ -11652,6 +11731,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'SURCHARGE'
             payment:
               $ref: '#/components/schemas/OperationPayment'
             surcharge:
@@ -11665,6 +11747,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DEDUCTION_CHARGE'
             deduction:
               $ref: '#/components/schemas/Deduction'
     DeductionIncreaseOperation:
@@ -11674,6 +11759,9 @@ components:
         - $ref: '#/components/schemas/BaseOperation'
         - type: object
           properties:
+            type:
+              type: string
+              default: 'DEDUCTION_INCREASE'
             deduction:
               $ref: '#/components/schemas/Deduction'
     OperationPayment:
@@ -11990,6 +12078,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_ACTIVATED'
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferChangedEvent:
@@ -11999,6 +12090,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_CHANGED'
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferEndedEvent:
@@ -12008,6 +12102,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_ENDED'
             offer:
               $ref: '#/components/schemas/OfferEventEndedOffer'
     OfferStockChangedEvent:
@@ -12017,6 +12114,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_STOCK_CHANGED'
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferPriceChangedEvent:
@@ -12026,6 +12126,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: 'OFFER_PRICE_CHANGED'
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferArchivedEvent:
@@ -12035,6 +12138,9 @@ components:
           required:
             - offer
           properties:
+            type:
+              type: string
+              default: "OFFER_ARCHIVED"
             offer:
               $ref: '#/components/schemas/OfferEventBaseOffer'
     OfferBidPlacedEvent:
