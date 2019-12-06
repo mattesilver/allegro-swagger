@@ -11040,28 +11040,14 @@ components:
       properties:
         carrierId:
           type: string
-          enum:
-            - UPS
-            - INPOST
-            - DHL
-            - GLS
-            - RUCH
-            - POCZTA_POLSKA
-            - DPD
-            - FEDEX
-            - TNT_EXPRESS
-            - DB_SCHENKER
-            - RABEN
-            - GEIS
-            - DTS
-            - PEKAES
-            - PATRON
-            - X_PRESS_COURIERS
-            - RHENUS_LOGISTICS
-            - OTHER
           description: >-
+            Supported carriers:
+              * Polish carriers: `UPS`, `INPOST`, `DHL`, `GLS`, `RUCH`, `POCZTA_POLSKA`, `DPD`, `FEDEX`, `TNT_EXPRESS`, `DB_SCHENKER`, `RABEN`, `GEIS`, `DTS`, `PEKAES`, `PATRON`, `X_PRESS_COURIERS`, `RHENUS_LOGISTICS`
+              * International carriers: `YUN_EXPRESS`, `CHINA_POST`
+              * Other: `OTHER`
+
             Carrier identifier taken from the dictionary below. It’s highly recommended to use an identifier different
-            from OTHER, because its parcel status may be updated automatically. Carrier identifier OTHER is reserved for
+            from `OTHER`, because its parcel status may be updated automatically. Carrier identifier `OTHER` is reserved for
             cases when seller uses a custom carrier or not yet integrated with Allegro.
         waybill:
           type: string
@@ -11100,28 +11086,14 @@ components:
             character (equal to [a-zA-Z0-9_]) and special characters: parentheses and hyphen-minus.
         carrierId:
           type: string
-          enum:
-            - UPS
-            - INPOST
-            - DHL
-            - GLS
-            - RUCH
-            - POCZTA_POLSKA
-            - FEDEX
-            - DPD
-            - TNT_EXPRESS
-            - DB_SCHENKER
-            - RABEN
-            - GEIS
-            - DTS
-            - PEKAES
-            - PATRON
-            - X_PRESS_COURIERS
-            - RHENUS_LOGISTICS
-            - OTHER
           description: >-
+            Supported carriers:
+              * Polish carriers: `UPS`, `INPOST`, `DHL`, `GLS`, `RUCH`, `POCZTA_POLSKA`, `DPD`, `FEDEX`, `TNT_EXPRESS`, `DB_SCHENKER`, `RABEN`, `GEIS`, `DTS`, `PEKAES`, `PATRON`, `X_PRESS_COURIERS`, `RHENUS_LOGISTICS`
+              * International carriers: `YUN_EXPRESS`, `CHINA_POST`
+              * Other: `OTHER`
+
             Carrier identifier taken from the dictionary below. It’s highly recommended to use an identifier different
-            from OTHER, because its parcel status may be updated automatically. Carrier identifier OTHER is reserved for
+            from `OTHER`, because its parcel status may be updated automatically. Carrier identifier `OTHER` is reserved for
             cases when seller uses a custom carrier or not yet integrated with Allegro.
         carrierName:
           type: string
