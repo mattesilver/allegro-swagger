@@ -1784,13 +1784,13 @@ paths:
             type: string
             default: 954b95b6-43cf-4104-8354-dea4d9b10ddf
       responses:
-        200:
+        '200':
           description: The list of categories returned successfully.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CategoriesDto'
-        404:
+        '404':
           description: The category with the given ID does not exist.
           content:
             application/vnd.allegro.public.v1+json:
@@ -1817,13 +1817,13 @@ paths:
             type: string
             example: "6061"
       responses:
-        200:
+        '200':
           description: The details of a category returned successfully.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/CategoryDto'
-        404:
+        '404':
           description: The category with the given ID does not exist.
           content:
             application/vnd.allegro.public.v1+json:
@@ -1850,7 +1850,7 @@ paths:
             type: string
             example: "709"
       responses:
-        200:
+        '200':
           description: The list of parameters for the category returned successfully.
           content:
             application/vnd.allegro.public.v1+json:
@@ -1950,7 +1950,7 @@ paths:
                           max: 1000
                           range: true
                           precision: 2
-        404:
+        '404':
           description: The category with the given ID does not exist.
           content:
             application/vnd.allegro.public.v1+json:
@@ -1978,7 +1978,7 @@ paths:
             type: string
             example: "709"
       responses:
-        200:
+        '200':
           description: 'The list of product parameters for the category returned successfully.'
           content:
             application/vnd.allegro.public.v1+json:
@@ -2063,7 +2063,7 @@ paths:
                           max: 1000
                           range: true
                           precision: 2
-        404:
+        '404':
           description: The category with the given ID does not exist.
           content:
             application/vnd.allegro.public.v1+json:
