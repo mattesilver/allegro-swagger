@@ -10394,12 +10394,14 @@ components:
         - CASH_ON_DELIVERY
         - WIRE_TRANSFER
         - ONLINE
+        - SPLIT_PAYMENT
     CheckoutFormPaymentProvider:
       description: Payment provider
       type: string
       enum:
         - P24
         - PAYU
+        - OFFLINE
     CheckoutFormDeliveryReference:
       type: object
       properties:
