@@ -5343,8 +5343,8 @@ paths:
                     type: "OFFER_ENDED"
                     offer:
                       id: "2865624934"
-                      endedBy: "USER"
-                      endedAt: "2019-07-30T12:11:00Z"
+                      publication:
+                        endedBy: "USER"
                 offerBidPlaced:
                   summary: offer bid placed event
                   value:
