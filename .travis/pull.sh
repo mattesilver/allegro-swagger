@@ -1,8 +1,5 @@
 #!/bin/bash
 
-date --help
-exit
-
 curl -O -D headers.txt https://developer.allegro.pl/swagger.yaml; EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
   echo problem
