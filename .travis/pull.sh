@@ -22,7 +22,7 @@ fi
 MOD_TIME=`grep last-modified headers.txt|cut -c16- - | tr -d '\r'`
 
 # convert to dot separated
-NEW_VERSION=`date -j -f '%a, %d %b %Y %T %Z' "$MOD_TIME" '+%Y.%m.%d'`
+NEW_VERSION=`date -d "$MOD_TIME" '+%Y.%m.%d'`
 
 # get old version number
 OLD_VERSION=`cat VERSION | tr -d "\n"`
