@@ -1,7 +1,6 @@
 #!/bin/bash
 
-date -v
-date -h
+date --help
 exit
 
 curl -O -D headers.txt https://developer.allegro.pl/swagger.yaml; EXIT_CODE=$?
