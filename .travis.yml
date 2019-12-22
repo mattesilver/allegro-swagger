@@ -1,13 +1,12 @@
 language: minimal
 script:
-- git checkout master
-- curl -o swagger-new.yaml https://developer.allegro.pl/swagger.yaml
-- test -z "$(diff swagger.yaml swagger-new.yaml)" ; CHANGED=$? ; true
+- git checkout $TRAVIS_BRANCH
+- .travis/pull.sh
 deploy:
   on:
     condition: $CHANGED = 1
   provider: script
-  script: .travis/update.sh && .travis/push.sh
+  script: .travis/push.sh
   skip_cleanup: true
 env:
   global:
