@@ -6,6 +6,7 @@ setup_git() {
 }
 
 commit_changes() {
+  VERSION=`cat VERSION`
   git add allegro-openapi.yaml VERSION
   git commit --message "New swagger file version: $VERSION"
 }

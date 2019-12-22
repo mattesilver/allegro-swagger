@@ -7,12 +7,12 @@ if [ $EXIT_CODE -ne 0 ]; then
 fi
 
 if [ -z "$(diff allegro-openapi.yaml swagger.yaml)" ]; then
-  export CHANGED=0
+  CHANGED=0
   echo no change
   rm swagger.yaml headers.txt
   exit
 else
-  export CHANGED=1
+  CHANGED=1
 fi
 
 # get modification time in HTTP format
