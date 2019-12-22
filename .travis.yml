@@ -5,6 +5,7 @@ script:
 deploy:
   on:
     condition: $CHANGED = 1
+    all_branches: true
   provider: script
   script: .travis/push.sh
   skip_cleanup: true
