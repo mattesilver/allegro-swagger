@@ -1,7 +1,7 @@
 language: minimal
 script:
 - git checkout $TRAVIS_BRANCH
-- .travis/pull.sh
+- .travis/pull.sh ; CHANGED=$?
 deploy:
   on:
     condition: $CHANGED = 1

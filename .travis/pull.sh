@@ -39,3 +39,4 @@ echo $NEW_VERSION > VERSION
 export VERSION=$NEW_VERSION
 rm headers.txt
 mv swagger.yaml allegro-openapi.yaml
+exit $CHANGED
