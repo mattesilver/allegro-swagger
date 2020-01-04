@@ -8128,7 +8128,7 @@ components:
           type: string
           format: date-time
         offer:
-          $ref: '#/components/schemas/Offer'
+          $ref: '#/components/schemas/OfferId'
         type:
           type: string
       title: OfferQuoteDto
