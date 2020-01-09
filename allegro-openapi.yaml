@@ -796,7 +796,7 @@ paths:
             format: int32
             default: 100
             minimum: 1
-            maximum: 100
+            maximum: 1000
         - name: user.id
           in: query
           description: User identifier.
