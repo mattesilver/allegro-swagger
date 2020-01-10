@@ -3081,75 +3081,11 @@ paths:
            - offer with id 5 having an image of a blue t-shirt and M as a value of parameter with id 21
 
 
-         You can build a variant set by grouping offers using combination of available parameters:
-           - variant set with offer parameter only
-           ```
-             {
-               "name": "t-shirt",
-               "offers": [
-                 {
-                   "id": "2"
-                 },
-                 {
-                   "id": "3"
-                 }
-               ],
-               "parameters": [
-                 { "id": "21" }
-               ]
-             }
-           ```
-           - variant set with `color/pattern` parameter only
-           ```
-             {
-               "name": "t-shirt",
-               "offers": [
-                 {
-                   "id": "2",
-                   "colorPattern": "red"
-                 },
-                 {
-                   "id": "4",
-                   "colorPattern": "blue"
-                 }
-               ],
-               "parameters": [
-                 {"id": "color/pattern"}
-               ]
-             }
-           ```
-           - variant set with offer and `color/pattern` parameters
-           ```
-             {
-               "name": "t-shirt",
-               "offers": [
-                 {
-                   "id": "2",
-                   "colorPattern": "red"
-                 },
-                 {
-                   "id": "3",
-                   "colorPattern": "red"
-                 },
-                 {
-                   "id": "4",
-                   "colorPattern": "blue"
-                 },
-                 {
-                   "id": "5",
-                   "colorPattern": "blue"
-                 }
-               ],
-               "parameters": [
-                 {"id": "color/pattern"},
-                 {"id": "21"}
-               ]
-             }
-           ```
+         You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
 
 
-           More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
-           more information about variant sets API can be found <a href="../../news/2018-07-09-wielowariantowosc/#03" target="_blank">here</a>.
+         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
+         more information about variant sets API can be found <a href="../../news/2018-07-09-wielowariantowosc/#03" target="_blank">here</a>.
       operationId: createOrUpdateVariantSet
       parameters:
         - name: setId
@@ -6411,6 +6347,43 @@ components:
         application/vnd.allegro.beta.v1+json:
           schema:
             $ref: '#/components/schemas/VariantSet'
+          examples:
+            offerParameterOnly:
+              summary: 'offer parameter only'
+              value:
+                name: 't-shirt'
+                offers:
+                  - id: '2'
+                  - id: '3'
+                parameters:
+                  - id: '21'
+            colorPatternParameterOnly:
+              summary: 'color/pattern parameter only'
+              value:
+                name: 't-shirt'
+                offers:
+                  - id: '2'
+                    colorPattern: 'red'
+                  - id: '4'
+                    colorPattern: 'blue'
+                parameters:
+                  - id: 'color/pattern'
+            offerAndColorPatternParameters:
+              summary: 'offer and color/pattern parameters'
+              value:
+                name: 't-shirt'
+                offers:
+                  - id: '2'
+                    colorPattern: 'red'
+                  - id: '3'
+                    colorPattern: 'red'
+                  - id: '4'
+                    colorPattern: 'blue'
+                  - id: '5'
+                    colorPattern: 'blue'
+                parameters:
+                  - id: 'color/pattern'
+                  - id: '21'
       required: true
     MessageRequest:
       content:
@@ -9486,20 +9459,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VariantSet_Parameter'
-      example:
-        name: 't-shirt'
-        offers:
-          - id: '2'
-            colorPattern: red
-          - id: '3'
-            colorPattern: red
-          - id: '4'
-            colorPattern: blue
-          - id: '5'
-            colorPattern: blue
-        parameters:
-          - id: 'color/pattern'
-          - id: '21'
     VariantSet_Offer:
       type: object
       required:
