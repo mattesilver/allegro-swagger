@@ -4640,6 +4640,8 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 1
+            maximum: 200
             default: 200
         - name: offset
           in: query
@@ -4647,6 +4649,7 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 0
             default: 0
       responses:
         '200':
@@ -4728,6 +4731,8 @@ paths:
         required: false
         schema:
           type: integer
+          minimum: 1
+          maximum: 200
           default: 200
       - name: offset
         in: query
@@ -4735,6 +4740,7 @@ paths:
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
       responses:
         '200':
