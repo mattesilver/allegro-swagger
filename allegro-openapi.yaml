@@ -721,6 +721,80 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+  /sale/user-ratings/{ratingId}/answer:
+    put:
+      tags:
+        - Information about user
+      summary: "Answer for user's rating"
+      description:
+        'Use this resource to answer for received rating.'
+      operationId: answerUserRatingUsingPUT
+      parameters:
+        - name: ratingId
+          in: path
+          description: ID of the rating.
+          required: true
+          schema:
+            type: string
+            example: "5df0a6d1ef437e00255572a1"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/Answer'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      requestBody:
+        $ref: '#/components/requestBodies/UserRatingAnswerRequest'
+  /sale/user-ratings/{ratingId}/removal:
+    put:
+      tags:
+        - Information about user
+      summary: "Request removal of user's rating"
+      description:
+        'Use this resource to request removal of received rating.'
+      operationId: userRatingRemovalUsingPUT
+      parameters:
+        - name: ratingId
+          in: path
+          description: ID of the rating.
+          required: true
+          schema:
+            type: string
+            example: "5df0a6d1ef437e00255572a1"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/Removal'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      requestBody:
+        $ref: '#/components/requestBodies/UserRatingRemovalRequest'
   /me:
     get:
       tags:
@@ -6421,6 +6495,20 @@ components:
             type: string
             format: binary
             description: File in a binary format
+    UserRatingAnswerRequest:
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/UserRatingAnswerRequest'
+      description: 'User rating answer request.'
+      required: true
+    UserRatingRemovalRequest:
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/UserRatingRemovalRequest'
+      description: 'User rating removal request.'
+      required: true
   schemas:
     InitializeRefund:
       required:
@@ -6739,6 +6827,16 @@ components:
           type: string
           description: The ID of an attachment received in a response from *POST /sale/offer-attachments*
           example: 1928302_MANUAL_45d7a0f543e1b0d05e12a1aef5642efe63389a1d419fe9286d0f158044391fdce
+    UserRatingAnswerRequest:
+      type: object
+      description: "Answer for user's rating."
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: 'Answer message.'
+          maxLength: 500
     Answer:
       type: object
       description: 'Seller''s answer, if null seller did not publish answer'
@@ -8846,6 +8944,20 @@ components:
         message:
           type: string
           description: Message containing explanation for removing rating
+    UserRatingRemovalRequest:
+      type: object
+      required:
+        - request
+      properties:
+        request:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: 'Message containing explanation for removing rating.'
+              maxLength: 500
     ReturnPolicyBasic:
       type: object
       properties:
