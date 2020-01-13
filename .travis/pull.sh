@@ -1,42 +1,37 @@
 #!/bin/bash
 
-curl -O -D headers.txt https://developer.allegro.pl/swagger.yaml; EXIT_CODE=$?
+FILE_NEW=swagger.yaml
+FILE=allegro-openapi.yaml
+
+curl -O https://developer.allegro.pl/swagger.yaml; EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
   echo problem
   exit $EXIT_CODE
 fi
 
-if [ -z "$(diff allegro-openapi.yaml swagger.yaml)" ]; then
-  CHANGED=0
+if [ -z "$(diff $FILE $FILE_NEW)" ]; then
+  export CHANGED=0
   echo no change
-  rm swagger.yaml headers.txt
+  rm $FILE_NEW
   exit
 else
-  CHANGED=1
+  export CHANGED=1
+  mv $FILE_NEW $FILE
 fi
 
-# get modification time in HTTP format
-MOD_TIME=`grep last-modified headers.txt|cut -c16- - | tr -d '\r'`
-
-# convert to dot separated
-NEW_VERSION=`date -d "$MOD_TIME" '+%Y.%m.%d'`
-
-# get old version number
+NEW_VERSION=$(date "+%Y.%m.%d")
 OLD_VERSION=`cat VERSION | tr -d "\n"`
 
-if [ "$NEW_VERSION" = $OLD_VERSION ]; then
+if [ "$OLD_VERSION" ] && [ "$NEW_VERSION" = $OLD_VERSION ]; then
   # second run this day
   NEW_VERSION="$NEW_VERSION-1"
-elif [ "$NEW_VERSION" = "${OLD_VERSION[1,10]}" ]; then
-  num=${OLD_VERSION[12,${#OLD_VERSION}]}
-  ((num = $num + 1))
-  NEW_VERSION=${NEW_VERSION}-${num}
+elif [ "$NEW_VERSION" = "${OLD_VERSION:0:10}" ]; then
+  num=${OLD_VERSION:11:1}
+  num=$(($num + 1))
+  NEW_VERSION="${NEW_VERSION}-${num}"
 fi
 
 echo $OLD_VERSION '=>' $NEW_VERSION
 
 echo $NEW_VERSION > VERSION
 export VERSION=$NEW_VERSION
-rm headers.txt
-mv swagger.yaml allegro-openapi.yaml
-exit $CHANGED

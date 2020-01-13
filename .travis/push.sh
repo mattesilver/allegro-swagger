@@ -1,12 +1,11 @@
 #!/bin/bash
 
 setup_git() {
-  git config --global user.email "travis@travis-ci.org"
+  git config --global user.email "rafalkrupinski@users.noreply.github.com"
   git config --global user.name "Travis CI"
 }
 
 commit_changes() {
-  VERSION=`cat VERSION`
   git add allegro-openapi.yaml VERSION
   git commit --message "New swagger file version: $VERSION"
 }
