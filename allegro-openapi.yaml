@@ -3524,7 +3524,7 @@ paths:
           schema:
             type: boolean
             default: true
-        - name: "\"A filter's ID\""
+        - name: "Dynamic filters"
           in: query
           description: >-
             You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value.
@@ -3555,11 +3555,17 @@ paths:
                 	]
                 }
               ````
-            You can use 'Stan' filter to query results, i.e.: parameter.11323=11323_1 (for "nowe"), parameter.11323=11323_2 (for "używane") or parameter.11323=11323_238066 (for "po zwrocie").
-          example: 127448=2
+            You can use 'Stan' filter to query results, i.e.:
+              * `parameter.11323=11323_1` for "nowe"
+              * `parameter.11323=11323_2` for "używane"
+              * `parameter.11323=11323_238066` for "po zwrocie".
           required: false
           schema:
-            type: string
+            type: object
+            additionalProperties:
+              x-additionalPropertiesName: filter's id
+              type: string
+              description: Filter value.
       responses:
         '200':
           description: The request successfully returns the search result.
@@ -4528,7 +4534,7 @@ paths:
           required: false
           schema:
             type: string
-        - name: "\"A filter's ID\""
+        - name: "Dynamic filters"
           in: query
           description: >-
             You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value.
@@ -4549,11 +4555,16 @@ paths:
                 ]
               }
               ````
-            You can use 'Kolor' filter to query results, i.e.: 127448=2 (for "biały") or 127448=1 (for "czarny").
-          example: 127448=2
+            You can use 'Kolor' filter to query results, i.e.:
+              * `127448=2` for "biały"
+              * `127448=1` for "czarny".
           required: false
           schema:
-            type: string
+            type: object
+            additionalProperties:
+              x-additionalPropertiesName: filter's id
+              type: string
+              description: Filter value.
         - name: page.id
           in: query
           description: A "cursor" to the next set of results.
