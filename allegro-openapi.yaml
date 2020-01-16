@@ -3922,6 +3922,8 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
+            default: 0
       responses:
         '200':
           description: OK
@@ -3995,6 +3997,8 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
+            default: 0
       responses:
         '200':
           description: OK
