@@ -3629,7 +3629,8 @@ paths:
             Allowed values are:
               * `BOUGHT`: purchase without checkout form filled in
               * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
-              * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
+              * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
+              * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
           required: false
           schema:
             type: array
@@ -3711,7 +3712,18 @@ paths:
               * `BOUGHT`: purchase without checkout form filled in.
               * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change.
               * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
-              * `ALL`: return all checkout-forms.
+        - name: fulfillment.status
+          in: query
+          schema:
+            type: string
+          description: >-
+            Specify seller status value that checkout-forms must have to be included in the output.
+            Allowed values are:
+              * `NEW`
+              * `PROCESSING`
+              * `READY_FOR_SHIPMENT`
+              * `SENT`
+              * `CANCELLED`.
         - name: lineItems.boughtAt.lte
           in: query
           schema:
@@ -10210,7 +10222,7 @@ components:
         order:
           $ref: '#/components/schemas/OrderEventData'
         type:
-          $ref: '#/components/schemas/CheckoutFormStatus'
+          $ref: '#/components/schemas/OrderEventType'
         occurredAt:
           type: string
           format: date-time
@@ -10354,6 +10366,19 @@ components:
         * `BOUGHT` - purchase without checkout form filled in
         * `FILLED_IN` - checkout form filled in but payment is not completed yet so data could still change
         * `READY_FOR_PROCESSING` - payment completed. Purchase is ready for processing.
+    OrderEventType:
+      enum:
+        - BOUGHT
+        - FILLED_IN
+        - READY_FOR_PROCESSING
+        - FULFILLMENT_STATUS_CHANGED
+      example: "READY_FOR_PROCESSING"
+      description: >
+        Type of order event.
+        * `BOUGHT` - purchase without checkout form filled in
+        * `FILLED_IN` - checkout form filled in but payment is not completed yet so data could still change
+        * `READY_FOR_PROCESSING` - payment completed. Purchase is ready for processing.
+        * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
     CheckoutForms:
       type: object
       required:
@@ -10402,6 +10427,8 @@ components:
           $ref: '#/components/schemas/CheckoutFormPaymentReference'
         status:
           $ref: '#/components/schemas/CheckoutFormStatus'
+        fulfillment:
+            $ref: '#/components/schemas/CheckoutFormFulfillment'
         delivery:
           $ref: '#/components/schemas/CheckoutFormDeliveryReference'
         invoice:
@@ -10526,6 +10553,21 @@ components:
         - P24
         - PAYU
         - OFFLINE
+    CheckoutFormFulfillment:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CheckoutFormFulfillmentStatus'
+    CheckoutFormFulfillmentStatus:
+      enum:
+        - NEW
+        - PROCESSING
+        - READY_FOR_SHIPMENT
+        - SENT
+        - CANCELLED
+      example: "SENT"
+      description: >
+        Order seller status.
     CheckoutFormDeliveryReference:
       type: object
       properties:
