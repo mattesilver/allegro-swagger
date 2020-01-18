@@ -5354,7 +5354,7 @@ paths:
           - OFFER_BID_CANCELED - bid for offer was canceled
 
         Returned events may occur by actions made via browser or API.
-        The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status.
+        The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event).
         Please note that one change may result in more than one event.
 
       operationId: getOfferEvents
