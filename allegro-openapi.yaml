@@ -12347,12 +12347,6 @@ components:
                      - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
                        success status, but further processing failed.
                      - `UNKNOWN` - in rare cases the reason might be unknown.
-                endedAt:
-                  type: string
-                  format: date-time
-                  description: >-
-                    Offer publication ending date and time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format in UTC - `yyyy-MM-ddTHH:mm:ssZ`.
-                  example: "2019-07-30T12:10:11Z"
     GetBadgeCampaignsList:
       type: object
       required:
