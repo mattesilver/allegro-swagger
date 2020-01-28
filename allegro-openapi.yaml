@@ -3899,6 +3899,41 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/order/checkout-forms/{id}/fulfillment':
+    put:
+      tags:
+        - Order management
+      summary: "Set seller order status"
+      description: >-
+        Use to set seller order status.
+      operationId: setOrderFulfillmentUsingPUT
+      parameters:
+        - name: id
+          in: path
+          description: Order identifier.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/CheckoutFormFulfillment'
+        description: request
+        required: true
+      responses:
+        '204':
+          description: Fulfillment set successfully
+        '401':
+          description: Authentication failed, e.g. token is expired
+        '404':
+          description: Order not found or doesn’t belong to the seller
+        '422':
+          description: Some of the provided data is invalid, e.g. unrecognized status value
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/disputes':
     get:
       tags:
