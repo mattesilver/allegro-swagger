@@ -2938,6 +2938,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 60
+            minimum: 1
+            maximum: 60
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -2946,6 +2949,8 @@ paths:
             type: integer
             format: int32
             default: 0
+            minimum: 0
+            maximum: 59
       responses:
         '200':
           description: OK
@@ -3010,6 +3015,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 60
+            minimum: 1
+            maximum: 60
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -3018,6 +3026,8 @@ paths:
             type: integer
             format: int32
             default: 0
+            minimum: 0
+            maximum: 59
       responses:
         '200':
           description: OK
@@ -3104,6 +3114,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 60
+            minimum: 1
+            maximum: 60
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -3112,6 +3125,8 @@ paths:
             type: integer
             format: int32
             default: 0
+            minimum: 0
+            maximum: 59
       responses:
         '200':
           description: OK
@@ -3724,6 +3739,16 @@ paths:
               * `READY_FOR_SHIPMENT`
               * `SENT`
               * `CANCELLED`.
+        - name: fulfillment.shipmentSummary.lineItemsSent
+          in: query
+          schema:
+            type: string
+          description: >-
+            Specify filter for line items sending status.
+            Allowed values are:
+              * `NONE`: none of line items have tracking number specified
+              * `SOME`: some of line items have tracking number specified
+              * `ALL`: all of line items have tracking number specified.
         - name: lineItems.boughtAt.lte
           in: query
           schema:
@@ -10593,6 +10618,8 @@ components:
       properties:
         status:
           $ref: '#/components/schemas/CheckoutFormFulfillmentStatus'
+        shipmentSummary:
+          $ref: '#/components/schemas/CheckoutFormFulfillmentShipmentSummary'
     CheckoutFormFulfillmentStatus:
       enum:
         - NEW
@@ -10603,6 +10630,19 @@ components:
       example: "SENT"
       description: >
         Order seller status.
+    CheckoutFormFulfillmentShipmentSummary:
+      type: object
+      properties:
+        lineItemsSent:
+          $ref: '#/components/schemas/CheckoutFormFulfillmentShipmentSummaryLineItemsSent'
+    CheckoutFormFulfillmentShipmentSummaryLineItemsSent:
+      enum:
+        - NONE
+        - SOME
+        - ALL
+      example: "SOME"
+      description: >
+        Indicates how many line items have tracking number specified.
     CheckoutFormDeliveryReference:
       type: object
       properties:
