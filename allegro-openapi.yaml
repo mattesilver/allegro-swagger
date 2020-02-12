@@ -3271,6 +3271,7 @@ paths:
             type: integer
             default: 0
             minimum: 0
+            maximum: 9950
         - name: limit
           in: query
           description: Maximum number of returned variant sets.
