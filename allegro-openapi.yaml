@@ -5400,7 +5400,7 @@ paths:
     get:
       tags:
         - User's offer information
-      summary: "[BETA] Get events about the seller's offers"
+      summary: "Get events about the seller's offers"
       description: >-
         Use this endpoint to get events concerning changes in the authorized seller's offers.
 
@@ -5459,7 +5459,7 @@ paths:
         '200':
           description: The list of offer events returned successfully.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/SellerOfferEventsResponse'
               examples:
