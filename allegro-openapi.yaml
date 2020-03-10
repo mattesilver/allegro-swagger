@@ -39,6 +39,7 @@ tags:
   - name: Badge campaigns
   - name: Delivery
   - name: Offer tags
+  - name: Offer rating
   - name: Order management
   - name: Payments
   - name: Disputes
@@ -4547,6 +4548,39 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+
+  '/sale/offers/{offerId}/rating':
+    get:
+      tags:
+        - Offer rating
+      summary: "Get offer rating"
+      description: 'Use this resource to get offer rating.'
+      operationId: offerRatingGET
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferRating'
+        '403':
+          description: Offer access denied.
+        '404':
+          description: Offer not found.
+        '401':
+          description: Unauthorized action.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+
   '/sale/offers/{offerId}/shipping-rates':
     get:
       tags:
@@ -12856,3 +12890,48 @@ components:
           items:
             $ref: '#/components/schemas/BadgeApplicationRejectionReason'
       description: 'Information about badge processing.'
+    OfferRating:
+      type: object
+      properties:
+        averageScore:
+          type: string
+          description: 'Average score of offer rating.'
+          example: '4.0'
+        scoreDistribution:
+          type: array
+          description: "List score distribution with count."
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Identifier of score: 5, 4, 3, 2, 1."
+              count:
+                type: integer
+                description: "Count of score."
+          example:
+            [{name: "5", count: 1},
+             {name: "4", count: 3},
+             {name: "3", count: 1},
+             {name: "2", count: 0},
+             {name: "1", count: 0}]
+        totalResponses:
+          type: integer
+          description: 'Number of total responses.'
+          example: 5
+        sizeFeedback:
+          type: array
+          description: "List of size feedback."
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Identifier of sizeFeedback: BIGGER, FIT, SMALLER."
+              count:
+                type: integer
+                description: "Count of sizeFeedback responses."
+          example:
+            [{name: "BIGGER", count: 0},
+             {name: "FIT", count: 2},
+             {name: "SMALLER", count: 0}]
