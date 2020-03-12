@@ -9952,6 +9952,7 @@ components:
           type: string
           enum:
             - CHARYTATYWNI_ALLEGRO
+            - ALLEGRO_LOKALNIE
           description: Identifier of the external service.
         url:
           type: string
