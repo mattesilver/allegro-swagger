@@ -8076,6 +8076,10 @@ components:
       properties:
         url:
           type: string
+          description: >-
+            URL of the image.
+            It has to contain domain name, not an IP address.
+            Currently we support http and https protocols. When using https the certificate chain needs to be valid.
     OfferImageUploadResponse:
       type: object
       properties:
