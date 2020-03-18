@@ -3852,6 +3852,44 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  '/order/carriers':
+    get:
+      tags:
+        - Order management
+      summary: "Get a list of available shipping carriers"
+      description: >-
+        Shipping carriers are essential to provide accurate tracking experience for customers.
+        Use this resource to get a list of all available shipping carriers.
+
+
+        The response of this resource can be stored in accordance with returned caching headers.
+      operationId: getOrdersCarriersUsingGET
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      responses:
+        '200':
+          description: List of available shipping carriers.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OrdersShippingCarriersResponse'
+              examples:
+                order-carriers:
+                  summary: Order carriers
+                  value:
+                    carriers:
+                      - id: 'POCZTA_POLSKA'
+                        name: 'Poczta Polska'
+                      - id: 'DHL'
+                        name: 'DHL'
+                      - id: 'YUN_EXPRESS'
+                        name: 'Yun Express'
+                      - id: 'OTHER'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
   '/order/checkout-forms/{id}/shipments':
     get:
       tags:
@@ -11323,14 +11361,7 @@ components:
         carrierId:
           type: string
           description: >-
-            Supported carriers:
-              * Polish carriers: `UPS`, `INPOST`, `DHL`, `GLS`, `RUCH`, `POCZTA_POLSKA`, `DPD`, `FEDEX`, `TNT_EXPRESS`, `DB_SCHENKER`, `RABEN`, `GEIS`, `DTS`, `PEKAES`, `PATRON`, `X_PRESS_COURIERS`, `RHENUS_LOGISTICS`
-              * International carriers: `YUN_EXPRESS`, `CHINA_POST`
-              * Other: `OTHER`
-
-            Carrier identifier taken from the dictionary below. It’s highly recommended to use an identifier different
-            from `OTHER`, because its parcel status may be updated automatically. Carrier identifier `OTHER` is reserved for
-            cases when seller uses a custom carrier or not yet integrated with Allegro.
+            Supported carriers are available via <a href="#operation/getOrdersCarriersUsingGET" target="_blank">shipping carriers resource</a>.
         waybill:
           type: string
           description: >-
@@ -11354,6 +11385,20 @@ components:
                 type: string
                 description: >-
                   Identifier of an order line item.
+    OrdersShippingCarrier:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            Identifier of a carrier - unique to every carrier.
+
+
+            It’s highly recommended to use an identifier different from `OTHER`, because its parcel status may be updated automatically.
+            Carrier identifier `OTHER` is reserved for cases when seller uses a custom carrier or not yet integrated with Allegro.
+        name:
+          type: string
+          description: Name of a carrier.
     CheckoutFormAddWaybillCreated:
       type: object
       properties:
@@ -11369,14 +11414,7 @@ components:
         carrierId:
           type: string
           description: >-
-            Supported carriers:
-              * Polish carriers: `UPS`, `INPOST`, `DHL`, `GLS`, `RUCH`, `POCZTA_POLSKA`, `DPD`, `FEDEX`, `TNT_EXPRESS`, `DB_SCHENKER`, `RABEN`, `GEIS`, `DTS`, `PEKAES`, `PATRON`, `X_PRESS_COURIERS`, `RHENUS_LOGISTICS`
-              * International carriers: `YUN_EXPRESS`, `CHINA_POST`
-              * Other: `OTHER`
-
-            Carrier identifier taken from the dictionary below. It’s highly recommended to use an identifier different
-            from `OTHER`, because its parcel status may be updated automatically. Carrier identifier `OTHER` is reserved for
-            cases when seller uses a custom carrier or not yet integrated with Allegro.
+            Supported carriers are available via <a href="#operation/getOrdersCarriersUsingGET" target="_blank">shipping carriers resource</a>.
         carrierName:
           type: string
           description: >-
@@ -11394,6 +11432,15 @@ components:
           type:
             string
           description: Date and time of the parcel tracking number registration in UTC (ISO8601 format).
+    OrdersShippingCarriersResponse:
+      type: object
+      properties:
+        carriers:
+          type: array
+          description: >-
+            List of shipping carriers.
+          items:
+            $ref: '#/components/schemas/OrdersShippingCarrier'
     CheckoutFormOrderWaybillResponse:
       type: object
       properties:
