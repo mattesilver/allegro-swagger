@@ -1947,6 +1947,7 @@ paths:
                         options:
                           variantsAllowed: true
                           variantsEqual: false
+                          ambiguousValueId: null
                         restrictions:
                           min: 0
                           max: 1000000
@@ -1963,6 +1964,7 @@ paths:
                         options:
                           variantsAllowed: false
                           variantsEqual: false
+                          ambiguousValueId: null
                         restrictions:
                           minLength: 2
                           maxLength: 35
@@ -1979,6 +1981,7 @@ paths:
                         options:
                           variantsAllowed: false
                           variantsEqual: true
+                          ambiguousValueId: null
                         dictionary:
                           - id: "11323_1"
                             value: "Nowy"
@@ -2006,6 +2009,7 @@ paths:
                         options:
                           variantsAllowed: false
                           variantsEqual: false
+                          ambiguousValueId: null
                         restrictions:
                           min: 0
                           max: 1000000
@@ -2023,6 +2027,7 @@ paths:
                         options:
                           variantsAllowed: false
                           variantsEqual: false
+                          ambiguousValueId: null
                         restrictions:
                           min: 0
                           max: 1000
@@ -8650,6 +8655,12 @@ components:
         variantsEqual:
           type: boolean
           description: All offer variants must have the same values in parameters with this option enabled.
+        ambiguousValueId:
+          type: string
+          description: >-
+            Indicates what value in the dictionary is defined as an ambiguous one.
+            Only parameters with dictionaries might have this option defined.
+          example: "128788_36"
       description: A list of the different options which can be used with this parameter.
     DictionaryCategoryParameter:
       allOf:
