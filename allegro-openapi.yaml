@@ -1881,7 +1881,7 @@ paths:
       summary: 'Get a category by ID'
       description: >-
         Use this resource to get the details of a specific category.
-        <a href="../../news/2018-07-09-wielowariantowosc/#01" target="_blank">Read more</a>.
+        <a href="https://developer.allegro.pl/multi_variant_offers/#1" target="_blank">Read more</a>.
       operationId: getCategoryUsingGET_1
       security:
         - bearer-token-for-application: []
@@ -3146,13 +3146,13 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  '/sale/offer-variants/{setId}':
-    put:
+  '/sale/offer-variants':
+    post:
       tags:
         - Offer variants
-      summary: '[BETA] Create or update variant set'
+      summary: 'Create variant set'
       description: >-
-        [BETA] Use this resource to create or update variant set.
+        Use this resource to create variant set.
 
          A valid variant set must consist of three required elements:
          - name:
@@ -3180,18 +3180,15 @@ paths:
 
 
          More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
-         more information about variant sets API can be found <a href="../../news/2018-07-09-wielowariantowosc/#03" target="_blank">here</a>.
-      operationId: createOrUpdateVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
+         more information about variant sets API can be found <a href="https://developer.allegro.pl/multi_variant_offers/#3" target="_blank">here</a>.
+      operationId: createVariantSet
       responses:
         '201':
-          description: Variant set created or updated successfully
+          description: Variant set created successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/VariantSetResponse'
         '401':
           description: Unauthorized
         '403':
@@ -3203,64 +3200,11 @@ paths:
     get:
       tags:
         - Offer variants
-      summary: '[BETA] Get a variant set'
-      description:
-        '[BETA] Use this resource to get variant set by set id. <a href="../../news/2018-07-09-wielowariantowosc/#04" target="_blank">Read more</a>.'
-      operationId: getVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Variant set returned successfully
-          content:
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/VariantSet'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-    delete:
-      tags:
-        - Offer variants
-      summary: '[BETA] Delete a variant set'
+      summary: "Get the user's variant sets"
       description: >-
-        [BETA] Use this resource to delete variant set by id.
-        Offers included in variant set will not be stopped or modified by this operation.
-        <a href="../../news/2018-07-09-wielowariantowosc/#05" target="_blank">Read more</a>.
-      operationId: deleteVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Variant set deleted successfully
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Variant set not found
-  '/sale/offer-variants':
-    get:
-      tags:
-        - Offer variants
-      summary: "[BETA] Get the user's variant sets"
-      description: >-
-        [BETA] Use this resource to get created variant sets.
+        Use this resource to get created variant sets.
         The returned variant sets are ordered by name.
-        <a href="../../news/2018-07-09-wielowariantowosc/" target="_blank">Read more</a>.
+        <a href="https://developer.allegro.pl/multi_variant_offers/#6" target="_blank">Read more</a>.
       operationId: getVariantSets
       parameters:
         - name: user.id
@@ -3298,13 +3242,123 @@ paths:
         '200':
           description: Variant sets returned successfully
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/VariantSets'
         '401':
           description: Unauthorized
         '403':
           description: Forbidden
+  '/sale/offer-variants/{setId}':
+    put:
+      tags:
+        - Offer variants
+      summary: 'Update variant set'
+      description: >-
+        Use this resource to create variant set.
+
+         A valid variant set must consist of three required elements:
+         - name:
+           - it can't be blank and must not be longer than 50 characters
+         - parameters:
+           - it should contain parameter identifiers used for offer grouping
+           - parameter identifiers from the offers and special `color/pattern` value (for grouping via image) are permitted
+           - it must contain at least one element (up to 2)
+         - offers:
+           - it must contain at least 2 offers (500 at most)
+           - `colorPattern` value must be set for every offer if `color/pattern` parameter is used
+           - `colorPattern` value can't be blank and must not be longer than 50 characters
+           - `colorPattern` can take arbitrary string value like `red`, `b323592c-522f-4ec1-b9ea-3764538e0ac4` (UUID), etc.
+           - offers having the same image should have identical `colorPattern` value
+
+
+         Let's assume we have 4 offers:
+           - offer with id 2 having an image of a red t-shirt and S as a value of parameter with id 21
+           - offer with id 3 having an image of a red t-shirt and M as a value of parameter with id 21
+           - offer with id 4 having an image of a blue t-shirt and S as a value of parameter with id 21
+           - offer with id 5 having an image of a blue t-shirt and M as a value of parameter with id 21
+
+
+         You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
+
+
+         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
+         more information about variant sets API can be found <a href="https://developer.allegro.pl/multi_variant_offers/#3" target="_blank">here</a>.
+      operationId: updateVariantSet
+      parameters:
+        - name: setId
+          in: path
+          description: Variant set identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Variant set updated successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/VariantSetResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        $ref: '#/components/requestBodies/VariantSetRequest'
+    get:
+      tags:
+        - Offer variants
+      summary: 'Get a variant set'
+      description:
+        'Use this resource to get variant set by set id. <a href="https://developer.allegro.pl/multi_variant_offers/#4" target="_blank">Read more</a>.'
+      operationId: getVariantSet
+      parameters:
+        - name: setId
+          in: path
+          description: Variant set identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Variant set returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/VariantSetResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Offer variants
+      summary: 'Delete a variant set'
+      description: >-
+        Use this resource to delete variant set by id.
+        Offers included in variant set will not be stopped or modified by this operation.
+        <a href="https://developer.allegro.pl/multi_variant_offers/#5" target="_blank">Read more</a>.
+      operationId: deleteVariantSet
+      parameters:
+        - name: setId
+          in: path
+          description: Variant set identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Variant set deleted successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Variant set not found
   '/sale/images':
     post:
       tags:
@@ -6589,7 +6643,7 @@ components:
       required: true
     VariantSetRequest:
       content:
-        application/vnd.allegro.beta.v1+json:
+        application/vnd.allegro.public.v1+json:
           schema:
             $ref: '#/components/schemas/VariantSet'
           examples:
@@ -9752,6 +9806,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VariantSet_Parameter'
+    VariantSetResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+        - $ref: '#/components/schemas/VariantSet'
     VariantSet_Offer:
       type: object
       required:
