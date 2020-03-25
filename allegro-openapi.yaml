@@ -47,6 +47,7 @@ tags:
   - name: Blacklist management
   - name: Auctions and Bidding
   - name: Billing
+  - name: Commission refunds
 
 security:
   - bearer-token-for-user: []
@@ -6588,6 +6589,160 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/order/refund-claims/{claimId}':
+    get:
+      tags:
+        - Commission refunds
+      summary: 'Get a refund application details'
+      description: Use this resource to get refund application details.
+      operationId: 'getRefundApplication'
+      parameters:
+        - name: claimId
+          in: path
+          description: 'Refund application ID.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned refund application.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/RefundClaim'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Refund application does not belong to you.
+        '404':
+          description: Refund application not found.
+        '406':
+          description: Not Acceptable
+    delete:
+      tags:
+        - Commission refunds
+      summary: 'Cancel a refund application'
+      description: Use this resource to cancel a refund application. This cannot be undone.
+      operationId: 'cancelRefundApplication'
+      parameters:
+        - name: claimId
+          in: path
+          description: 'Refund application ID.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Refund application was cancelled successfully.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Refund application does not belong to you.
+        '404':
+          description: Refund application not found.
+        '406':
+          description: Not Acceptable
+        '422':
+          description: Refund application has already been processed.
+  '/order/refund-claims':
+    get:
+      tags:
+        - Commission refunds
+      summary: 'Get a list of refund applications'
+      description: Use this resource to get a list of refund applications based on the provided query parameters.
+      operationId: 'getRefundApplications'
+      parameters:
+        - name: lineItem.offer.id
+          in: query
+          required: false
+          description: ID of the offer associated with the refund application.
+          schema:
+            type: string
+        - name: buyer.login
+          in: query
+          required: false
+          description: Login of the buyer that made the purchase associated with the refund application.
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: Status of the refund application.
+          schema:
+            type: string
+            enum:
+              - "IN_PROGRESS"
+              - "GRANTED"
+              - "REJECTED"
+              - "REJECTED_AFTER_APPEAL"
+              - "CANCELLED"
+              - "APPEALED"
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of returned refund applications in response.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 25
+        - name: offset
+          in: query
+          required: false
+          description: Index of the first returned refund application from all search results.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Successfully returned list of refund applications.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  refundClaims:
+                    type: array
+                    description: Collection of refund applications.
+                    items:
+                      $ref: '#/components/schemas/RefundClaim'
+                  count:
+                    type: integer
+                    format: int32
+                    description: Count of refund applications returned.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Refund application does not belong to you.
+        '406':
+          description: Not Acceptable
+        '422':
+          description: Unprocessable Entity
+    post:
+      tags:
+        - Commission refunds
+      summary: 'Create a refund application'
+      description: Use this resource to create a refund application.
+      operationId: 'createRefundApplication'
+      responses:
+        '201':
+          description: The refund application was created successfully.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '406':
+          description: Not Acceptable
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/RefundClaimRequest'
+        required: true
 
 components:
   securitySchemes:
@@ -6772,6 +6927,112 @@ components:
             value:
               $ref: '#/components/schemas/RefundAdditionalServicesValue'
           description: Payment refund for additional services.
+    RefundClaim:
+      type: object
+      description: Detailed information about the refund application.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the returned refund application.
+          example: '09f0b4cc-7880-11e9-8f9e-2a86e4085a59'
+        status:
+          type: string
+          description: Status of the returned refund application.
+
+            - `IN_PROGRESS` - the application is being processed or awaits user or admin action.
+
+            - `GRANTED` - the application was accepted and a commission refund was granted as requested,
+              or the application was rejected and the seller successfully appealed.
+
+            - `REJECTED` - the application was rejected and no commission was refunded.
+
+            - `REJECTED_AFTER_APPEAL` - the application was initially rejected and the seller unsuccessfully appealed.
+
+            - `CANCELLED` - the application was cancelled by the seller.
+
+            - `APPEALED` - the application was rejected and the seller appealed, but the appeal has not yet finished processing.
+          enum:
+            - "IN_PROGRESS"
+            - "GRANTED"
+            - "REJECTED"
+            - "REJECTED_AFTER_APPEAL"
+            - "CANCELLED"
+            - "APPEALED"
+        quantity:
+          type: integer
+          format: int32
+          description: Quantity of product for which the seller filed the refund application.
+        commission:
+          type: object
+          description: Money value of the returned refund application.
+          properties:
+            amount:
+              type: string
+              description: Monetary amount of the returned refund application.
+              example: '100.00'
+            currency:
+              type: string
+              description: Three-letter currency code (ISO-4217) of the returned refund application.
+              example: 'PLN'
+        buyer:
+          type: object
+          description: Buyer associated with the refund application.
+          properties:
+            id:
+              type: string
+              description: ID of the buyer associated with the refund application.
+              example: '12345678'
+            login:
+              type: string
+              description: Login of the buyer associated with the refund application.
+              example: 'JanKowalski'
+        createdAt:
+          type: string
+          format: date-time
+          description: Date when the refund application was created.
+        lineItem:
+          type: object
+          description: Purchase associated with the refund application.
+          properties:
+            id:
+              type: string
+              description: ID of the purchase associated with the refund application.
+              example: '09f0b4cc-7880-11e9-8f9e-2a86e4085a59'
+            quantity:
+              type: integer
+              format: int32
+              description: Total quantity of product purchased by the buyer.
+                Equal to or greater than quantity for which the seller filed the refund application.
+            boughtAt:
+              type: string
+              format: date-time
+              description: Date when the purchase was made.
+            offer:
+              type: object
+              description: Offer associated with the purchase.
+              properties:
+                id:
+                  type: string
+                  description: ID of the offer associated with the purchase.
+                  example: '12345678'
+                name:
+                  type: string
+                  description: Name of the offer associated with the purchase.
+    RefundClaimRequest:
+      type: object
+      properties:
+        lineItem:
+          type: object
+          description: Purchase for which a refund application will be created.
+          properties:
+            id:
+              type: string
+              description: ID of the purchase for which a refund application will be created.
+        quantity:
+          type: integer
+          format: int32
+          description: Quantity of product for which the refund application will be created. Must be greater than zero.
     RefundDetails:
       type: object
       description: Detailed information about the refund.
