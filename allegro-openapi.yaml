@@ -112,8 +112,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/Offer'
-        '201':
-          description: Created
         '400':
           description: Syntactically incorrect request
         '401':
