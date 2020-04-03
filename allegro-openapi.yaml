@@ -1947,6 +1947,7 @@ paths:
                           variantsAllowed: true
                           variantsEqual: false
                           ambiguousValueId: null
+                          dependsOnParameterId: null
                         restrictions:
                           min: 0
                           max: 1000000
@@ -1964,6 +1965,7 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
+                          dependsOnParameterId: null
                         restrictions:
                           minLength: 2
                           maxLength: 35
@@ -1981,19 +1983,26 @@ paths:
                           variantsAllowed: false
                           variantsEqual: true
                           ambiguousValueId: null
+                          dependsOnParameterId: null
                         dictionary:
                           - id: "11323_1"
                             value: "Nowy"
+                            "dependsOnValueIds": []
                           - id: "11323_2"
                             value: "Używany"
+                            "dependsOnValueIds": []
                           - id: "11323_238066"
                             value: "Po zwrocie"
+                            "dependsOnValueIds": []
                           - id: "11323_238058"
                             value: "Powystawowy"
+                            "dependsOnValueIds": []
                           - id: "11323_238062"
                             value: "Uszkodzony"
+                            "dependsOnValueIds": []
                           - id: "11323_246534"
                             value: "Odnowiony przez producenta"
+                            "dependsOnValueIds": []
                         restrictions:
                           multipleChoices: false
                 float:
@@ -2009,6 +2018,7 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
+                          dependsOnParameterId: null
                         restrictions:
                           min: 0
                           max: 1000000
@@ -2027,6 +2037,7 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
+                          dependsOnParameterId: null
                         restrictions:
                           min: 0
                           max: 1000
@@ -8974,6 +8985,12 @@ components:
             Indicates what value in the dictionary is defined as an ambiguous one.
             Only parameters with dictionaries might have this option defined.
           example: "128788_36"
+        dependsOnParameterId:
+          type: string
+          description: >-
+            Values in the dictionary depend on the parameter referenced by this field.
+            Only parameters with dictionaries can have this option defined.
+          example: "211062"
       description: A list of the different options which can be used with this parameter.
     DictionaryCategoryParameter:
       allOf:
@@ -9005,6 +9022,14 @@ components:
                     type: string
                     description: The label of the dictionary value in Polish.
                     example: "Nowy"
+                  dependsOnValueIds:
+                    type: array
+                    items:
+                      type: string
+                      description: >-
+                        The ID of the dictionary value from parameter that this parameter depends on.
+                        This value might be set in the offer, but only when the referenced value is set as well.
+                      example: "211062_246554"
     IntegerCategoryParameter:
       allOf:
         - $ref: '#/components/schemas/CategoryParameter'
