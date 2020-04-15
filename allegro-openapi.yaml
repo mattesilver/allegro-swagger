@@ -7054,6 +7054,7 @@ paths:
             type: string
             enum:
               - "IN_PROGRESS"
+              - "WAITING_FOR_PAYMENT_REFUND"
               - "GRANTED"
               - "REJECTED"
               - "REJECTED_AFTER_APPEAL"
@@ -7324,6 +7325,8 @@ components:
 
             - `IN_PROGRESS` - the application is being processed or awaits user or admin action.
 
+            - `WAITING_FOR_PAYMENT_REFUND` - the application is being processed and awaits payment refund to buyer.
+
             - `GRANTED` - the application was accepted and a commission refund was granted as requested,
               or the application was rejected and the seller successfully appealed.
 
@@ -7336,6 +7339,7 @@ components:
             - `APPEALED` - the application was rejected and the seller appealed, but the appeal has not yet finished processing.
           enum:
             - "IN_PROGRESS"
+            - "WAITING_FOR_PAYMENT_REFUND"
             - "GRANTED"
             - "REJECTED"
             - "REJECTED_AFTER_APPEAL"
