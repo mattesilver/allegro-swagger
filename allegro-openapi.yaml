@@ -3784,6 +3784,8 @@ paths:
           description: Image is too big
         '415':
           description: Unsupported media type
+        '422':
+          description: Unprocessable entity (problem with image server)
       requestBody:
         $ref: '#/components/requestBodies/OfferImageUploadRequest'
   '/sale/offer-attachments':
