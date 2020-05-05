@@ -4091,6 +4091,7 @@ paths:
               * `BOUGHT`: purchase without checkout form filled in
               * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
               * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
+              * `BUYER_CANCELLED`: purchase was cancelled by buyer
               * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
           required: false
           schema:
@@ -4173,6 +4174,7 @@ paths:
               * `BOUGHT`: purchase without checkout form filled in.
               * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change.
               * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
+              * `CANCELLED`: purchase cancelled by buyer.
         - name: fulfillment.status
           in: query
           schema:
@@ -11484,17 +11486,20 @@ components:
         - BOUGHT
         - FILLED_IN
         - READY_FOR_PROCESSING
+        - CANCELLED
       example: "READY_FOR_PROCESSING"
       description: >
         Describes status of the form delivery and purchase options based on payment and purchase status.
         * `BOUGHT` - purchase without checkout form filled in
         * `FILLED_IN` - checkout form filled in but payment is not completed yet so data could still change
         * `READY_FOR_PROCESSING` - payment completed. Purchase is ready for processing.
+        * `CANCELLED` - purchase cancelled by buyer.
     OrderEventType:
       enum:
         - BOUGHT
         - FILLED_IN
         - READY_FOR_PROCESSING
+        - BUYER_CANCELLED
         - FULFILLMENT_STATUS_CHANGED
       example: "READY_FOR_PROCESSING"
       description: >
@@ -11502,6 +11507,7 @@ components:
         * `BOUGHT` - purchase without checkout form filled in
         * `FILLED_IN` - checkout form filled in but payment is not completed yet so data could still change
         * `READY_FOR_PROCESSING` - payment completed. Purchase is ready for processing.
+        * `BUYER_CANCELLED` - purchase cancelled by buyer
         * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
     CheckoutForms:
       type: object
