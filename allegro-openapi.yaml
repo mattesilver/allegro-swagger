@@ -4425,6 +4425,13 @@ paths:
           required: true
           schema:
             type: string
+        - name: checkoutForm.revision
+          in: query
+          description: Checkout form revision.
+          required: false
+          schema:
+            type: string
+          example: "819b5836"            
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -4439,6 +4446,12 @@ paths:
           description: Authentication failed, e.g. token is expired
         '404':
           description: Order not found or doesn’t belong to the seller
+        '409':
+          description: Conflict. Provided revision is outdated.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'          
         '422':
           description: Some of the provided data is invalid, e.g. unrecognized status value
           content:
@@ -11480,7 +11493,11 @@ components:
         id:
           type: string
           example: "88ae369b-8f65-4fc4-9c77-bedf604a2e2b"
-      description: Checkout form identifier
+          description: Checkout form identifier
+        revision:
+          type: string
+          example: "819b5836"
+          description: Checkout form revision          
     CheckoutFormStatus:
       enum:
         - BOUGHT
@@ -11581,6 +11598,10 @@ components:
           type: string
           description: 'Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).'
           example: '2011-12-03T10:15:30.133Z'
+        revision:
+          type: string
+          example: "819b5836"
+          description: Checkout form revision 
     CheckoutFormBuyerReference:
       type: object
       required:
