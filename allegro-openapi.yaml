@@ -5284,6 +5284,51 @@ paths:
             schema:
               $ref: '#/components/schemas/ProposeSaleProductRequest'
         required: true
+  '/sale/product-offers':
+    post:
+      tags:
+        - Offer management
+      summary: "Create offer based on product"
+      description: >-
+        Use this resource to create offer based on product. <a href="../../product_offers" target="_blank">Read more</a>.
+      operationId: createProductOffers
+      responses:
+        '201':
+          description: Offer created successfully.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - not allowed to access.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferRequest'
+        required: true
   '/sale/compatibility-list/supported-categories':
     get:
       tags:
@@ -12678,6 +12723,162 @@ components:
               identifiesProduct:
                 type: boolean
       description: Product's parameter
+    SaleProductOffer:
+      type: object
+      required:
+        - stock
+      properties:
+        payments:
+          $ref: '#/components/schemas/Payments'
+        sellingMode:
+          $ref: '#/components/schemas/SellingMode'
+        stock:
+          $ref: '#/components/schemas/Stock'
+        location:
+          $ref: '#/components/schemas/Location'
+        publication:
+          $ref: '#/components/schemas/Publication'
+        images:
+          type: array
+          items:
+            type: string
+        description:
+          $ref: '#/components/schemas/StandardizedDescription'
+      description: Single offer data.
+    SaleProductOfferRequest:
+      allOf:
+        - $ref: '#/components/schemas/SaleProductOffer'
+        - type: object
+          properties:
+            product:
+              $ref: '#/components/schemas/ProductOffer'
+            afterSalesServices:
+              $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
+            delivery:
+              $ref: '#/components/schemas/DeliveryProductOfferRequest'
+            parameters:
+              type: array
+              items:
+                $ref: '#/components/schemas/ParameterProductOfferRequest'
+    SaleProductOfferResponse:
+      allOf:
+        - $ref: '#/components/schemas/SaleProductOffer'
+        - type: object
+          properties:
+            id:
+              type: string
+            product:
+              $ref: '#/components/schemas/JustId'
+            afterSalesServices:
+              $ref: '#/components/schemas/AfterSalesServices'
+            delivery:
+              type: object
+              properties:
+                handlingTime:
+                  type: string
+                  example: PDT12H30M5S
+                  description: 'Handling time, ISO 8601 duration format'
+                shippingRates:
+                  $ref: '#/components/schemas/JustId'
+            validation:
+              $ref: '#/components/schemas/Validation'
+            createdAt:
+              type: string
+              format: date-time
+              description: >-
+                Creation date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+                Cannot be modified.
+            updatedAt:
+              type: string
+              format: date-time
+              description: >-
+                Last update date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+                Cannot be modified.
+    ProductOffer:
+      type: object
+      properties:
+        id:
+          type: string
+          example: c9e39cae-9cb6-11e9-a2a3-2a2ae2dbcce4
+          description: Product id.
+        name:
+          type: string
+          description: Product name.
+          example: iPhone 5s
+        category:
+          $ref: '#/components/schemas/Category'
+        images:
+          type: array
+          items:
+            type: string
+          description: List of product images.
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterProductOfferRequest'
+          description: List of product parameters.
+    AfterSalesServicesProductOfferRequest:
+      type: object
+      description: The definitions of the different after sales services assigned to the offer.
+      properties:
+        impliedWarranty:
+          allOf:
+            - $ref: '#/components/schemas/ImpliedWarranty'
+            - type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the implied warranty definition.
+        returnPolicy:
+          allOf:
+            - $ref: '#/components/schemas/ReturnPolicy'
+            - type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the return policy definition.
+        warranty:
+          allOf:
+            - $ref: '#/components/schemas/Warranty'
+            - type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the warranty definition.
+    DeliveryProductOfferRequest:
+      type: object
+      properties:
+        handlingTime:
+          type: string
+          example: PDT12H30M5S
+          description: 'Handling time, ISO 8601 duration format'
+        shippingRates:
+          allOf:
+            - $ref: '#/components/schemas/JustId'
+            - type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the shipping rate.
+    ParameterProductOfferRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: The name of the parameter.
+        rangeValue:
+          $ref: '#/components/schemas/ParameterRangeValue'
+        values:
+          type: array
+          items:
+            type: string
+        valuesIds:
+          type: array
+          items:
+            type: string
+      description: Offer's parameter.
     OfferRequirements:
       description: 'Conditions which an offer must meet to be assigned with the product, i.e. Condition parameter must be set to New.'
       properties:
