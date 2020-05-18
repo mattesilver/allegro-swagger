@@ -3929,10 +3929,15 @@ paths:
         - name: offset
           in: query
           description: >-
-            Index of the first returned offer from all search results.
+            Index of the first returned offer from all search results. Max offset is:
+            	- `120000 - <limit>` if seller.id parameter is given in request,
+                - `6000 - <limit>` if no seller.id parameter is given in request.
           required: false
           schema:
             type: integer
+            minimum: 0
+            maximum: 119999
+            default: 0
         - name: limit
           in: query
           description: >-
@@ -3941,7 +3946,7 @@ paths:
           schema:
             type: integer
             minimum: 0
-            maximum: 100
+            maximum: 60
             default: 60
         - name: sort
           in: query
@@ -11041,12 +11046,13 @@ components:
           type: string
           enum:
             - CHARYTATYWNI_ALLEGRO
+            - ALLEGRO_LOKALNIE
           description: Identifier of the external service.
         url:
           type: string
           description: URL to the web page of the offer.
           example: http://charytatywni.allegro.pl/oferta-charytatywna-i1234567
-      description: This section is available only for the charity offers.
+      description: This section is available only for the charity and allegrolokalnie.pl offers.
     OfferPublication:
       properties:
         endingAt:
@@ -13505,6 +13511,10 @@ components:
           type: string
           description: User's last name.
           example: "Iksiński"
+        email:
+          type: string
+          description: User's email.
+          example: "user-email@allegro.pl"
         company:
             $ref: '#/components/schemas/Company'
     Company:
@@ -13514,6 +13524,10 @@ components:
           type: string
           description: User's company name.
           example: "Allegro.pl sp. z o.o."
+        taxId:
+          type: string
+          description: User's tax identification number.
+          example: "5252674798"
     MyBidResponse:
       type: object
       description: bid response
