@@ -5738,61 +5738,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/payments/payment-id-mappings':
-    get:
-      tags:
-        - Payments
-      summary: Mapping of payment identifiers
-      description: >-
-        Use this endpoint to get payment identifiers compatible with RestAPI and WebAPI.
-        Querying is allowed only by paymentId or transactionId. Identifiers are returned for payments created in last 3 months.
-      operationId: getPaymentIdMapping
-      parameters:
-        - in: query
-          name: paymentId
-          description: Payment identifier.
-          schema:
-            type: string
-            format: uuid
-            description: The payment ID compatible with RestAPI.
-        - in: query
-          name: transactionId
-          description: Transaction identifier.
-          schema:
-            type: string
-            description: The payment ID compatible with WebAPI.
-      responses:
-        '200':
-          description: The payment identifiers for given query param returned successfully.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/PaymentIdMapping'
-        '400':
-          description: >-
-            Returned when none or every of query params was provided in search parameters.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '401':
-          description: Unauthorized
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AuthError'
-        '403':
-          description: Forbidden
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '404':
-          description: Not Found
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/blacklisted-users':
     get:
       tags:
@@ -13397,21 +13342,6 @@ components:
           format: uuid
           description: The deduction ID.
           example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
-    PaymentIdMapping:
-      type: object
-      required:
-        - paymentId
-        - transactionId
-      properties:
-        paymentId:
-          type: string
-          format: uuid
-          description: The payment ID compatible with RestAPI.
-          example: "2e2fe432-2115-32f9-82ae-e350e7aa9ed0"
-        transactionId:
-          type: string
-          description: The transaction ID compatible with WebAPI.
-          example: "1016873349"
     TecdocSpecification:
       type: object
       required:
