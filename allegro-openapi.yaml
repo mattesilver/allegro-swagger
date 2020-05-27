@@ -4436,7 +4436,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "819b5836"            
+          example: "819b5836"
       requestBody:
         content:
           application/vnd.allegro.public.v1+json:
@@ -4456,7 +4456,7 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ErrorsHolder'          
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Some of the provided data is invalid, e.g. unrecognized status value
           content:
@@ -11493,7 +11493,7 @@ components:
         revision:
           type: string
           example: "819b5836"
-          description: Checkout form revision          
+          description: Checkout form revision
     CheckoutFormStatus:
       enum:
         - BOUGHT
@@ -11597,7 +11597,7 @@ components:
         revision:
           type: string
           example: "819b5836"
-          description: Checkout form revision 
+          description: Checkout form revision
     CheckoutFormBuyerReference:
       type: object
       required:
@@ -12719,7 +12719,7 @@ components:
             id:
               type: string
             product:
-              $ref: '#/components/schemas/JustId'
+              $ref: '#/components/schemas/ProductOfferResponse'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServices'
             delivery:
@@ -12768,6 +12768,27 @@ components:
           items:
             $ref: '#/components/schemas/ParameterProductOfferRequest'
           description: List of product parameters.
+    ProductOfferResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: c9e39cae-9cb6-11e9-a2a3-2a2ae2dbcce4
+          description: Product id.
+        publication:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - PROPOSED
+                - LISTED
+                - NOT_LISTED
+              description: >-
+                The publication status of the submitted product:
+                 - `PROPOSED` - we created new product proposal and assigned it to an offer
+                 - `LISTED` - we identified the product in our database and assigned it to an offer
+                 - `NOT_LISTED` - we didn’t create a new product proposal and didn’t assign any product from our database to an offer
     AfterSalesServicesProductOfferRequest:
       type: object
       description: The definitions of the different after sales services assigned to the offer.
