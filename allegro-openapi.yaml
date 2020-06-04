@@ -9170,6 +9170,8 @@ components:
           $ref: '#/components/schemas/Publication'
         sellingMode:
           $ref: '#/components/schemas/SellingMode'
+        tax:
+          $ref: '#/components/schemas/Tax'
         sizeTable:
           $ref: '#/components/schemas/JustId'
         stock:
@@ -11244,6 +11246,8 @@ components:
           $ref: '#/components/schemas/MinimalPrice'
         startingPrice:
           $ref: '#/components/schemas/StartingPrice'
+        netPrice:
+          $ref: '#/components/schemas/NetPrice'
     BuyNowPrice:
       allOf:
         - $ref: '#/components/schemas/Price'
@@ -11256,6 +11260,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/Price'
       description: The starting price for offers in auction format.
+    NetPrice:
+      allOf:
+        - $ref: '#/components/schemas/Price'
+      description: >-
+        The buy now net price computed based on tax.
+        Provided for informational purposes only - ignored when creating (POST) or updating (PUT).
     CurrentPrice:
       allOf:
         - $ref: '#/components/schemas/Price'
@@ -11271,6 +11281,14 @@ components:
         - 'BUY_NOW'
         - 'AUCTION'
         - 'ADVERTISEMENT'
+    Tax:
+      type: object
+      description: VAT tax rate.
+      properties:
+        percentage:
+          type: string
+          description: The buy now tax rate, Format 0.00.
+          example: '23.00'
     OfferListingDtoV1Delivery:
       type: object
       description: Delivery information.
