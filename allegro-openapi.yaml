@@ -13373,9 +13373,8 @@ components:
       properties:
         id:
           type: string
-          format: uuid
+          format: int32
           description: The payout ID.
-          example: 2e2fe432-2115-32f9-82ae-e350e7aa9ed0
     Surcharge:
       type: object
       description: Surcharge.
