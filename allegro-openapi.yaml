@@ -3500,12 +3500,6 @@ paths:
         <a href="../../news/2018-07-18-aktualizacja_zasob_do_sprawdzania_daty_oplaty/" target="_blank">here</a>.
       operationId: offerQuotesPublicUsingGET
       parameters:
-        - name: name
-          description: Offer quote name.
-          in: query
-          required: false
-          schema:
-            type: string
         - name: offer.id
           in: query
           description: 'List of offer Ids, maximum 20 values.'
@@ -6992,6 +6986,48 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/billing/billing-types':
+    get:
+      tags:
+        - Billing
+      summary: 'Get a list of billing types'
+      description: List of all billing types. Type names are localized according to "Accept-Language" header.
+      operationId: "getBillingTypes"
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          description: Expected language of name translations. Only Polish and English are currently supported.
+          example: "pl-PL"
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: List of billing types returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    format: string
+                    description: ID of the billing type.
+                    example: 'SUC'
+                  description:
+                    type: string
+                    format: string
+                    description: Localized type name.
+                    example: 'Prowizja od sprzedaży'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
   '/order/refund-claims/{claimId}':
     get:
       tags:
