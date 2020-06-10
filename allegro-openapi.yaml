@@ -48,6 +48,7 @@ tags:
   - name: Auctions and Bidding
   - name: Billing
   - name: Commission refunds
+  - name: Charity
 
 security:
   - bearer-token-for-user: []
@@ -7183,7 +7184,49 @@ paths:
             schema:
               $ref: '#/components/schemas/RefundClaimRequest'
         required: true
-
+  /charity/fundraising-campaigns:
+    get:
+      tags:
+        - Charity
+      summary: Search fundraising campaigns
+      operationId: searchFundraisingCampaigns
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of returned results.
+          required: true
+          allowEmptyValue: false
+          schema:
+            maximum: 100
+            exclusiveMaximum: false
+            minimum: 1
+            exclusiveMinimum: false
+            type: integer
+            format: int32
+        - name: phrase
+          in: query
+          description: Fundraising campaign name or it's Organization name prefix to search for.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: The request successfully returns the search result.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/FundraisingCampaigns'
+        400:
+          description: Invalid or missing query parameters.
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+      deprecated: false
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -9180,6 +9223,8 @@ components:
           maxLength: 18
         external:
           $ref: '#/components/schemas/ExternalId'
+        fundraisingCampaign:
+          $ref: '#/components/schemas/JustId'
         id:
           type: string
         images:
@@ -14236,3 +14281,31 @@ components:
             [{name: "BIGGER", count: 0},
              {name: "FIT", count: 2},
              {name: "SMALLER", count: 0}]
+    FundraisingCampaigns:
+      title: FundraisingCampaigns
+      type: object
+      properties:
+        campaigns:
+          type: array
+          description: search results
+          items:
+            $ref: '#/components/schemas/FundraisingCampaign'
+    FundraisingCampaign:
+      title: FundraisingCampaign
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique campaign identifier
+        name:
+          type: string
+          description: campaign name
+        organization:
+          $ref: '#/components/schemas/CharityOrganization'
+    CharityOrganization:
+      title: CharityOrganization
+      type: object
+      properties:
+        name:
+          type: string
+          description: organization name
