@@ -4863,6 +4863,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1000
+            minimum: 1
+            maximum: 1000
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -4870,6 +4873,8 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successfully returned the requested list of tags
