@@ -60,8 +60,7 @@ paths:
         - Offer management
       summary: 'Modify the Buy Now price in an offer'
       description:
-        'Use this resource to change the Buy Now price in a single offer.
-         <a href="../../news/2016-08-01-zmiana-ceny/" target="_blank">Read more</a>.'
+        'Use this resource to change the Buy Now price in a single offer. Read more: <a href="../../news/2016-08-01-zmiana-ceny/" target="_blank">PL</a>.'
       operationId: createChangePriceCommandUsingPUT
       parameters:
         - name: offerId
@@ -104,7 +103,7 @@ paths:
         - Offer management
       summary: 'Create a draft offer'
       description:
-        'Use this resource to create a draft offer. <a href="../../sale/#step-6-draft" target="_blank">Read more</a>.'
+        'Use this resource to create a draft offer. Read more: <a href="../../sale/#7-draft-oferty" target="_blank">PL</a> / <a href="../../en/sale/#7-offer-draft" target="_blank">EN</a>.'
       operationId: createOfferUsingPOST
       responses:
         '200':
@@ -130,8 +129,7 @@ paths:
         - User's offer information
       summary: "Get seller's offers"
       description: >-
-        Use this resource to get the list of the seller's offers. You can use different query parameters to filter
-        the list.
+        Use this resource to get the list of the seller's offers. You can use different query parameters to filter the list. Read more: <a href="../../my_offers/#jak-pobrać-moje-oferty-w-rest-api" target="_blank">PL</a> / <a href="../../en/my_offers/#list-of-offers" target="_blank">EN</a>.
       operationId: searchOffersUsingGET
       parameters:
         - name: offer.id
@@ -266,7 +264,7 @@ paths:
         - Offer management
       summary: 'Complete a draft offer or edit an offer'
       description:
-        'Use this resource to complete a draft offer or edit ongoing offers. <a href="../../sale/#step-7-complete" target="_blank">Read more</a>.'
+        'Use this resource to complete a draft offer or edit ongoing offers. Read more: <a href="../../sale/#uzupełnij-draft-oferty" target="_blank">PL</a> / <a href="../../en/sale/#new-offer" target="_blank">EN</a>.'
       operationId: updateOfferUsingPUT
       parameters:
         - name: offerId
@@ -301,7 +299,7 @@ paths:
         - User's offer information
       summary: 'Get all fields of the particular offer'
       description:
-        'Use this resource to retrieve all fields of the particular offer. <a href="../../sale/#similar-offer" target="_blank">Read more</a>.'
+        'Use this resource to retrieve all fields of the particular offer. Read more: <a href="../../sale/#wystaw-podobną-ofertę" target="_blank">PL</a> / <a href="../../en/sale/#list-a-similar-offer" target="_blank">EN</a>.'
       operationId: getOfferUsingGET
       parameters:
         - name: offerId
@@ -330,7 +328,7 @@ paths:
         - Offer management
       summary: 'Delete a draft offer'
       description:
-        'Use this resource to delete a draft offer. <a href="../../news/2018-10-09_draft_delete/" target="_blank">Read more</a>.'
+        'Use this resource to delete a draft offer. Read more: <a href="../../news/2018-10-09_draft_delete" target="_blank">PL</a> / <a href="../../en/news/2018-10-09_draft_delete" target="_blank">EN</a>.'
       operationId: deleteOfferUsingDELETE
       parameters:
         - name: offerId
@@ -354,7 +352,7 @@ paths:
         - Offer management
       summary: 'Batch offer publish / unpublish'
       description:
-        'Use this resource to modify multiple offers publication at once. <a href="../../sale/#step-8-offer-publication-commands" target="_blank">Read more</a>.'
+        'Use this resource to modify multiple offers publication at once. Read more: <a href="../../sale/#9-publikacja-oferty" target="_blank">PL</a> / <a href="../../en/sale/#9-publish-your-offer" target="_blank">EN</a>.'
       operationId: changePublicationStatusUsingPUT
       parameters:
         - name: commandId
@@ -395,7 +393,7 @@ paths:
       summary: "Publish command summary"
       description:
         'Use this resource to retrieve information about the offer listing statuses. You will receive a summary with
-         a number of correctly listed offers and errors. <a href="../../sale/#step-8-offer-publication-commands" target="_blank">Read more</a>.'
+         a number of correctly listed offers and errors. Read more: <a href="../../sale/#zestawienie-zadań" target="_blank">PL</a> / <a href="../../en/sale/#task-list" target="_blank">EN</a>.'
       operationId: getPublicationReportUsingGET
       parameters:
         - name: commandId
@@ -424,7 +422,7 @@ paths:
       summary: 'Publish command detailed report'
       description:
         'Use this resource to retrieve information about the offer statuses on the site (Defaults: limit = 100,
-         offset = 0). <a href="../../sale/#step-8-offer-publication-commands" target="_blank">Read more</a>.'
+         offset = 0). Read more: <a href="../../sale/#informacje-o-publikacji" target="_blank">PL</a> / <a href="../../en/sale/#information-about-publication" target="_blank">EN</a>.'
       operationId: getPublicationTasksUsingGET
       parameters:
         - name: commandId
@@ -1535,7 +1533,7 @@ paths:
         - Batch offer modification
       summary: 'Batch offer modification'
       description:
-        'Use this resource to modify multiple offers at once. <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">Read more</a>.'
+        'Use this resource to modify multiple offers at once. Read more: <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">PL</a> / <a href="../../en/news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">EN</a>.'
       operationId: modificationCommandUsingPUT
       parameters:
         - name: commandId
@@ -1576,7 +1574,7 @@ paths:
       summary: "Modification command summary"
       description:
         'Use this resource to find out how many offers were edited within one {commandId}. You will receive a summary
-         with a number of successfully edited offers. <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#2" target="_blank">Read more</a>.'
+         with a number of successfully edited offers. Read more: <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#2" target="_blank">PL</a> / <a href="../../en/news/2018-04-19-news_grupowa_edycja_ofert_update/#2" target="_blank">EN</a>.'
       operationId: getGeneralReportUsingGET
       parameters:
         - name: commandId
@@ -1605,7 +1603,7 @@ paths:
       summary: "Modification command detailed report"
       description:
         'Use this resource to retrieve a detailed summary of changes introduced within one {commandId} (defaults:
-         limit = 100, offset = 0). <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#2" target="_blank">Read more</a>.'
+         limit = 100, offset = 0). Read more: <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#3" target="_blank">PL</a> / <a href="../../en/news/2018-04-19-news_grupowa_edycja_ofert_update/#3" target="_blank">EN</a>.'
       operationId: getTasksUsingGET
       parameters:
         - name: commandId
@@ -1647,7 +1645,8 @@ paths:
         - Batch offer modification
       summary: "Batch offer price modification"
       operationId: priceModificationCommandUsingPUT
-      description: "Change price of offers."
+      description: >-
+        Change price of offers. Read more: <a href="../../my_offers/#cena" target="_blank">PL</a> / <a href="../../en/my_offers/#price" target="_blank">EN</a>.
       parameters:
         - name: commandId
           in: path
@@ -1745,7 +1744,8 @@ paths:
       tags:
         - Batch offer modification
       summary: "Batch offer quantity modification"
-      description: "Change quantity of multiple offers."
+      description: >-
+        Change quantity of multiple offers. Read more: <a href="../../my_offers/#liczba-przedmiotów" target="_blank">PL</a> / <a href="../../en/my_offers/#quantity" target="_blank">EN</a>.
       operationId: quantityModificationCommandUsingPUT
       parameters:
         - name: commandId
@@ -1846,7 +1846,7 @@ paths:
       summary: 'Get IDs of Allegro categories'
       description: >-
         Use this resource to traverse the Allegro categories tree. It returns the list of the given category's children
-        or a list of the main Allegro categories. <a href="../../sale/#categories" target="_blank">Read more</a>.
+        or a list of the main Allegro categories. Read more: <a href="../../sale/#2-kategorie-i-parametry" target="_blank">PL</a> / <a href="../../en/sale/#2-category-and-parameters" target="_blank">EN</a>.
       operationId: getCategoriesUsingGET
       security:
         - bearer-token-for-application: []
@@ -1880,8 +1880,7 @@ paths:
         - Categories and parameters
       summary: 'Get a category by ID'
       description: >-
-        Use this resource to get the details of a specific category.
-        <a href="https://developer.allegro.pl/multi_variant_offers/#1" target="_blank">Read more</a>.
+        Use this resource to get the details of a specific category. Read more: <a href="../../multi_variant_offers/#1" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#1" target="_blank">EN</a>.
       operationId: getCategoryUsingGET_1
       security:
         - bearer-token-for-application: []
@@ -1914,7 +1913,7 @@ paths:
       summary: 'Get parameters supported by a category'
       description: >-
         Use this resource to get the list of parameters that are supported by the given category.
-        <a href="../../sale/#parameters" target="_blank">Read more</a>.
+        Read more: <a href="../../sale/#parametry" target="_blank">PL</a> / <a href="../../en/sale/#parameters" target="_blank">EN</a>.
       operationId: getFlatParametersUsingGET_2
       security:
         - bearer-token-for-application: []
@@ -2223,7 +2222,7 @@ paths:
         - Delivery
       summary: "Get the user's shipping rates"
       description:
-        'Use this resource to get a list of seller''s shipping rates. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to get a list of seller''s shipping rates. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: getListOfShippingRatestUsingGET
       parameters:
         - name: seller.id
@@ -2273,7 +2272,7 @@ paths:
         - Delivery
       summary: "Create a new shipping rates set"
       description:
-        'Use this resource to create a new seller''s shipping rates set. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to create a new seller''s shipping rates set. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: createShippingRatesSetUsingPOST
       requestBody:
         description: Shipping rates set
@@ -2307,7 +2306,7 @@ paths:
         - Delivery
       summary: 'Get the details of a shipping rates set'
       description:
-        'Use this resource to get details of the given shipping rates set. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to get details of the given shipping rates set. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: getShippingRatesSetUsingGET
       parameters:
         - name: id
@@ -2365,7 +2364,7 @@ paths:
         - Delivery
       summary: "Edit a user's shipping rates set"
       description:
-        'Use this resource to edit a new seller''s shipping rates set. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to edit a new seller''s shipping rates set. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: modifyShippingRatesSetUsingPUT
       parameters:
         - name: id
@@ -2405,8 +2404,8 @@ paths:
       tags:
         - Delivery
       summary: "Get the user's delivery settings"
-      description:
-        "Use this resource to get the delivery settings declared by the seller."
+      description: >-
+        Use this resource to get the delivery settings declared by the seller. Read more: <a href="../../sale/#ustawienia-dostawy" target="_blank">PL</a> / <a href="../../en/sale/#delivery-settings" target="_blank">EN</a>.
       operationId: getSaleDeliverySettings
       responses:
         '200':
@@ -2431,8 +2430,8 @@ paths:
       tags:
         - Delivery
       summary: "Modify the user's delivery settings"
-      description:
-        "Use this resource to modify the delivery settings declared by the seller."
+      description: >-
+        Use this resource to modify the delivery settings declared by the seller. Read more: <a href="../../sale/#ustawienia-dostawy" target="_blank">PL</a> / <a href="../../en/sale/#delivery-settings" target="_blank">EN</a>.
       operationId: putSaleDeliverySettings
       responses:
         '200':
@@ -2723,7 +2722,7 @@ paths:
         - Delivery
       summary: "Get the list of delivery methods"
       description:
-        'Use this resource to get a list of all delivery methods currently available on the platform, as well as those that have already been discontinued. <a href="../../sale/#shipping-rates" target="_blank">Read more</a>.'
+        'Use this resource to get a list of all delivery methods currently available on the platform, as well as those that have already been discontinued. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: getListOfDeliveryMethodsUsingGET
       security:
         - bearer-token-for-application: []
@@ -4082,8 +4081,7 @@ paths:
       summary: 'Get order events'
       description: >-
         Use this resource to return events that allow you to monitor actions which clients perform, i.e.
-        making a purchase, filling in the checkout form (FOD), finishing payment process, making a surcharge.
-        <a href="/orders/#02" target="_blank">Read more</a>.
+        making a purchase, filling in the checkout form (FOD), finishing payment process, making a surcharge. Read more: <a href="../../orders/#dziennik-zdarzeń" target="_blank">PL</a> / <a href="../../en/orders/#event-log" target="_blank">EN</a>.
       operationId: getOrderEventsUsingGET
       parameters:
         - name: from
@@ -4133,8 +4131,7 @@ paths:
       summary: 'Get order events statistics'
       description: >-
         Use this resource to returns object that contains event id and occurrence date of the latest event.
-        It gives you current starting point for reading events.
-        <a href="/orders/#02" target="_blank">Read more</a>.
+        It gives you current starting point for reading events. Read more: <a href="../../orders/#jak-znaleźć-najnowsze-zdarzenie" target="_blank">PL</a> / <a href="../../en/orders/#how-to-find-the-newest-event" target="_blank">EN</a>.
       operationId: getOrderEventsStatisticsUsingGET
       responses:
         '200':
@@ -4151,8 +4148,7 @@ paths:
         - Order management
       summary: "Get the user's orders"
       description: >-
-        Use this resource to get an order list.
-        <a href="/orders/#03" target="_blank">Read more</a>.
+        Use this resource to get an order list. Read more: <a href="../../orders/#lista-zamówień" target="_blank">PL</a> / <a href="../../en/orders/#order-list" target="_blank">EN</a>.
       operationId: getListOfOrdersUsingGET
       parameters:
         - name: offset
@@ -4284,8 +4280,7 @@ paths:
         - Order management
       summary: "Get an order's details"
       description: >-
-        Use this resource to get an order details.
-        <a href="/orders/#04" target="_blank">Read more</a>.
+        Use this resource to get an order details. Read more: <a href="../../orders/#szczegóły-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#order-details" target="_blank">EN</a>.
       operationId: getOrdersDetailsUsingGET
       parameters:
         - name: id
@@ -4354,7 +4349,7 @@ paths:
         Get a list of parcel tracking numbers currently assigned to the order.
         Orders can be retrieved using REST API resource GET /order/checkout-forms.
         Please note that the shipment list may contain parcel tracking numbers added
-        through other channels such as Moje Allegro or by the carrier that delivers the parcel.
+        through other channels such as Moje Allegro or by the carrier that delivers the parcel. Read more: <a href="../../orders/#jak-pobrać-numery-przesyłek-dodane-do-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#retrieving-tracking-numbers" target="_blank">EN</a>.
       operationId: getOrderShipmentsUsingGET
       parameters:
         - name: id
@@ -4380,7 +4375,7 @@ paths:
         - Order management
       summary: "Add a parcel tracking number"
       description: >-
-        Add a parcel tracking number (shipment) to given order line items.
+        Add a parcel tracking number (shipment) to given order line items. Read more: <a href="../../orders/#jak-dodać-numer-przesyłki-do-przedmiotu-w-zamówieniu" target="_blank">PL</a> / <a href="../../en/orders/#add-tracking-number-to-order" target="_blank">EN</a>.
       operationId: createOrderShipmentsUsingPOST
       parameters:
         - name: id
@@ -4425,7 +4420,7 @@ paths:
         - Order management
       summary: "Set seller order status"
       description: >-
-        Use to set seller order status.
+        Use to set seller order status. Read more: <a href="../../orders/#zmiana-statusu-realizacji-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#order-fulfillment-status-changeg" target="_blank">EN</a>.
       operationId: setOrderFulfillmentUsingPUT
       parameters:
         - name: id
@@ -5304,7 +5299,7 @@ paths:
         - Offer management
       summary: "Create offer based on product"
       description: >-
-        Use this resource to create offer based on product. <a href="../../product_offers" target="_blank">Read more</a>.
+        Use this resource to create offer based on product. Read more: <a href="../../product_offers/" target="_blank">PL</a> / <a href="../../en/product_offers/" target="_blank">EN</a>.
       operationId: createProductOffers
       responses:
         '201':
@@ -5951,7 +5946,7 @@ paths:
 
         Returned events may occur by actions made via browser or API.
         The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event).
-        Please note that one change may result in more than one event.
+        Please note that one change may result in more than one event. Read more: <a href="../../my_offers/#dziennik-zdarzeń-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../en/my_offers/#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
 
       operationId: getOfferEvents
       parameters:
