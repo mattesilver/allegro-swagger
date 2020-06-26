@@ -9235,7 +9235,7 @@ components:
           $ref: '#/components/schemas/Location'
         name:
           type: string
-          description: Name of the offer. Words used in the name field cannot be longer than 30 characters.
+          description: Name of the offer. Words used in the name field cannot be longer than 50 characters.
           maxLength: 50
         parameters:
           type: array
@@ -12811,6 +12811,12 @@ components:
             type: string
         description:
           $ref: '#/components/schemas/StandardizedDescription'
+        name:
+          type: string
+          description: Name of the offer. Words used in the name field cannot be longer than 50 characters.
+          maxLength: 50
+        external:
+          $ref: '#/components/schemas/ExternalId'
       description: Single offer data.
     SaleProductOfferRequest:
       allOf:
@@ -12939,7 +12945,7 @@ components:
         handlingTime:
           type: string
           example: PDT12H30M5S
-          description: 'Handling time, ISO 8601 duration format'
+          description: 'Handling time, ISO 8601 duration format.'
         shippingRates:
           allOf:
             - $ref: '#/components/schemas/JustId'
@@ -12948,6 +12954,10 @@ components:
                 name:
                   type: string
                   description: The name of the shipping rate.
+        additionalInfo:
+          type: string
+          maxLength: 650
+          description: "Additional information about delivery."
     ParameterProductOfferRequest:
       type: object
       properties:
