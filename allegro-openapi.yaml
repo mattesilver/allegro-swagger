@@ -8,7 +8,11 @@ servers:
           - allegro.pl                    # Production server
           - allegro.pl.allegrosandbox.pl  # Sandbox server
 info:
-  description: 'https://developer.allegro.pl/about'
+  description:
+    'https://developer.allegro.pl/about
+
+
+    Documentation is generated from [this](https://developer.allegro.pl/swagger.yaml) OpenAPI 3.0 specification file.'
   version: 'latest'
   title: Allegro REST API
   termsOfService: 'https://developer.allegro.pl/rules/'
