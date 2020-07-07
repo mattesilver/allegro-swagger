@@ -244,11 +244,12 @@ paths:
         - name: offset
           in: query
           required: false
-          description: Index of the first returned offer from all search results.
+          description: Index of the first returned offer from all search results. Maximum sum of offset and limit is 10 000 000.
           schema:
             type: integer
             format: int32
             minimum: 0
+            maximum: 9999999
       responses:
         '200':
           description: The list of offers returned successfully.
