@@ -12591,9 +12591,7 @@ components:
           items:
             $ref: '#/components/schemas/SaleProductResponseDto'
         categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/SaleProductResponseCategoriesDto'
+          $ref: '#/components/schemas/SaleProductResponseCategoriesDto'
         filters:
           type: array
           items:
@@ -12788,12 +12786,10 @@ components:
         unit:
           type: string
         options:
-          type: array
-          items:
-            type: object
-            properties:
-              identifiesProduct:
-                type: boolean
+          type: object
+          properties:
+            identifiesProduct:
+              type: boolean
       description: Product's parameter
     SaleProductOffer:
       type: object
