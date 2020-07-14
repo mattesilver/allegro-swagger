@@ -9075,6 +9075,8 @@ components:
             - VAT_MARGIN
             - WITHOUT_VAT
             - NO_INVOICE
+        tax:
+          $ref: '#/components/schemas/Tax'
     ModificationPromotion:
       type: object
       properties:
