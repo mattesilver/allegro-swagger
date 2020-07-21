@@ -443,6 +443,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -450,6 +453,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 0
+            minimum: 0
+            maximum: 999
       responses:
         '200':
           description: Task status successfully returned
@@ -463,6 +469,8 @@ paths:
           description: Forbidden
         '404':
           description: Command not found
+        '422':
+          description: Unprocessable Entity
   '/sale/offer-classifieds-packages/{offerId}':
     get:
       tags:
@@ -1624,6 +1632,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -1631,6 +1642,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 0
+            minimum: 0
+            maximum: 999
       responses:
         '200':
           description: Task status successfully returned
@@ -1644,6 +1658,8 @@ paths:
           description: Forbidden
         '404':
           description: Command not found
+        '422':
+          description: Unprocessable Entity
   '/sale/offer-price-change-commands/{commandId}':
     put:
       tags:
@@ -1726,6 +1742,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -1733,6 +1752,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 0
+            minimum: 0
+            maximum: 999
       responses:
         '200':
           description: Task status successfully returned
@@ -1744,6 +1766,8 @@ paths:
           description: Unauthorized
         '404':
           description: Command not found
+        '422':
+          description: Unprocessable Entity
   '/sale/offer-quantity-change-commands/{commandId}':
     put:
       tags:
@@ -1826,6 +1850,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -1833,6 +1860,9 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 0
+            minimum: 0
+            maximum: 999
       responses:
         '200':
           description: Task status successfully returned
@@ -1844,6 +1874,8 @@ paths:
           description: Unauthorized
         '404':
           description: Command not found
+        '422':
+          description: Unprocessable Entity
   /sale/categories:
     get:
       tags:
