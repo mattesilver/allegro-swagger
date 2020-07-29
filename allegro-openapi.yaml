@@ -9289,7 +9289,7 @@ components:
         publication:
           $ref: '#/components/schemas/Publication'
         sellingMode:
-          $ref: '#/components/schemas/SellingMode'
+          $ref: '#/components/schemas/SellingModeWithNetPrice'
         tax:
           $ref: '#/components/schemas/Tax'
         sizeTable:
@@ -11366,6 +11366,18 @@ components:
           $ref: '#/components/schemas/MinimalPrice'
         startingPrice:
           $ref: '#/components/schemas/StartingPrice'
+    SellingModeWithNetPrice:
+      type: object
+      description: Information on the offer's selling mode.
+      properties:
+        format:
+          $ref: '#/components/schemas/SellingModeFormat'
+        price:
+          $ref: '#/components/schemas/BuyNowPrice'
+        minimalPrice:
+          $ref: '#/components/schemas/MinimalPrice'
+        startingPrice:
+          $ref: '#/components/schemas/StartingPrice'
         netPrice:
           $ref: '#/components/schemas/NetPrice'
     BuyNowPrice:
@@ -12623,7 +12635,7 @@ components:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/SaleProductResponseDto'
+            $ref: '#/components/schemas/BaseSaleProductResponseDto'
         categories:
           $ref: '#/components/schemas/SaleProductResponseCategoriesDto'
         filters:
@@ -12715,6 +12727,16 @@ components:
         description:
           $ref: '#/components/schemas/StandardizedDescription'
     SaleProductResponseDto:
+      allOf:
+        - $ref: '#/components/schemas/BaseSaleProductResponseDto'
+        - type: object
+          properties:
+            eans:
+              type: array
+              description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
+              items:
+                type: string
+    BaseSaleProductResponseDto:
       type: object
       required:
         - id
@@ -12729,11 +12751,6 @@ components:
           maxLength: 50
         category:
           $ref: '#/components/schemas/Category'
-        eans:
-          type: array
-          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
-          items:
-            type: string
         images:
           type: array
           items:
