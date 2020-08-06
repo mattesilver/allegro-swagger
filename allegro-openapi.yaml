@@ -8306,6 +8306,9 @@ components:
         productEANRequired:
           type: boolean
           description: Indicates whether at least one EAN is required when creating products.
+        customParametersEnabled:
+          type: boolean
+          description: Indicates whether custom parameters can be added to offers in this category.
       description: A list of the different options which can be used with this category.
     CompatibilityListSupportedCategoriesDto:
       type: object
@@ -9253,6 +9256,11 @@ components:
           description: >-
             Creation date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
             Cannot be modified.
+        customParameters:
+          type: array
+          description: List of custom parameters. You can add up to 4 custom parameters, each containing exactly one value.
+          items:
+            $ref: '#/components/schemas/CustomParameter'
         delivery:
           $ref: '#/components/schemas/Delivery'
         description:
@@ -14371,3 +14379,15 @@ components:
         name:
           type: string
           description: organization name
+    CustomParameter:
+      title: CustomParameter
+      type: object
+      properties:
+        name:
+          type: string
+          description: custom parameter name
+        values:
+          type: array
+          description: custom parameter values
+          items:
+            type: string
