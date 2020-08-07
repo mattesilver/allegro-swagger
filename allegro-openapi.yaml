@@ -10658,10 +10658,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ValidationError'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationWarning'
         validatedAt:
           type: string
           format: date-time
     ValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+        details:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        userMessage:
+          type: string
+    ValidationWarning:
       type: object
       properties:
         code:
