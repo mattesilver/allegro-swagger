@@ -6871,7 +6871,7 @@ paths:
       tags:
         - Billing
       summary: 'Get a list of billing entries'
-      description: 'The billing entries are sorted in a descending order (newest first) by date on which they occurred. Read more: <a href="../../charges/#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../en/charges/#billing-operations" target="_blank">EN</a>.' 
+      description: 'The billing entries are sorted in a descending order (newest first) by date on which they occurred. Read more: <a href="../../charges/#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../en/charges/#billing-operations" target="_blank">EN</a>.'
       operationId: "getBillingEntries"
       parameters:
         - name: occurredAt.gte
@@ -8810,7 +8810,10 @@ components:
         handlingTime:
           type: string
           example: PDT12H30M5S
-          description: 'Handling time, ISO 8601 duration format'
+          description: >-
+            Handling time, ISO 8601 duration format.
+            This field must be set to one of the following:
+            PT0S for immediately, PT24H, P2D, P3D, P4D, P5D, P7D, P10D, P14D, P21D, P30D, P60D.
         shipmentDate:
           type: string
           format: date-time
@@ -12739,7 +12742,7 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/ProductParameter'
+            $ref: '#/components/schemas/ProductParameterDto'
           description: List of product parameters.
         offerRequirements:
           $ref: '#/components/schemas/OfferRequirements'
@@ -12781,7 +12784,7 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/ProductParameter'
+            $ref: '#/components/schemas/ProductParameterDto'
     SaleProductCompatibilityList:
       type: object
       required:
@@ -12842,6 +12845,37 @@ components:
         - id
       properties:
         id:
+          type: string
+        rangeValue:
+           $ref: '#/components/schemas/ParameterRangeValue'
+        values:
+          type: array
+          items:
+            type: string
+        valuesIds:
+          type: array
+          items:
+            type: string
+        valuesLabels:
+          type: array
+          items:
+            type: string
+        unit:
+          type: string
+        options:
+          type: object
+          properties:
+            identifiesProduct:
+              type: boolean
+      description: Product's parameter
+    ProductParameterDto:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
           type: string
         rangeValue:
           $ref: '#/components/schemas/ParameterRangeValue'
