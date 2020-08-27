@@ -477,7 +477,7 @@ paths:
         - Classifieds
       summary: Get classified packages assigned to an offer
       description:
-        'Use this resource to retrieve classified packages currently assigned to an offer.'
+        'Use this resource to retrieve classified packages currently assigned to an offer. Read more: <a href="../../advertisement/#przypisane-pakiety" target="_blank">PL</a> / <a href="../../en/advertisement/#promo-options-assigned-to-ad" target="_blank">EN</a>.'
       operationId: getClassifiedPackagesUsingGET
       parameters:
         - name: offerId
@@ -522,7 +522,7 @@ paths:
         - Classifieds
       summary: Assign packages to a classified
       description:
-        'Use this resource to assign classified packages to an offer.'
+        'Use this resource to assign classified packages to an offer. Read more: <a href="../../advertisement/#8-pakiet-i-opcje-dodatkowe" target="_blank">PL</a> / <a href="../../en/advertisement/#8-package-and-additional-options" target="_blank">EN</a>.'
       operationId: assignClassifiedPackagesUsingPUT
       parameters:
         - name: offerId
@@ -571,7 +571,7 @@ paths:
         - Classifieds
       summary: Get configurations of packages
       description:
-        'Use this resource to retrieve configurations of classifieds packages for a category.'
+        'Use this resource to retrieve configurations of classifieds packages for a category. Read more: <a href="../../advertisement/#lista-pakietów-i-opcji-dodatkowych" target="_blank">PL</a> / <a href="../../en/advertisement/#list-of-promo-options" target="_blank">EN</a>.'
       operationId: getClassifiedPackageConfigurationsForCategoryUsingGET
       parameters:
         - name: category.id
@@ -605,7 +605,7 @@ paths:
         - Classifieds
       summary: Get the configuration of a package
       description:
-        'Use this resource to retrieve the configuration of a classifieds package.'
+        'Use this resource to retrieve the configuration of a classifieds package. Read more: <a href="../../advertisement/#lista-pakietów-i-opcji-dodatkowych" target="_blank">PL</a> / <a href="../../en/advertisement/#list-of-promo-options" target="_blank">EN</a>.'
       operationId: getClassifiedPackageConfigurationUsingGET
       parameters:
         - name: packageId
@@ -2646,7 +2646,7 @@ paths:
         - Contacts
       summary: 'Create a new contact'
       description:
-        'Use this resource to create a new contact. <a href="../../news/2018-01-17-news_zarzadzanie_kontaktami/#1" target="_blank">Read more</a>.'
+        'Use this resource to create a new contact. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
       operationId: createContactUsingPOST
       responses:
         '201':
@@ -2671,7 +2671,7 @@ paths:
         - Contacts
       summary: "Get the user's contacts"
       description:
-        'Use this resource to get details of many contacts. <a href="../../news/2018-01-17-news_zarzadzanie_kontaktami/#4" target="_blank">Read more</a>.'
+        'Use this resource to get details of many contacts. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
       operationId: getListOfContactsUsingGET
       parameters:
         - name: seller.id
@@ -2697,7 +2697,7 @@ paths:
         - Contacts
       summary: "Get contact details"
       description:
-        'Use this resource to get contact details. <a href="../../news/2018-01-17-news_zarzadzanie_kontaktami/#3" target="_blank">Read more</a>.'
+        'Use this resource to get contact details. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
       operationId: getContactUsingGET
       parameters:
         - name: id
@@ -2724,7 +2724,7 @@ paths:
         - Contacts
       summary: "Modify contact details"
       description:
-        'Use this resource to modify contact details. <a href="../../news/2018-01-17-news_zarzadzanie_kontaktami/#2" target="_blank">Read more</a>.'
+        'Use this resource to modify contact details. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
       operationId: modifyContactUsingPUT
       parameters:
         - name: id
@@ -3920,8 +3920,7 @@ paths:
         Use this resource to get a list of offers based on the provided query parameters.
         At least one of: phrase, seller.id or category.id is required.
         Additional available parameters vary depending on category.id. The
-        parameters are defined in the filters entity.
-        <a href="../../news/2018-07-03-listing_ofert/" target="_blank">Read more</a>.
+        parameters are defined in the filters entity. Read more: <a href="../../listing/" target="_blank">PL</a> / <a href="../../en/listing/" target="_blank">EN</a>.
       operationId: getListing
       security:
         - bearer-token-for-application: []
@@ -3945,6 +3944,15 @@ paths:
           in: query
           description: >-
             The identifier of a seller, to limit the results to offers from this seller. May be provided more than once.
+            Should not be provided when seller.login is given.
+          required: false
+          schema:
+            type: string
+        - name: seller.login
+          in: query
+          description: >-
+            The login of a seller, to limit the results to offers from this seller. May be provided more than once.
+            Should not be provided when seller.id is given.
           required: false
           schema:
             type: string
@@ -3983,7 +3991,7 @@ paths:
           required: false
           schema:
             type: integer
-            minimum: 0
+            minimum: 1
             maximum: 60
             default: 60
         - name: sort
@@ -11035,6 +11043,10 @@ components:
           type: string
           description: The seller ID.
           example: "41846511"
+        login:
+          type: string
+          description: The seller login.
+          example: "myLogin"
         company:
           type: boolean
           description: Indicates whether the seller represents a registered business.
