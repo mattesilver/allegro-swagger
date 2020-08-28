@@ -1987,6 +1987,7 @@ paths:
                           ambiguousValueId: null
                           dependsOnParameterId: null
                           describesProduct: false
+                          customValuesEnabled: false
                         restrictions:
                           min: 0
                           max: 1000000
@@ -2006,6 +2007,7 @@ paths:
                           ambiguousValueId: null
                           dependsOnParameterId: null
                           describesProduct: false
+                          customValuesEnabled: false
                         restrictions:
                           minLength: 2
                           maxLength: 35
@@ -2026,6 +2028,7 @@ paths:
                           ambiguousValueId: null
                           dependsOnParameterId: null
                           describesProduct: false
+                          customValuesEnabled: false
                         dictionary:
                           - id: "11323_1"
                             value: "Nowy"
@@ -2063,6 +2066,7 @@ paths:
                           ambiguousValueId: null
                           dependsOnParameterId: null
                           describesProduct: false
+                          customValuesEnabled: false
                         restrictions:
                           min: 0
                           max: 1000000
@@ -2084,6 +2088,7 @@ paths:
                           ambiguousValueId: null
                           dependsOnParameterId: null
                           describesProduct: true
+                          customValuesEnabled: false
                         restrictions:
                           min: 0
                           max: 1000
@@ -9788,6 +9793,9 @@ components:
         describesProduct:
           type: boolean
           description: Indicates if parameter is used to define products.
+        customValuesEnabled:
+          type: boolean
+          description: Indicates if a custom value can be added to a parameter with an ambiguous value.
       description: A list of the different options which can be used with this parameter.
     DictionaryCategoryParameter:
       allOf:
