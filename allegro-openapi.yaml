@@ -53,6 +53,7 @@ tags:
   - name: Billing
   - name: Commission refunds
   - name: Charity
+  - name: Parcel management
 
 security:
   - bearer-token-for-user: []
@@ -7275,6 +7276,798 @@ paths:
           description: Forbidden
           content: {}
       deprecated: false
+  '/parcel-management/delivery-services':
+    get:
+      tags:
+        - Parcel management
+      summary: "Get available delivery services"
+      description: >-
+        Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI.
+      operationId: getAvailableDeliveryServices
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/DeliveryServices'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcel-create-commands/{commandId}':
+    put:
+      tags:
+        - Parcel management
+      summary: "Create a new parcel"
+      description:
+        'Use this resource to create parcel for delivery. Read more: <a href="https://developer.allegro.pl/wza/#jak-utworzyć-nową-paczkę" target="_blank">PL</a> / <a href="https://developer.allegro.pl/en/wza/#how-to-create-a-new-parcel" target="_blank">EN</a>.'
+      operationId: createNewParcel
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/ParcelCreationParameters'
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+    get:
+      tags:
+        - Parcel management
+      summary: "Get parcel creation status"
+      description:
+        'Use this resource to get parcel creation status.'
+      operationId: getParcelCreationStatus
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: Sent command UUID.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  parcelId:
+                    type: string
+                    description: Id of created parcel.
+                    example: "12345"
+                  status:
+                    type: string
+                    description: Parcel creation status.
+                    enum:
+                      - "IN_PROGRESS"
+                      - "SUCCESS"
+                      - "ERROR"
+                    example: "ERROR"
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error200'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcels/{parcelId}':
+    get:
+      tags:
+        - Parcel management
+      summary: "Get parcel details"
+      description:
+        'Use this resource to get parcel details.'
+      operationId: getParcelDetails
+      parameters:
+        - name: parcelId
+          in: path
+          description: Id of parcel.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ParcelDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error404'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/pickup-date-proposals':
+    get:
+      tags:
+        - Parcel management
+      summary: 'Get parcels pickup date proposals'
+      description: >-
+        Use this resource to get parcels pickup date proposals. Pickup takes place, when courier arrives to take parcels for shipment.
+      operationId: getParcelsPickupDateProposals
+      parameters:
+        - name: parcelId
+          in: query
+          description: >-
+            Ids of parcels. Passing more than one value will search pickup dates for all of them separately.
+            Example: `parcelId=1233&parcelId=1234` - will return pickup date proposals for parcels with ID `1233` and `1234`.
+          required: true
+          schema:
+            type: array
+            maxItems: 100
+            items:
+              type: string
+              maxLength: 100
+        - name: readyDate
+          in: query
+          description: Date when parcels will be ready.
+          example: "2020-01-01"
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/PickupDateParcelsProposals'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error404'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcel-pickup-request-commands/{commandId}':
+    put:
+      tags:
+        - Parcel management
+      summary: "Request parcel pickup"
+      description:
+        'Use this resource to request pickup for parcels.'
+      operationId: requestParcelPickup
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/PickupParcelParameters'
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+    get:
+      tags:
+        - Parcel management
+      summary: "Get parcel pickup status"
+      description:
+        'Use this resource to get parcel pickup status.'
+      operationId: getParcelPickupStatus
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: Sent command UUID.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  status:
+                    type: string
+                    description: Parcel pickup status.
+                    enum:
+                      - "IN_PROGRESS"
+                      - "SUCCESS"
+                      - "PARTIAL_SUCCESS"
+                      - "ERROR"
+                    example: "ERROR"
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error200'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcels/label':
+    get:
+      tags:
+        - Parcel management
+      summary: 'Get parcel label'
+      description: >-
+        Use this resource to get label for created parcel.
+        <br/>Returned content type depends on created parcel.
+      operationId: getParcelLabel
+      parameters:
+        - name: parcelId
+          in: query
+          description: Id of parcel.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                description: File in a binary format
+            plain/text:
+              schema:
+                type: string
+                format: text
+                description: File in a text format
+        '204':
+          description: No Label For Given Parcel
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Parcel Not Found or Parcel Label Is Not Ready Yet
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error404'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcels/protocol':
+    get:
+      tags:
+        - Parcel management
+      summary: 'Get parcels protocol'
+      description: >-
+        Use this resource to get parcels protocol.
+      operationId: getParcelsProtocol
+      parameters:
+        - name: parcelId
+          in: query
+          description: >-
+            Ids of parcels. Passing more than one value will generate protocol for all of them.
+            Example: `parcelId=1233&parcelId=1234` - returns protocol for parcels with ID `1233` and `1234`.
+          required: true
+          schema:
+            type: array
+            maxItems: 100
+            items:
+              type: string
+              maxLength: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                description: File in a binary format
+        '204':
+          description: No Protocol For Given Parcels
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Parcels Not Found or Parcels Protocol Is Not Ready Yet
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error404'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+  '/parcel-management/parcel-cancel-commands/{commandId}':
+    put:
+      tags:
+        - Parcel management
+      summary: "Cancel parcel"
+      description:
+        'Use this resource to cancel parcel.'
+      operationId: cancelParcel
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/CancelParcelParameters'
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+    get:
+      tags:
+        - Parcel management
+      summary: "Get parcel cancellation status"
+      description:
+        'Use this resource to get parcel cancellation status.'
+      operationId: getParcelCancellationStatus
+      parameters:
+        - name: commandId
+          in: path
+          description: Command UUID.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: Sent command UUID.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  status:
+                    type: string
+                    description: Cancelation status.
+                    enum:
+                      - "IN_PROGRESS"
+                      - "SUCCESS"
+                      - "ERROR"
+                    example: "ERROR"
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error200'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -14460,3 +15253,662 @@ components:
           description: custom parameter values
           items:
             type: string
+    PickupDateParcelsProposals:
+      title: PickupDateParcelsProposals
+      type: object
+      properties:
+        pickupDateProposals:
+          type: array
+          description: Pickup date parcels proposals.
+          items:
+            $ref: '#/components/schemas/PickupDateProposals'
+    PickupDateProposals:
+      title: PickupDateProposals
+      type: object
+      properties:
+        parcelId:
+          type: string
+          description: Id of parcel.
+          example: "12345"
+        proposals:
+          type: array
+          description: Pickup date proposal.
+          items:
+            $ref: '#/components/schemas/PickupDateProposal'
+    PickupDateProposal:
+      title: PickupDateProposal
+      type: object
+      description: "Parcel pickup date. In pickup request you have to use exactly the same values as you get from `/parcel-management/pickup-date-proposals`."
+      properties:
+        date:
+          type: string
+          description: "Shipping date (format YYYY-MM-DD). Example: `2020-05-01`"
+          example: "2020-05-01"
+        minTime:
+          type: string
+          description: "Timebox start hour. Example: `10:00`"
+          example: "10:00"
+        maxTime:
+          type: string
+          description: "Timebox finish hour. Example: `14:00`"
+          example: "14:00"
+    DeliveryServices:
+      title: DeliveryServices
+      type: object
+      properties:
+        deliveryServices:
+          type: array
+          description: Delivery services.
+          items:
+            $ref: '#/components/schemas/DeliveryService'
+    DeliveryService:
+      title: DeliveryService
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Delivery service Id.
+          example: 12345
+        service:
+          type: string
+          description: Delivery service.
+          example: "UPS"
+        name:
+          type: string
+          description: Delivery service name.
+          example: "Allegro UPS"
+        additionalServices:
+          $ref: '#/components/schemas/ParcelAdditionalServicesAvailability'
+        owner:
+          type: string
+          enum:
+            - ALLEGRO
+            - CLIENT
+    ParcelAdditionalServicesAvailability:
+      title: AdditionalServices
+      type: object
+      properties:
+        cashOnDelivery:
+          $ref: '#/components/schemas/ParcelAdditionalServicesCashOnDeliveryAvailability'
+        options:
+          type: array
+          description: Delivery services.
+          items:
+            $ref: '#/components/schemas/ParcelAdditionalServicesOptionAvailability'
+    ParcelAdditionalServicesCashOnDeliveryAvailability:
+      title: CashOnDeliveryAvailability
+      type: object
+      properties:
+        available:
+          type: boolean
+          description: Indicates if Cash On Delivery is available as part of Additional Services for parcel creation for carrier.
+        expressAvailable:
+          type: boolean
+          description: Postpaid Express service available. Postpaid value is send to parcel sender in one business day after delivery.
+    ParcelAdditionalServicesOptionAvailability:
+      title: AdditionalServicesAvailableOption
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of option that can be passed to additionalServices for parcel creation.
+          example: guarantee0930
+        description:
+          type: string
+          description: Brief description of option.
+          example: The order is guaranteed to be delivered before 09:30 am.
+    ParcelCreationParameters:
+      type: object
+      required:
+        - serviceId
+        - receiver
+        - pickup
+        - items
+        - type
+      properties:
+        serviceId:
+          type: integer
+          description: Delivery service id.
+          example: 12345
+        receiver:
+          $ref: '#/components/schemas/Receiver'
+        pickup:
+          $ref: '#/components/schemas/Pickup'
+        items:
+          type: array
+          description: Parcel items details.
+          items:
+            $ref: '#/components/schemas/ParcelItemDetails'
+        type:
+          type: string
+          enum:
+            - PACKAGE
+            - DOX
+            - PALLET
+        label:
+          type: object
+          properties:
+            sender:
+              $ref: '#/components/schemas/Sender'
+            fileFormat:
+              type: string
+              description: Label file format.
+              enum:
+                - PDF
+                - ZPL
+                - EPL
+            pageFormat:
+              type: string
+              description: Label page format.
+              enum:
+                - A4
+                - A6
+            referenceNumber:
+              type: string
+              description: "Parcel identifier in own system. Example: `your_ordering_number`."
+              example: "abcd1234"
+        additionalServices:
+          $ref: '#/components/schemas/ParcelAdditionalServices'
+    Sender:
+      type: object
+      description: Parcel's sender data.
+      required:
+        - address
+      properties:
+        address:
+          $ref: '#/components/schemas/ParcelCreationAddressWithMandatoryPlace'
+        email:
+          type: string
+          description: Email.
+          example: "email@mail.com"
+        name:
+          type: string
+          description: Person name.
+          example: "Jan Kowalski"
+        company:
+          type: string
+          description: Company name.
+          example: "Allegro.pl sp. z o.o."
+        phone:
+          type: string
+          description: Phone.
+          example: "500600700"
+    Receiver:
+      type: object
+      description: Parcel's receiver data.
+      required:
+        - email
+      properties:
+        address:
+          $ref: '#/components/schemas/ParcelCreationAddress'
+        email:
+          type: string
+          description: Must be a valid buyer email generated by Allegro.
+          example: "hamu7udk3p+17454c1b6@allegromail.pl"
+        name:
+          type: string
+          description: Person name.
+          example: "Jan Kowalski"
+        company:
+          type: string
+          description: Company name.
+          example: "Allegro.pl sp. z o.o."
+        phone:
+          type: string
+          description: Phone.
+          example: "500600700"
+        pointId:
+          type: string
+          description: Pickup point id. You can get it from order or directly from courier service.
+          example: "1234567"
+    Pickup:
+      type: object
+      description: Parcel's pickup data.
+      required:
+        - address
+      properties:
+        address:
+          $ref: '#/components/schemas/ParcelCreationAddressWithMandatoryPlace'
+        email:
+          type: string
+          description: Email.
+          example: "email@mail.com"
+        name:
+          type: string
+          description: Person name.
+          example: "Jan Kowalski"
+        company:
+          type: string
+          description: Company name.
+          example: "Allegro.pl sp. z o.o."
+        phone:
+          type: string
+          description: Phone.
+          example: "500600700"
+        pointId:
+          type: string
+          description: Pickup point id. You can get it from order or directly from courier service.
+          example: "1234567"
+    ParcelCreationAddress:
+      type: object
+      description: Address data.
+      properties:
+        street:
+          type: string
+          example: "Główna"
+        postCode:
+          type: string
+          example: "10-200"
+        city:
+          type: string
+          example: "Warszawa"
+        countryCode:
+          type: string
+          description: Country code in ISO 3166-1 alfa-2 format (two-letter code).
+          default: "PL"
+        county:
+          type: string
+          description: Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code )
+          example: "AL"
+    ParcelCreationAddressWithMandatoryPlace:
+      type: object
+      description: Address data.
+      required:
+        - street
+        - postCode
+        - city
+      properties:
+        street:
+          type: string
+          description: Street.
+          example: "Główna"
+        postCode:
+          type: string
+          description: Post code.
+          example: "10-200"
+        city:
+          type: string
+          description: City.
+          example: "Warszawa"
+        countryCode:
+          type: string
+          description: Country code in ISO 3166-1 alfa-2 format (two-letter code).
+          default: "PL"
+        county:
+          type: string
+          description: Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code )
+          example: "AL"
+    ParcelItemDetailsWithWaybill:
+      type: object
+      description: Parcel item details.
+      properties:
+        waybill:
+          type: string
+          description: Parcel waybill.
+          example: "123"
+        dimensions:
+          type: object
+          description: Parcel dimensions.
+          properties:
+            height:
+              $ref: '#/components/schemas/DimensionItem'
+            width:
+              $ref: '#/components/schemas/DimensionItem'
+            depth:
+              $ref: '#/components/schemas/DimensionItem'
+        weight:
+          type: object
+          properties:
+            value:
+              type: string
+              description: Weight value, provided in a string format to avoid rounding errors.
+              example: "12.45"
+            unit:
+              type: string
+              description: Weight unit. Currently only `KILOGRAM` is accepted.
+              example: "KILOGRAM"
+              default: "KILOGRAM"
+        description:
+          type: string
+          description: Parcel description.
+          example: "Car wheels."
+        value:
+          type: object
+          description: Declared Parcel value.
+          required:
+            - amount
+            - currency
+          properties:
+            amount:
+              type: string
+              description: The amount provided in a string format to avoid rounding errors.
+              example: "2.50"
+            currency:
+              type: string
+              description: ISO 4217 currency code. Currently only PLN is available.
+              example: "PLN"
+    ParcelItemDetails:
+      type: object
+      description: Parcel item details.
+      properties:
+        dimensions:
+          type: object
+          description: Parcel dimensions.
+          properties:
+            height:
+              $ref: '#/components/schemas/DimensionItem'
+            width:
+              $ref: '#/components/schemas/DimensionItem'
+            depth:
+              $ref: '#/components/schemas/DimensionItem'
+        weight:
+          type: object
+          properties:
+            value:
+              type: string
+              description: Weight value, provided in a string format to avoid rounding errors.
+              example: "12.45"
+            unit:
+              type: string
+              description: Weight unit. Currently only `KILOGRAM` is accepted.
+              example: "KILOGRAM"
+              default: "KILOGRAM"
+        description:
+          type: string
+          description: Parcel description.
+          example: "Car wheels."
+        value:
+          type: object
+          description: Declared Parcel value.
+          required:
+            - amount
+            - currency
+          properties:
+            amount:
+              type: string
+              description: The amount provided in a string format to avoid rounding errors.
+              example: "2.50"
+            currency:
+              type: string
+              description: ISO 4217 currency code. Currently only PLN is available.
+              example: "PLN"
+    ParcelDetails:
+      type: object
+      properties:
+        parcelId:
+          type: string
+          description: Id of parcel.
+          example: "1234"
+        serviceId:
+          type: integer
+          description: Delivery service id.
+          example: 3456
+        receiver:
+          $ref: '#/components/schemas/Receiver'
+        pickup:
+          $ref: '#/components/schemas/Pickup'
+        items:
+          type: array
+          description: Parcel items details.
+          items:
+            $ref: '#/components/schemas/ParcelItemDetailsWithWaybill'
+        type:
+          type: string
+          enum:
+            - PACKAGE
+            - DOX
+            - PALLET
+        label:
+          type: object
+          properties:
+            sender:
+              $ref: '#/components/schemas/Sender'
+            fileFormat:
+              type: string
+              description: Label file format.
+              enum:
+                - PDF
+                - ZPL
+                - EPL
+            referenceNumber:
+              type: string
+              description: "Parcel identifier in own system. Example: `Ordering number`."
+              example: "abcd1234"
+        additionalServices:
+          $ref: '#/components/schemas/ParcelAdditionalServices'
+        state:
+          type: string
+          enum:
+            - DRAFT
+            - CREATED
+            - CANCELLED
+    PickupParcelParameters:
+      type: object
+      properties:
+        parcelIds:
+          type: array
+          description: Ids of parcels.
+          items:
+            type: string
+            example: "12345"
+        pickupDate:
+          $ref: '#/components/schemas/PickupDateProposal'
+    ParcelAdditionalServices:
+      type: object
+      description: Additional services.
+      properties:
+        cashOnDelivery:
+          type: object
+          required:
+            - value
+            - accountNumber
+            - name
+          description: "Cash on delivery service."
+          properties:
+            value:
+              type: object
+              description: Postpaid value.
+              required:
+                - amount
+                - currency
+              properties:
+                amount:
+                  type: string
+                  description: The amount provided in a string format to avoid rounding errors.
+                  example: "2.50"
+                currency:
+                  type: string
+                  description: ISO 4217 currency code. Currently only PLN is available.
+                  example: "PLN"
+            accountNumber:
+              type: string
+              example: "12345678901234567890123456"
+              description: "Bank account number."
+            name:
+              type: string
+              example: "Jan Kowalski"
+              description: "Bank account owner."
+            express:
+              type: boolean
+              default: false
+              example: false
+              description: "Postpaid Express service. Postpaid value is send to parcel sender in one business day after delivery."
+        options:
+          type: array
+          description: "Additional services provided within delivery. Their description are obtainted with delivery services from `/parcel-management/delivery-services`."
+          items:
+            type: string
+    CancelParcelParameters:
+      type: object
+      properties:
+        parcelId:
+          type: string
+          description: Id of parcel.
+          example: "1234"
+    Error200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code. You can use this code when contacting us about any problems with our systems.
+          example: string
+        details:
+          type: string
+          description: >-
+            For some cases, this field provides more details regarding the error. This field can not be null.
+          example: string
+        message:
+          type: string
+          description: >-
+            A message directed to the developer of the program. This message give you some more technical details on
+            what exactly has happened.
+          example: string
+        path:
+          type: string
+          description: >-
+            This field will point to a specific field in object if the error is connected to a problem with such specific
+            field. This field can be empty
+          example: string
+        userMessage:
+          type: string
+          description: >-
+            The message that can be presented directly to your user. It will not contain any technical information. This
+            message is translated based on the value of the `Accept-Language` header. By default message in Polish is
+            returned.
+          example: string
+    Error400:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code. You can use this code when contacting us about any problems with our systems.
+          example: "VALIDATION_ERROR"
+        details:
+          type: string
+          description: >-
+            For some cases, this field provides more details regarding the error. This field can not be null.
+          example: "Invalid value: null"
+        message:
+          type: string
+          description: >-
+            A message directed to the developer of the program. This message give you some more technical details on
+            what exactly has happened.
+          example: may not be null
+        path:
+          type: string
+          description: >-
+            This field will point to a specific field in object if the error is connected to a problem with such specific
+            field. This field can be empty
+          example: serviceId
+        userMessage:
+          type: string
+          description: >-
+            The message that can be presented directly to your user. It will not contain any technical information. This
+            message is translated based on the value of the `Accept-Language` header. By default message in Polish is
+            returned.
+          example: may not be null
+    Error403:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code. You can use this code when contacting us about any problems with our systems.
+          example: "AUTHENTICATION_ERROR"
+        details:
+          type: string
+          description: >-
+            For some cases, this field provides more details regarding the error.
+          example: null
+        message:
+          type: string
+          description: >-
+            A message directed to the developer of the program. This message give you some more technical details on
+            what exactly has happened.
+          example: Brak dostępu, więcej informacji w regulaminie usługi Wysyłam z Allegro
+        path:
+          type: string
+          description: >-
+            This field will point to a specific field in object if the error is connected to a problem with such specific
+            field.
+          example: header.authorization
+        userMessage:
+          type: string
+          description: >-
+            The message that can be presented directly to your user. It will not contain any technical information. This
+            message is translated based on the value of the 'Accept-Language' header. By default message in Polish is
+            returned.
+          example: null
+    Error404:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code. You can use this code when contacting us about any problems with our systems.
+          example: "ERROR"
+        details:
+          type: string
+          description: >-
+            For some cases, this field provides more details regarding the error. This field can not be null.
+          example: null
+        message:
+          type: string
+          description: >-
+            A message directed to the developer of the program. This message give you some more technical details on
+            what exactly has happened.
+          example: Command doesn't exist
+        path:
+          type: string
+          description: >-
+            This field will point to a specific field in object if the error is connected to a problem with such specific
+            field. This field can be empty
+          example: /parcel-management/parcel-pickup-request-commands/{commandId}
+        userMessage:
+          type: string
+          description: >-
+            The message that can be presented directly to your user. It will not contain any technical information. This
+            message is translated based on the value of the `Accept-Language` header. By default message in Polish is
+            returned.
+          example: Command doesn't exist
+    Error504:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code. You can use this code when contacting us about any problems with our systems.
+          example: "UPSTREAM_SERVICE_TIMEOUT"
+        details:
+          type: string
+          description: >-
+            For some cases, this field provides more details regarding the error.
+          example: null
+        message:
+          type: string
+          description: >-
+            A message directed to the developer of the program. This message give you some more technical details on
+            what exactly has happened.
+          example: Błąd połączenia z systemem firmy kurierskiej
+        path:
+          type: string
+          description: >-
+            This field will point to a specific field in object if the error is connected to a problem with such specific
+            field.
+          example: null
+        userMessage:
+          type: string
+          description: >-
+            The message that can be presented directly to your user. It will not contain any technical information. This
+            message is translated based on the value of the 'Accept-Language' header. By default message in Polish is
+            returned.
+          example: null
+    DimensionItem:
+      type: object
+      properties:
+        value:
+          type: integer
+          description: Dimension value.
+          example: 12
+        unit:
+          type: string
+          description: Dimension unit. Currently only `CENTIMETER` is accepted.
+          example: "CENTIMETER"
+          default: "CENTIMETER"
