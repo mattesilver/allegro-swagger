@@ -686,12 +686,6 @@ paths:
         'Use this resource to receive your sales score. <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">Read more</a>.'
       operationId: getUserRatingsUsingGET
       parameters:
-        - name: user.id
-          in: query
-          description: Filter by user id, you are allowed to get your ratings only.
-          required: true
-          schema:
-            type: string
         - name: recommended
           in: query
           description: Filter by recommended.
@@ -884,12 +878,6 @@ paths:
             default: 100
             minimum: 1
             maximum: 1000
-        - name: user.id
-          in: query
-          description: User identifier.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -1081,13 +1069,6 @@ paths:
         and <a href="../../news/2018-02-01-rabaty_ilosciowe/#2" target="_blank">Multipack</a>.</p>
       operationId: listSellerPromotionsUsingGET_1
       parameters:
-        - name: user.id
-          in: query
-          description: The id of the user who is the owner of the promotions.
-          required: true
-          schema:
-            type: string
-          example: "11111111"
         - name: limit
           in: query
           description: Limit of promotions per page.
@@ -2242,12 +2223,6 @@ paths:
             default: 100
             minimum: 1
             maximum: 1000
-        - name: user.id
-          in: query
-          description: User identifier.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -2267,13 +2242,6 @@ paths:
       description:
         'Use this resource to get a list of seller''s shipping rates. Read more: <a href="../../sale/#cennik-dostaw" target="_blank">PL</a> / <a href="../../en/sale/#shipping-price" target="_blank">EN</a>.'
       operationId: getListOfShippingRatestUsingGET
-      parameters:
-        - name: seller.id
-          in: query
-          description: Shipping rates owner identifier.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -2679,13 +2647,6 @@ paths:
       description:
         'Use this resource to get details of many contacts. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
       operationId: getListOfContactsUsingGET
-      parameters:
-        - name: seller.id
-          in: query
-          description: Contacts owner identifier.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -2993,13 +2954,6 @@ paths:
         'Use this resource to get all size tables assigned to a seller account.
            <a href="../../news/2018-04-19-news_tabele_rozmiarow/" target="_blank">Read more</a>.'
       operationId: getTablesUsingGET
-      parameters:
-        - name: user.id
-          in: query
-          description: User identifier.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Size tables returned successfully
@@ -3022,12 +2976,6 @@ paths:
         'Use this resource to get seller return policies listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
       operationId: getPublicSellerListingUsingGET_1
       parameters:
-        - name: seller.id
-          in: query
-          description: Filter by user id. You are allowed to get your return policies only.
-          required: true
-          schema:
-            type: string
         - name: limit
           in: query
           description: The limit of elements in the response.
@@ -3163,12 +3111,6 @@ paths:
         'Use this resource to get seller implied warranties listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
       operationId: getPublicSellerListingUsingGET
       parameters:
-        - name: seller.id
-          in: query
-          description: Filter by user id. You are allowed to get your implied warranties only.
-          required: true
-          schema:
-            type: string
         - name: limit
           in: query
           description: The limit of elements in the response.
@@ -3305,12 +3247,6 @@ paths:
         'Use this resource to get seller warranties listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
       operationId: getPublicSellerListingUsingGET_2
       parameters:
-        - name: seller.id
-          in: query
-          description: Filter by user id. You are allowed to get your warranties only.
-          required: true
-          schema:
-            type: string
         - name: limit
           in: query
           description: The limit of elements in the response.
@@ -3634,12 +3570,6 @@ paths:
         <a href="https://developer.allegro.pl/multi_variant_offers/#6" target="_blank">Read more</a>.
       operationId: getVariantSets
       parameters:
-        - name: user.id
-          in: query
-          description: Filter by user id, you are allowed to get your variant sets only.
-          required: true
-          schema:
-            type: string
         - name: offset
           in: query
           description: Index of first returned variant set.
@@ -4894,12 +4824,6 @@ paths:
         <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagi" target="_blank">Read more</a>.
       operationId: listSellerTagsGET_1
       parameters:
-        - name: user.id
-          in: query
-          description: User identifier.
-          required: true
-          schema:
-            type: string
         - name: limit
           in: query
           description: The limit of elements in the response.
