@@ -38,7 +38,7 @@ tags:
   - name: Additional services
   - name: After sale services
   - name: Offer variants
-  - name: Sets and rebates
+  - name: Rebates and promotions
   - name: Promotion campaigns
   - name: Badge campaigns
   - name: Delivery
@@ -251,6 +251,24 @@ paths:
             format: int32
             minimum: 0
             maximum: 9999999
+        - name: category.id
+          in: query
+          description: The identifier of the category, where you want to search for offers.
+          required: false
+          schema:
+            type: string
+        - name: product.id.empty
+          in: query
+          description: Allow to filter offers by existence of product ID.
+          required: false
+          schema:
+            type: boolean
+        - name: productizationRequired
+          in: query
+          description: Allow to filter offers from categories where productization is required.
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: The list of offers returned successfully.
@@ -892,25 +910,38 @@ paths:
   /sale/loyalty/promotions:
     post:
       tags:
-        - Sets and rebates
+        - Rebates and promotions
       summary: "Create a new promotion"
       description: >-
         This endpoint creates a new promotion. You can define the following types of promotions:
 
-        1. Bundle
+        1. Wholesale price list
+        <br>
+        Only company users will see and be eligible for this type of promotion.
+        In order to create a wholesale price list, you also have to be a company user. Define a promotion with a single benefit
+        of type **WHOLESALE_PRICE_LIST** and a single criterion of type **OFFERS_ASSIGNED_EXTERNALLY**.
+        The benefit specification should contain a name (it will be visible to you only) and a list of discount thresholds.
+        Threshold's quantity defines the minimum number of units of an offer for which the threshold is applicable (`lowerBound`).
+        Threshold's discount defines the discount percentage applied when the threshold is applied. The percentage's fractional part must be equal to 0.
+        Only the highest applicable threshold (if any) will be applied to the total price of units of the offer bought.
+        A threshold with higher quantity than another threshold in the price list must also have a higher discount.
+        In order to assign offers to a wholesale price list, use `discounts` field in <a href="#operation/modificationCommandUsingPUT">batch offer modification</a>.
 
+        2. Bundle
+        <br>
         In order to create a new bundle, you have to define a
          promotion with a single benefit of type **ORDER_FIXED_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. In the benefit specification you have to declare the discount amount that you want to be deducted from the sum of bundled offers prices. In the offer criterion you need to pass a list of offers that are to be grouped as a bundle. For each offer you have to define a fixed quantity (that many pieces of your offer will be part of the bundle) and you also have to set a promotionEntryPoint flag (offers with this flag set to true will have a section that allows the users to purchase your bundle).
 
-        2. Multipack
-
+        3. Multipack
+        <br>
         In order to create a new multipack, you have to define a promotion with a single benefit of type **UNIT_PERCENTAGE_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. The benefit specification should contain a configuration section with a percentage which indicates the specific discount for the discounted offer. This percentage should be an integer value greater than 15 for quantity 2, greater than 30 for quantity 3, greater than 40 for quantity 4, greater than 50 for quantity 5 and lower than or equal to 100. The specification should also contain a trigger section with a field forEachQuantity that defines the amount of items in the multipack which is necessary to trigger the benefit. Additionally, the discountedNumber field must be set to 1 by default as you can only discount one unit in a multipack. Finally, the offer criterion specifies the offer for which the multipack promotion will take effect.
 
-        3. Cross-offer multipack
-
+        4. Cross-offer multipack
+        <br>
         A cross-offer multipack is created in the same fashion as a standard multipack. The only difference is that you need to pass
         more than 1 offer in the offer criterion section. This group of offers is then considered as a pool from which users can
         pick and choose forEachQuantity offers and the cheapest of them gets a discount.
+
 
         Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/" target="_blank">bundles</a>, <a href="../../news/2018-02-01-rabaty_ilosciowe/" target="_blank">multipack</a> and <a href="../../news/2018-10-08-rabaty_ilosciowe/" target="_blank">cross-offer multipack</a>.
       operationId: createPromotionUsingPOST_1
@@ -922,6 +953,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/SellerRebateDto'
               examples:
+                wholesale-price-list:
+                  summary: Wholesale Price List
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: WHOLESALE_PRICE_LIST
+                          name: "Cardboard boxes"
+                          thresholds:
+                            - quantity:
+                                lowerBound: 2000
+                              discount:
+                                percentage: "5"
+                            - quantity:
+                                lowerBound: 4000
+                              discount:
+                                percentage: "10"
+                            - quantity:
+                                lowerBound: 6000
+                              discount:
+                                percentage: "15"
+                    offerCriteria:
+                      - type: OFFERS_ASSIGNED_EXTERNALLY
                 bundle:
                   summary: Bundle
                   value:
@@ -986,10 +1042,16 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: >-
+            Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: >-
-            Validation failed - your request was correct, but the promotion
-            could not be created.
+            Validation failed – request had correct syntax, but violated validation rules
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -1000,6 +1062,28 @@ paths:
             schema:
               $ref: '#/components/schemas/SellerCreateRebateRequestDto'
             examples:
+              wholesale-price-list:
+                summary: Wholesale Price List
+                value:
+                  benefits:
+                    - specification:
+                        type: WHOLESALE_PRICE_LIST
+                        name: "Cardboard boxes"
+                        thresholds:
+                          - quantity:
+                              lowerBound: 2000
+                            discount:
+                              percentage: "5"
+                          - quantity:
+                              lowerBound: 4000
+                            discount:
+                              percentage: "10"
+                          - quantity:
+                              lowerBound: 6000
+                            discount:
+                              percentage: "15"
+                  offerCriteria:
+                    - type: OFFERS_ASSIGNED_EXTERNALLY
               bundle:
                 summary: Bundle
                 value:
@@ -1052,7 +1136,7 @@ paths:
         required: true
     get:
       tags:
-        - Sets and rebates
+        - Rebates and promotions
       summary: "Get the user's list of promotions"
       description: >-
         <p>Get a list of promotions defined by the authorized user.</p>
@@ -1091,7 +1175,7 @@ paths:
             default: 0
         - name: offer.id
           in: query
-          description: Filter by offer id.
+          description: Filter by offer id. No promotions with `OFFERS_ASSIGNED_EXTERNALLY` criteria will be returned if this parameter is present.
           schema:
             type: string
           example: "8226673525"
@@ -1134,7 +1218,7 @@ paths:
   '/sale/loyalty/promotions/{promotionId}':
     get:
       tags:
-        - Sets and rebates
+        - Rebates and promotions
       summary: "Get a promotion data by id"
       description:
         'Use this resource to returns the requested promotion. You need to use its unique id.
@@ -1161,9 +1245,99 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+    put:
+      tags:
+        - Rebates and promotions
+      summary: "Modify a promotion"
+      description: >-
+        Use this resource to update a promotion by its unique id.
+        Only wholesale price lists can be updated. Benefit type cannot be changed.
+      operationId: updatePromotionUsingPUT
+      responses:
+        '200':
+          description: Successfully updated the requested promotion
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SellerRebateDto'
+              examples:
+                wholesale-price-list:
+                  summary: Wholesale Price List
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: WHOLESALE_PRICE_LIST
+                          name: "Cardboard boxes - new version"
+                          thresholds:
+                            - quantity:
+                                lowerBound: 1500
+                              discount:
+                                percentage: "6"
+                            - quantity:
+                                lowerBound: 3000
+                              discount:
+                                percentage: "11"
+                            - quantity:
+                                lowerBound: 4500
+                              discount:
+                                percentage: "16"
+                    offerCriteria:
+                      - type: OFFERS_ASSIGNED_EXTERNALLY
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: >-
+            Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: >-
+            Validation failed – request had correct syntax, but violated validation rules
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/SellerCreateRebateRequestDto'
+            examples:
+              wholesale-price-list:
+                summary: Wholesale Price List
+                value:
+                  benefits:
+                    - specification:
+                        type: WHOLESALE_PRICE_LIST
+                        name: "Cardboard boxes - new version"
+                        thresholds:
+                          - quantity:
+                              lowerBound: 1500
+                            discount:
+                              percentage: "6"
+                          - quantity:
+                              lowerBound: 3000
+                            discount:
+                              percentage: "11"
+                          - quantity:
+                              lowerBound: 4500
+                            discount:
+                              percentage: "16"
+                  offerCriteria:
+                    - type: OFFERS_ASSIGNED_EXTERNALLY
+        required: true
     delete:
       tags:
-        - Sets and rebates
+        - Rebates and promotions
       summary: "Deactivate a promotion by id"
       description:
         'Use this resource to deactivate the requested promotion. You need to use its unique id.
@@ -8895,7 +9069,7 @@ components:
           $ref: '#/components/schemas/BenefitSpecification'
     BenefitSpecification:
       type: object
-      description: "One of: BundleBenefitSpecification, MultiPackBenefitSpecification"
+      description: "One of: WholesalePriceListBenefitSpecification, BundleBenefitSpecification, MultiPackBenefitSpecification"
       properties:
         type:
           type: string
@@ -8905,8 +9079,52 @@ components:
       discriminator:
         propertyName: type
         mapping:
+          WHOLESALE_PRICE_LIST: '#/components/schemas/WholesalePriceListBenefitSpecification'
           ORDER_FIXED_DISCOUNT: '#/components/schemas/BundleBenefitSpecification'
           UNIT_PERCENTAGE_DISCOUNT: '#/components/schemas/MultiPackBenefitSpecification'
+    WholesalePriceListBenefitSpecification:
+      allOf:
+        - $ref: "#/components/schemas/BenefitSpecification"
+        - type: object
+          required:
+            - name
+            - thresholds
+            - configuration
+            - trigger
+          properties:
+            type:
+              type: string
+              default: 'WHOLESALE_PRICE_LIST'
+            name:
+              type: string
+              description: 'Price list name (visible to you only).'
+              example: "Cardboard boxes"
+            thresholds:
+              type: array
+              description: 'List of discount thresholds. A threshold with higher quantity.lowerBound than another must also have higher discount.percentage.'
+              items:
+                type: object
+                properties:
+                  quantity:
+                    type: object
+                    required:
+                      - lowerBound
+                    properties:
+                      lowerBound:
+                        type: number
+                        example: 100
+                        minimum: 2
+                        maximum: 100000
+                        description: 'Minimum number of units of an offer for which the threshold is applicable.'
+                  discount:
+                    type: object
+                    required:
+                      - percentage
+                    properties:
+                      percentage:
+                        type: string
+                        example: "5"
+                        description: 'Discount percentage applied when the threshold is applied. The fractional part must be equal to 0.'
     BundleBenefitSpecification:
       allOf:
         - $ref: "#/components/schemas/BenefitSpecification"
@@ -9791,6 +10009,8 @@ components:
           $ref: '#/components/schemas/AdditionalServicesGroup'
         delivery:
           $ref: '#/components/schemas/ModificationDelivery'
+        discounts:
+          $ref: '#/components/schemas/ModificationDiscounts'
         payments:
           $ref: '#/components/schemas/ModificationPayments'
         promotion:
@@ -9806,6 +10026,16 @@ components:
         shippingRates:
           $ref: '#/components/schemas/ShippingRates'
       description: Contains shipping rates to change
+    ModificationDiscounts:
+      type: object
+      properties:
+        wholesalePriceList:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Promotion id of a wholesale price list to assign to the offer or `null` to unassign wholesale price list from the offer.
+      description: Allows you to assign/unassign discounts (rebates) to/from offers.
     ModificationPublication:
       type: object
       properties:
@@ -10177,11 +10407,11 @@ components:
       type: object
       required:
         - type
-        - offers
       properties:
         offers:
           type: array
-          description: Set of offers
+          description: >-
+            Set of offers – only if `type` is `CONTAINS_OFFERS`
           items:
             type: object
             required:
@@ -10204,9 +10434,10 @@ components:
                 example: false
         type:
           type: string
-          description: 'Criteria type: CONTAINS_OFFERS'
+          description: 'Criteria type: CONTAINS_OFFERS or OFFERS_ASSIGNED_EXTERNALLY'
           enum:
             - CONTAINS_OFFERS
+            - OFFERS_ASSIGNED_EXTERNALLY
     OfferCriterium:
       type: object
       properties:
