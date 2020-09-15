@@ -5501,6 +5501,51 @@ paths:
                 $ref: '#/components/schemas/CompatibilityListSupportedCategoriesDto'
         '401':
           description: 'Unauthorized'
+  '/sale/compatibility-list-suggestions':
+    get:
+      tags:
+        - Compatibility List
+      summary: 'Get suggested compatibility list.'
+      description: 'Resource allows to fetch compatibility list suggestion for given offer or product.'
+      operationId: "getCompatibilityListSuggestion"
+      parameters:
+        - name: offer.id
+          in: query
+          description: 'Offer id on the basis of which we will return the suggested compatibility list.'
+          required: false
+          schema:
+            type: string
+        - name: product.id
+          in: query
+          description: 'Product id on the basis of which we will return the suggested compatibility list.'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Compatibility list suggestion returned successfully.'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CompatibilityList'
+        '400':
+          description: 'Bad request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: 'Suggestion was not found.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   '/sale/compatible-products/groups':
     get:
       tags:
