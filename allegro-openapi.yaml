@@ -8211,6 +8211,48 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
+  '/sale/matching-categories':
+    get:
+      tags:
+        - Categories and parameters
+      summary: "Get categories suggestions"
+      description:
+        'Use this resource to receive suggested categories for given phrase.'
+      operationId: categorySuggestionUsingGET
+      parameters:
+        - name: name
+          in: query
+          description: Product name for which you want to get suggested categories.
+          required: true
+          schema:
+            type: string
+            example: "bwm x3"
+      responses:
+        '200':
+          description: Category suggestion returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CategorySuggestionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '406':
+          description: Not Acceptable
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+
 components:
   securitySchemes:
     bearer-token-for-user:
@@ -9301,6 +9343,43 @@ components:
           type: boolean
           description: Indicates whether custom parameters can be added to offers in this category.
       description: A list of the different options which can be used with this category.
+    CategorySuggestionResponse:
+      type: object
+      required:
+        - matching_categories
+      properties:
+        matching_categories:
+          type: array
+          description: List of categories matching with given phrase.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "2"
+                description: Id of category.
+              name:
+                type: string
+                example: Samochody Osobowe
+                description: Category name.
+              parent:
+                type: object
+                description: Parent category object.
+                example:
+                  id:
+                    type: string
+                    example: "1"
+                    description: Id of category.
+                  name:
+                    type: string
+                    example: Motoryzacja
+                    description: Category name.
+                  parent:
+                    type: object
+                    description: Parent category object.
+            required:
+              - id
+              - name
     CompatibilityListSupportedCategoriesDto:
       type: object
       properties:
