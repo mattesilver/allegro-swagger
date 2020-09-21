@@ -7922,6 +7922,15 @@ paths:
           required: true
           schema:
             type: string
+        - name: pageFormat
+          in: query
+          description: Label page format. Only for PDF file.
+          required: false
+          schema:
+            type: string
+            enum:
+              - A4
+              - A6
       responses:
         '200':
           description: OK
@@ -15676,12 +15685,6 @@ components:
                 - PDF
                 - ZPL
                 - EPL
-            pageFormat:
-              type: string
-              description: Label page format.
-              enum:
-                - A4
-                - A6
             referenceNumber:
               type: string
               description: "Parcel identifier in own system. Example: `your_ordering_number`."
