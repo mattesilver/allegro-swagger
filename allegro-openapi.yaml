@@ -8235,7 +8235,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "bwm x3"
+            example: "bmw x3"
       responses:
         '200':
           description: Category suggestion returned successfully.
@@ -12808,6 +12808,7 @@ components:
         - READY_FOR_PROCESSING
         - BUYER_CANCELLED
         - FULFILLMENT_STATUS_CHANGED
+        - BUYER_MODIFIED
       example: "READY_FOR_PROCESSING"
       description: >
         Type of order event.
@@ -12816,6 +12817,7 @@ components:
         * `READY_FOR_PROCESSING` - payment completed. Purchase is ready for processing.
         * `BUYER_CANCELLED` - purchase cancelled by buyer
         * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
+        * `BUYER_MODIFIED` - purchase modified by buyer
     CheckoutForms:
       type: object
       required:
@@ -13087,6 +13089,10 @@ components:
         phoneNumber:
           type: string
           description: Phone number
+          example: null
+        modifiedAt:
+          type: string
+          description: Address modification date
           example: null
     CheckoutFormDeliveryMethod:
       type: object
