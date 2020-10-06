@@ -102,6 +102,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ChangePriceWithoutOutput'
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
   /sale/offers:
     post:
       tags:
@@ -129,6 +132,9 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/Offer'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - User's offer information
@@ -155,6 +161,7 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
             example: 9.99
         - name: sellingMode.price.amount.lte
           in: query
@@ -162,6 +169,7 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 1
             example: 125.99
         - name: publication.status
           in: query
@@ -282,7 +290,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/offers/{offerId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offers/{offerId}:
     put:
       tags:
         - Offer management
@@ -318,6 +329,9 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/Offer'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - User's offer information
@@ -347,6 +361,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
     delete:
       tags:
         - Offer management
@@ -370,7 +387,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  '/sale/offer-publication-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-publication-commands/{commandId}:
     put:
       tags:
         - Offer management
@@ -411,6 +431,9 @@ paths:
               $ref: '#/components/schemas/PublicationChangeCommandDto'
         description: publicationChangeCommandDto
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Offer management
@@ -439,7 +462,10 @@ paths:
           description: Forbidden
         '404':
           description: Command not found
-  '/sale/offer-publication-commands/{commandId}/tasks':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-publication-commands/{commandId}/tasks:
     get:
       tags:
         - Offer management
@@ -490,7 +516,10 @@ paths:
           description: Command not found
         '422':
           description: Unprocessable Entity
-  '/sale/offer-classifieds-packages/{offerId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-classifieds-packages/{offerId}:
     get:
       tags:
         - Classifieds
@@ -536,6 +565,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
     put:
       tags:
         - Classifieds
@@ -584,7 +616,10 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ClassifiedPackages'
-  '/sale/classifieds-packages':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/classifieds-packages:
     get:
       tags:
         - Classifieds
@@ -618,7 +653,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
-  '/sale/classifieds-packages/{packageId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/classifieds-packages/{packageId}:
     get:
       tags:
         - Classifieds
@@ -658,7 +696,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/users/{userId}/ratings-summary':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /users/{userId}/ratings-summary:
     get:
       tags:
         - Public user information
@@ -695,6 +736,9 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
         '404':
           description: User with the given ID not found or user is not a seller.
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:read
   /sale/user-ratings:
     get:
       tags:
@@ -746,6 +790,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:ratings
   /sale/user-ratings/{ratingId}/answer:
     put:
       tags:
@@ -783,6 +830,9 @@ paths:
           description: Not Found
       requestBody:
         $ref: '#/components/requestBodies/UserRatingAnswerRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:ratings
   /sale/user-ratings/{ratingId}/removal:
     put:
       tags:
@@ -820,6 +870,9 @@ paths:
           description: Not Found
       requestBody:
         $ref: '#/components/requestBodies/UserRatingRemovalRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:ratings
   /me:
     get:
       tags:
@@ -847,6 +900,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:read
   /sale/offer-additional-services/groups:
     post:
       tags:
@@ -868,6 +924,9 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/AdditionalServicesGroupRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     get:
       tags:
         - Additional services
@@ -907,6 +966,9 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
   /sale/loyalty/promotions:
     post:
       tags:
@@ -1134,6 +1196,9 @@ paths:
                         - id: '1122334455'
                         - id: '2233445566'
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Rebates and promotions
@@ -1215,7 +1280,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/loyalty/promotions/{promotionId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/loyalty/promotions/{promotionId}:
     get:
       tags:
         - Rebates and promotions
@@ -1245,6 +1313,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
     put:
       tags:
         - Rebates and promotions
@@ -1335,6 +1406,9 @@ paths:
                   offerCriteria:
                     - type: OFFERS_ASSIGNED_EXTERNALLY
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     delete:
       tags:
         - Rebates and promotions
@@ -1366,6 +1440,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
   /sale/loyalty/promotion-campaigns:
     post:
       tags:
@@ -1420,6 +1497,9 @@ paths:
               $ref: '#/components/schemas/PromotionCampaignRequestDto'
         description: request
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
     get:
       tags:
         - Promotion campaigns
@@ -1441,6 +1521,7 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 1
             format: int32
             default: 50
         - name: offset
@@ -1450,6 +1531,7 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
             default: 0
       responses:
         '200':
@@ -1476,6 +1558,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
     delete:
       tags:
         - Promotion campaigns
@@ -1524,7 +1609,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/loyalty/promotion-campaign-applications/{applicationId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
+  /sale/loyalty/promotion-campaign-applications/{applicationId}:
     get:
       tags:
         - Promotion campaigns
@@ -1567,6 +1655,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
     delete:
       tags:
         - Promotion campaigns
@@ -1609,6 +1700,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
   /pricing/fee-preview:
     post:
       tags:
@@ -1657,6 +1751,9 @@ paths:
               $ref: '#/components/schemas/Wrapper_type_for_preview_conditions'
         description: command
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
   /pricing/offer-fee-preview:
     post:
       tags:
@@ -1696,7 +1793,10 @@ paths:
             schema:
               $ref: '#/components/schemas/PublicOfferPreviewRequest'
         required: true
-  '/sale/offer-modification-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offer-modification-commands/{commandId}:
     put:
       tags:
         - Batch offer modification
@@ -1737,6 +1837,9 @@ paths:
               $ref: '#/components/schemas/OfferChangeCommand'
         description: offerChangeCommandDto
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Batch offer modification
@@ -1765,7 +1868,10 @@ paths:
           description: Forbidden
         '404':
           description: Command not found
-  '/sale/offer-modification-commands/{commandId}/tasks':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-modification-commands/{commandId}/tasks:
     get:
       tags:
         - Batch offer modification
@@ -1816,7 +1922,10 @@ paths:
           description: Command not found
         '422':
           description: Unprocessable Entity
-  '/sale/offer-price-change-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-price-change-commands/{commandId}:
     put:
       tags:
         - Batch offer modification
@@ -1853,6 +1962,9 @@ paths:
               $ref: '#/components/schemas/OfferPriceChangeCommand'
         description: offerPriceChangeCommandDto
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Batch offer modification
@@ -1877,7 +1989,10 @@ paths:
           description: Unauthorized
         '404':
           description: Command not found
-  '/sale/offer-price-change-commands/{commandId}/tasks':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-price-change-commands/{commandId}/tasks:
     get:
       tags:
         - Batch offer modification
@@ -1924,7 +2039,10 @@ paths:
           description: Command not found
         '422':
           description: Unprocessable Entity
-  '/sale/offer-quantity-change-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-quantity-change-commands/{commandId}:
     put:
       tags:
         - Batch offer modification
@@ -1961,6 +2079,9 @@ paths:
               $ref: '#/components/schemas/OfferQuantityChangeCommand'
         description: offerQuantityChangeCommandDto
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Batch offer modification
@@ -1985,7 +2106,10 @@ paths:
           description: Unauthorized
         '404':
           description: Command not found
-  '/sale/offer-quantity-change-commands/{commandId}/tasks':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-quantity-change-commands/{commandId}/tasks:
     get:
       tags:
         - Batch offer modification
@@ -2032,6 +2156,9 @@ paths:
           description: Command not found
         '422':
           description: Unprocessable Entity
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
   /sale/categories:
     get:
       tags:
@@ -2408,6 +2535,9 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
   /sale/shipping-rates:
     get:
       tags:
@@ -2452,6 +2582,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     post:
       tags:
         - Delivery
@@ -2485,7 +2618,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/shipping-rates/{id}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /sale/shipping-rates/{id}:
     get:
       tags:
         - Delivery
@@ -2544,6 +2680,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - Delivery
@@ -2584,7 +2723,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/delivery-settings':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /sale/delivery-settings:
     get:
       tags:
         - Delivery
@@ -2611,6 +2753,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - Delivery
@@ -2637,7 +2782,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/points-of-service':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /points-of-service:
     post:
       tags:
         - Points of service
@@ -2664,6 +2812,9 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         $ref: '#/components/requestBodies/Pos'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     get:
       tags:
         - Points of service
@@ -2693,7 +2844,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/points-of-service/{id}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
+  /points-of-service/{id}:
     get:
       tags:
         - Points of service
@@ -2726,6 +2880,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - Points of service
@@ -2761,6 +2918,9 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         $ref: '#/components/requestBodies/Pos'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     delete:
       tags:
         - Points of service
@@ -2788,6 +2948,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /sale/offer-contacts:
     post:
       tags:
@@ -2814,6 +2977,9 @@ paths:
               $ref: '#/components/schemas/ContactRequest'
         description: New contact
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     get:
       tags:
         - Contacts
@@ -2832,7 +2998,10 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-  '/sale/offer-contacts/{id}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
+  /sale/offer-contacts/{id}:
     get:
       tags:
         - Contacts
@@ -2860,6 +3029,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - Contacts
@@ -2894,6 +3066,9 @@ paths:
               $ref: '#/components/schemas/ContactRequest'
         description: Contact
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /sale/delivery-methods:
     get:
       tags:
@@ -3064,6 +3239,9 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - Additional services
@@ -3091,7 +3269,10 @@ paths:
           description: Not Found
       requestBody:
         $ref: '#/components/requestBodies/AdditionalServicesGroupRequest'
-  '/sale/size-tables/{tableId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /sale/size-tables/{tableId}:
     get:
       tags:
         - Size tables
@@ -3119,6 +3300,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
   /sale/size-tables:
     get:
       tags:
@@ -3141,6 +3325,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
   /after-sales-service-conditions/return-policies:
     get:
       tags:
@@ -3183,6 +3370,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     post:
       tags:
         - After sale services
@@ -3210,6 +3400,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ReturnPolicyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/return-policies/{returnPolicyId}:
     get:
       tags:
@@ -3238,6 +3431,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - After sale services
@@ -3276,6 +3472,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ReturnPolicyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/implied-warranties:
     get:
       tags:
@@ -3319,6 +3518,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     post:
       tags:
         - After sale services
@@ -3346,6 +3548,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ImpliedWarrantyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/implied-warranties/{impliedWarrantyId}:
     get:
       tags:
@@ -3374,6 +3579,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - After sale services
@@ -3412,6 +3620,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ImpliedWarrantyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/warranties:
     get:
       tags:
@@ -3454,6 +3665,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     post:
       tags:
         - After sale services
@@ -3481,6 +3695,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/WarrantyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/warranties/{warrantyId}:
     get:
       tags:
@@ -3509,6 +3726,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     put:
       tags:
         - After sale services
@@ -3547,6 +3767,9 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/WarrantyRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/attachments:
     post:
       tags:
@@ -3586,7 +3809,10 @@ paths:
               properties:
                 name:
                   type: string
-                  example: 'uploaded_file.pdf'
+                  example: uploaded_file.pdf
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /after-sales-service-conditions/attachments/{attachmentId}:
     put:
       tags:
@@ -3640,6 +3866,9 @@ paths:
           description: Payload too large.
         '422':
           description: Invalid file content.
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
   /pricing/offer-quotes:
     get:
       tags:
@@ -3682,7 +3911,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/offer-variants':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:billing:read
+  /sale/offer-variants:
     post:
       tags:
         - Offer variants
@@ -3734,6 +3966,9 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/VariantSetRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Offer variants
@@ -3780,7 +4015,10 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-  '/sale/offer-variants/{setId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offer-variants/{setId}:
     put:
       tags:
         - Offer variants
@@ -3838,6 +4076,9 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/VariantSetRequest'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Offer variants
@@ -3865,6 +4106,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
     delete:
       tags:
         - Offer variants
@@ -3890,7 +4134,10 @@ paths:
           description: Forbidden
         '404':
           description: Variant set not found
-  '/sale/images':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/images:
     post:
       tags:
         - Images and attachments
@@ -3936,7 +4183,10 @@ paths:
           description: Unprocessable entity (problem with image server)
       requestBody:
         $ref: '#/components/requestBodies/OfferImageUploadRequest'
-  '/sale/offer-attachments':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-attachments:
     post:
       tags:
         - Images and attachments
@@ -3977,7 +4227,10 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/OfferAttachmentRequest'
-  '/sale/offer-attachments/{attachmentId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/offer-attachments/{attachmentId}:
     put:
       tags:
         - Images and attachments
@@ -4021,6 +4274,9 @@ paths:
           description: Syntactically incorrect request
         '401':
           description: Invalid or missing bearer token
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
   /offers/listing:
     get:
       tags:
@@ -4277,7 +4533,10 @@ paths:
                 $ref: '#/components/schemas/OrderEventsList'
         '401':
           description: Unauthorized
-  '/order/event-stats':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /order/event-stats:
     get:
       tags:
         - Order management
@@ -4295,7 +4554,10 @@ paths:
                 $ref: '#/components/schemas/OrderEventStats'
         '401':
           description: Unauthorized
-  '/order/checkout-forms':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /order/checkout-forms:
     get:
       tags:
         - Order management
@@ -4427,7 +4689,10 @@ paths:
         '422':
           description: >
             Unprocessable Entity - Returned when limit or offset value is outside an acceptable range
-  '/order/checkout-forms/{id}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /order/checkout-forms/{id}:
     get:
       tags:
         - Order management
@@ -4455,7 +4720,10 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
-  '/order/carriers':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /order/carriers:
     get:
       tags:
         - Order management
@@ -4523,6 +4791,9 @@ paths:
           description: Authentication failed, e.g. token is expired
         '404':
           description: Order not found or doesn’t belong to the seller
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
     post:
       tags:
         - Order management
@@ -4567,7 +4838,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/order/checkout-forms/{id}/fulfillment':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /order/checkout-forms/{id}/fulfillment:
     put:
       tags:
         - Order management
@@ -4615,7 +4889,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/disputes':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /sale/disputes:
     get:
       tags:
         - Disputes
@@ -4663,7 +4940,10 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
-  '/sale/disputes/{disputeId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
+  /sale/disputes/{disputeId}:
     get:
       tags:
         - Disputes
@@ -4692,7 +4972,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  '/sale/disputes/{disputeId}/messages':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
+  /sale/disputes/{disputeId}/messages:
     get:
       tags:
         - Disputes
@@ -4740,6 +5023,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
     post:
       tags:
         - Disputes
@@ -4773,7 +5059,10 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/MessageRequest'
-  '/sale/dispute-attachments':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
+  /sale/dispute-attachments:
     post:
       tags:
         - Disputes
@@ -4801,7 +5090,10 @@ paths:
           description: Unprocessable Entity
       requestBody:
         $ref: '#/components/requestBodies/AttachmentDeclaration'
-  '/sale/dispute-attachments/{attachmentId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
+  /sale/dispute-attachments/{attachmentId}:
     put:
       tags:
         - Disputes
@@ -4876,6 +5168,9 @@ paths:
               type: string
               format: binary
               description: File in a binary format
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
     get:
       tags:
         - Disputes
@@ -4905,7 +5200,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  '/order/line-item-id-mappings':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:disputes
+  /order/line-item-id-mappings:
     get:
       tags:
         - Order management
@@ -4941,7 +5239,10 @@ paths:
           description: Not Found
         '422':
           description: Missing required parameter. Provide lineItemId or dealId.
-  '/sale/offer-tags':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /sale/offer-tags:
     post:
       tags:
         - Offer tags
@@ -4989,6 +5290,9 @@ paths:
               $ref: '#/components/schemas/TagRequest'
         description: request
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     get:
       tags:
         - Offer tags
@@ -5037,7 +5341,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
 
-  '/sale/offer-tags/{tagId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
+  /sale/offer-tags/{tagId}:
     delete:
       tags:
         - Offer tags
@@ -5073,6 +5380,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
     put:
       tags:
         - Offer tags
@@ -5117,7 +5427,10 @@ paths:
         description: request
         required: true
 
-  '/sale/offers/{offerId}/tags':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /sale/offers/{offerId}/tags:
     post:
       tags:
         - Offer tags
@@ -5168,6 +5481,9 @@ paths:
               $ref: '#/components/schemas/TagIdsRequest'
         description: request
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
     get:
       tags:
         - Offer tags
@@ -5202,7 +5518,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
 
-  '/sale/offers/{offerId}/rating':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offers/{offerId}/rating:
     get:
       tags:
         - Offer rating
@@ -5234,7 +5553,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthError'
 
-  '/sale/offers/{offerId}/shipping-rates':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offers/{offerId}/shipping-rates:
     get:
       tags:
         - Delivery
@@ -5268,7 +5590,10 @@ paths:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/products':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/products:
     get:
       tags:
         - Products
@@ -5355,7 +5680,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/products/{productId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/products/{productId}:
     get:
       tags:
         - Products
@@ -5388,7 +5716,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/product-proposals':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/product-proposals:
     post:
       tags:
         - Products
@@ -5440,7 +5771,10 @@ paths:
             schema:
               $ref: '#/components/schemas/ProposeSaleProductRequest'
         required: true
-  '/sale/product-offers':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/product-offers:
     post:
       tags:
         - Offer management
@@ -5485,7 +5819,10 @@ paths:
             schema:
               $ref: '#/components/schemas/SaleProductOfferRequest'
         required: true
-  '/sale/compatibility-list/supported-categories':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+  /sale/compatibility-list/supported-categories:
     get:
       tags:
       - Compatibility List
@@ -5500,8 +5837,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CompatibilityListSupportedCategoriesDto'
         '401':
-          description: 'Unauthorized'
-  '/sale/compatibility-list-suggestions':
+          description: Unauthorized
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/compatibility-list-suggestions:
     get:
       tags:
         - Compatibility List
@@ -5606,8 +5946,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
-  '/sale/compatible-products':
+          description: Unauthorized
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/compatible-products:
     get:
       tags:
       - Compatibility List
@@ -5697,8 +6040,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
-  '/account/additional-emails':
+          description: Unauthorized
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /account/additional-emails:
     get:
       tags:
         - Information about user
@@ -5718,6 +6064,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthError'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:read
     post:
       tags:
         - Information about user
@@ -5756,7 +6105,10 @@ paths:
               $ref: '#/components/schemas/AdditionalEmailRequest'
         description: request
         required: true
-  '/account/additional-emails/{emailId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:write
+  /account/additional-emails/{emailId}:
     get:
       tags:
         - Information about user
@@ -5789,6 +6141,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:read
     delete:
       tags:
         - Information about user
@@ -5817,7 +6172,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/payments/payment-operations':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:profile:write
+  /payments/payment-operations:
     get:
       tags:
         - Payments
@@ -5934,7 +6292,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/blacklisted-users':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:payments:read
+  /sale/blacklisted-users:
     get:
       tags:
         - Blacklist management
@@ -5973,6 +6334,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:read
     post:
       tags:
         - Blacklist management
@@ -6011,7 +6375,10 @@ paths:
               $ref: '#/components/schemas/BlacklistRequest'
         description: request
         required: true
-  '/sale/blacklisted-users/{excludedUserId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /sale/blacklisted-users/{excludedUserId}:
     delete:
       tags:
         - Blacklist management
@@ -6023,6 +6390,7 @@ paths:
           schema:
             type: integer
             format: int64
+            minimum: 1
       summary: "Remove users from the blacklist"
       description: "Use this resource to remove users from the blacklist on given account."
       operationId: doRemoveFromBlackList
@@ -6035,7 +6403,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
-  '/bidding/offers/{offerId}/bid':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:settings:write
+  /bidding/offers/{offerId}/bid:
     put:
       tags:
       - Auctions and Bidding
@@ -6087,11 +6458,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
-            description: If bidding was not allowed (see message for explanation).
-            content:
-              application/vnd.allegro.public.v1+json:
-                schema:
-                  $ref: '#/components/schemas/ErrorsHolder'
+          description: If bidding was not allowed (see message for explanation).
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:bids
     get:
       tags:
         - Auctions and Bidding
@@ -6118,7 +6492,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/sale/offer-events':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:bids
+  /sale/offer-events:
     get:
       tags:
         - User's offer information
@@ -6232,7 +6609,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthError'
-  '/sale/badge-campaigns':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/badge-campaigns:
     get:
       tags:
         - Badge campaigns
@@ -6305,12 +6685,15 @@ paths:
                   summary: 'Account is not a Company account type.'
                   value:
                     errors:
-                      - code: 'BB2'
-                        details: null
-                        message: 'Account is not a Company account type'
-                        path: null
-                        userMessage: 'Account is not a Company account type'
-  '/sale/badges':
+                    - code: BB2
+                      details:
+                      message: Account is not a Company account type
+                      path:
+                      userMessage: Account is not a Company account type
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
+  /sale/badges:
     post:
       tags:
         - Badge campaigns
@@ -6492,6 +6875,9 @@ paths:
                       perUser:
                         maxItems: '1'
 
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
     get:
       tags:
         - Badge campaigns
@@ -6513,6 +6899,7 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 0
         - name: limit
           in: query
           description: 'The maximum number of badges returned in the response.'
@@ -6614,12 +7001,15 @@ paths:
                   summary: 'Account is not a Company account type.'
                   value:
                     errors:
-                      - code: 'BB2'
-                        details: null
-                        message: 'Account is not a Company account type'
-                        path: null
-                        userMessage: 'Account is not a Company account type'
-  '/sale/badge-applications/{applicationId}':
+                    - code: BB2
+                      details:
+                      message: Account is not a Company account type
+                      path:
+                      userMessage: Account is not a Company account type
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
+  /sale/badge-applications/{applicationId}:
     get:
       tags:
         - Badge campaigns
@@ -6732,12 +7122,15 @@ paths:
                   summary: 'Badge application not found.'
                   value:
                     errors:
-                      - code: 'BB8'
-                        details: null
-                        message: 'Application not found'
-                        path: null
-                        userMessage: 'Application not found'
-  '/sale/badge-applications':
+                    - code: BB8
+                      details:
+                      message: Application not found
+                      path:
+                      userMessage: Application not found
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
+  /sale/badge-applications:
     get:
       tags:
         - Badge campaigns
@@ -6765,6 +7158,7 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 0
         - name: limit
           in: query
           description: 'The maximum number of applications returned in the response.'
@@ -6871,12 +7265,15 @@ paths:
                   summary: 'Account is not a Company account type'
                   value:
                     errors:
-                      - code: 'BB2'
-                        details: null
-                        message: 'Account is not a Company account type'
-                        path: null
-                        userMessage: 'Account is not a Company account type'
-  '/payments/refunds':
+                    - code: BB2
+                      details:
+                      message: Account is not a Company account type
+                      path:
+                      userMessage: Account is not a Company account type
+      security:
+      - bearer-token-for-user:
+        - allegro:api:campaigns
+  /payments/refunds:
     post:
       tags:
         - Payments
@@ -6919,6 +7316,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:payments:write
     get:
       tags:
         - Payments
@@ -7004,11 +7404,13 @@ paths:
                   count:
                     type: integer
                     format: int32
+                    minimum: 0
                     description: Number of payment operations returned in search result for the given parameters.
                     example: 50
                   totalCount:
                     type: integer
                     format: int32
+                    minimum: 0
                     description: Total number of payment operations for the given parameters.
                     example: 123
         '401':
@@ -7023,7 +7425,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/billing/billing-entries':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:payments:read
+  /billing/billing-entries:
     get:
       tags:
         - Billing
@@ -7179,7 +7584,10 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  '/billing/billing-types':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:billing:read
+  /billing/billing-types:
     get:
       tags:
         - Billing
@@ -7250,6 +7658,9 @@ paths:
           description: Refund application not found.
         '406':
           description: Not Acceptable
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
     delete:
       tags:
         - Commission refunds
@@ -7276,7 +7687,10 @@ paths:
           description: Not Acceptable
         '422':
           description: Refund application has already been processed.
-  '/order/refund-claims':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /order/refund-claims:
     get:
       tags:
         - Commission refunds
@@ -7343,6 +7757,7 @@ paths:
                       $ref: '#/components/schemas/RefundClaim'
                   count:
                     type: integer
+                    minimum: 0
                     format: int32
                     description: Count of refund applications returned.
         '401':
@@ -7353,6 +7768,9 @@ paths:
           description: Not Acceptable
         '422':
           description: Unprocessable Entity
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
     post:
       tags:
         - Commission refunds
@@ -7376,11 +7794,15 @@ paths:
             schema:
               $ref: '#/components/schemas/RefundClaimRequest'
         required: true
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
   /charity/fundraising-campaigns:
     get:
       tags:
         - Charity
       summary: Search fundraising campaigns
+      description: Use this resource to search fundraising campaigns.
       operationId: searchFundraisingCampaigns
       parameters:
         - name: limit
@@ -7462,7 +7884,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcel-create-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /parcel-management/parcel-create-commands/{commandId}:
     put:
       tags:
         - Parcel management
@@ -7490,6 +7915,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
         '400':
           description: Bad request
@@ -7519,6 +7945,9 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error403'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
     get:
       tags:
         - Parcel management
@@ -7540,6 +7969,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
           content:
             application/vnd.allegro.public.v1+json:
@@ -7607,7 +8037,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcels/{parcelId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /parcel-management/parcels/{parcelId}:
     get:
       tags:
         - Parcel management
@@ -7679,7 +8112,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/pickup-date-proposals':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /parcel-management/pickup-date-proposals:
     get:
       tags:
         - Parcel management
@@ -7764,7 +8200,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcel-pickup-request-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /parcel-management/parcel-pickup-request-commands/{commandId}:
     put:
       tags:
         - Parcel management
@@ -7792,6 +8231,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
         '400':
           description: Bad request
@@ -7821,6 +8261,9 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error403'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
     get:
       tags:
         - Parcel management
@@ -7842,6 +8285,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
           content:
             application/vnd.allegro.public.v1+json:
@@ -7906,7 +8350,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcels/label':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /parcel-management/parcels/label:
     get:
       tags:
         - Parcel management
@@ -7997,7 +8444,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcels/protocol':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /parcel-management/parcels/protocol:
     get:
       tags:
         - Parcel management
@@ -8079,7 +8529,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/parcel-management/parcel-cancel-commands/{commandId}':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:read
+  /parcel-management/parcel-cancel-commands/{commandId}:
     put:
       tags:
         - Parcel management
@@ -8107,6 +8560,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
         '400':
           description: Bad request
@@ -8136,6 +8590,9 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error403'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
     get:
       tags:
         - Parcel management
@@ -8157,6 +8614,7 @@ paths:
             Retry-After:
               schema:
                 type: integer
+                minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
           content:
             application/vnd.allegro.public.v1+json:
@@ -8220,7 +8678,10 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error504'
-  '/sale/matching-categories':
+      security:
+      - bearer-token-for-user:
+        - allegro:api:orders:write
+  /sale/matching-categories:
     get:
       tags:
         - Categories and parameters
@@ -8482,6 +8943,7 @@ components:
             - "APPEALED"
         quantity:
           type: integer
+          minimum: 1
           format: int32
           description: Quantity of product for which the seller filed the refund application.
         commission:
@@ -8522,6 +8984,7 @@ components:
               example: '09f0b4cc-7880-11e9-8f9e-2a86e4085a59'
             quantity:
               type: integer
+              minimum: 1
               format: int32
               description: Total quantity of product purchased by the buyer.
                 Equal to or greater than quantity for which the seller filed the refund application.
@@ -8552,6 +9015,7 @@ components:
               description: ID of the purchase for which a refund application will be created.
         quantity:
           type: integer
+          minimum: 1
           format: int32
           description: Quantity of product for which the refund application will be created. Must be greater than zero.
     RefundDetails:
@@ -8644,6 +9108,7 @@ components:
             - "QUANTITY"
         quantity:
           type: number
+          minimum: 1
           example: 5
           description: This field is provided for QUANTITY type only. It specifies how many items will be refunded.
         value:
@@ -9252,6 +9717,7 @@ components:
               properties:
                 percentage:
                   type: number
+                  minimum: 1
                   example: 100
                   description: discount percentage
             trigger:
@@ -9263,11 +9729,13 @@ components:
               properties:
                 forEachQuantity:
                   type: number
+                  minimum: 1
                   description: >-
                     For every pack of this quantity new rebate will be given.
                   example: 3
                 discountedNumber:
                   type: number
+                  minimum: 1
                   description: Describes how many offers in pack should be discounted by discount percentage.
                   example: 1
     Caption:
@@ -9430,10 +9898,12 @@ components:
                 properties:
                   maxRows:
                     type: integer
+                    minimum: 1
                     description: 'Maximum number of items allowed on compatibility list.'
                     example: 2000
                   maxCharactersPerLine:
                     type: integer
+                    minimum: 1
                     description: 'Maximum length of single item on the list.'
                     example: 160
           example:
@@ -9490,10 +9960,12 @@ components:
               text: 'ACURA'
         count:
           type: integer
+          minimum: 0
           description: 'Number of returned elements.'
           example: 3
         totalCount:
           type: integer
+          minimum: 0
           description: 'Total number of available elements.'
           example: 256
     CompatibleProductsListDto:
@@ -9548,10 +10020,12 @@ components:
                     - '3.0 TDI quattro'
         count:
           type: integer
+          minimum: 0
           description: 'Number of returned elements.'
           example: 1
         totalCount:
           type: integer
+          minimum: 0
           description: 'Total number of available elements.
                         Field is not present when `phrase` parameter is used.'
           example: 1448
@@ -9871,9 +10345,13 @@ components:
       properties:
         lat:
           type: number
+          minimum: -90
+          maximum: 90
           format: double
         lon:
           type: number
+          minimum: -180
+          maximum: 180
           format: double
     DefinitionsResponse:
       type: object
@@ -10536,6 +11014,7 @@ components:
             - 'GAIN'
         value:
           type: integer
+          minimum: 0
     SellerRebateOfferCriterion:
       type: object
       required:
@@ -10556,6 +11035,7 @@ components:
                 example: "1233432"
               quantity:
                 type: number
+                minimum: 0
                 description: >-
                   that many pieces of your offer will be part of the bundle, valid only for bundle `ORDER_FIXED_DISCOUNT` promotions
                 example: 5
@@ -10614,6 +11094,7 @@ components:
         count:
           type: integer
           format: int32
+          minimum: 0
         quotes:
           type: array
           items:
@@ -10786,10 +11267,12 @@ components:
               properties:
                 min:
                   type: integer
+                  minimum: 0
                   description: The minimum value of this parameter.
                   example: 8
                 max:
                   type: integer
+                  minimum: 1
                   description: The maximum value of this parameter.
                   example: 128
                 range:
@@ -10811,10 +11294,12 @@ components:
               properties:
                 min:
                   type: number
+                  minimum: 0
                   description: The minimum value of this parameter.
                   example: 0.0
                 max:
                   type: number
+                  minimum: 0
                   description: The maximum value of this parameter.
                   example: 10000.0
                 range:
@@ -10824,6 +11309,7 @@ components:
                     for this parameter - `from` and `to`. Both these values have to be between the `min` and `max`.
                 precision:
                   type: integer
+                  minimum: 0
                   description: Number of digits you can provide after a comma that can be transferred in the parameter value.
                   example: 3
     StringCategoryProductParameter:
@@ -10840,14 +11326,17 @@ components:
               properties:
                 minLength:
                   type: integer
+                  minimum: 0
                   description: The minimum length of the parameter value.
                   example: 3
                 maxLength:
                   type: integer
+                  minimum: 1
                   description: The maximum length of the parameter value.
                   example: 250
                 allowedNumberOfValues:
                   type: integer
+                  minimum: 0
                   description: Indicates how many different values can be provided for this parameter.
                   example: 5
     CategoryParameterOptions:
@@ -10930,10 +11419,12 @@ components:
               properties:
                 min:
                   type: integer
+                  minimum: 0
                   description: The minimum value of this parameter.
                   example: 8
                 max:
                   type: integer
+                  minimum: 1
                   description: The maximum value of this parameter.
                   example: 128
                 range:
@@ -10955,10 +11446,12 @@ components:
               properties:
                 min:
                   type: number
+                  minimum: 0
                   description: The minimum value of this parameter.
                   example: 0.0
                 max:
                   type: number
+                  minimum: 0
                   description: The maximum value of this parameter.
                   example: 10000.0
                 range:
@@ -10968,6 +11461,7 @@ components:
                     for this parameter - `from` and `to`. Both these values have to be between the `min` and `max`.
                 precision:
                   type: integer
+                  minimum: 0
                   description: Number of digits you can provide after a comma that can be transferred in the parameter value.
                   example: 3
     StringCategoryParameter:
@@ -10984,14 +11478,17 @@ components:
               properties:
                 minLength:
                   type: integer
+                  minimum: 0
                   description: The minimum length of the parameter value.
                   example: 3
                 maxLength:
                   type: integer
+                  minimum: 1
                   description: The maximum length of the parameter value.
                   example: 250
                 allowedNumberOfValues:
                   type: integer
+                  minimum: 0
                   description: Indicates how many different values can be provided for this parameter.
                   example: 5
     ParameterRangeValue:
@@ -11270,6 +11767,7 @@ components:
         delivery:
           type: integer
           format: int32
+          minimum: 0
           example: 5
           description: Delivery rate value
           enum:
@@ -11281,6 +11779,7 @@ components:
         deliveryCost:
           type: integer
           format: int32
+          minimum: 0
           example: 5
           description: Delivery cost rate value
           enum:
@@ -11292,6 +11791,7 @@ components:
         description:
           type: integer
           format: int32
+          minimum: 0
           example: 5
           description: Description rate value
           enum:
@@ -11303,6 +11803,7 @@ components:
         service:
           type: integer
           format: int32
+          minimum: 0
           example: 5
           description: Service rate value
           enum:
@@ -11439,6 +11940,7 @@ components:
         totalCount:
           type: integer
           format: int64
+          minimum: 0
     ShippingRate:
       type: object
       properties:
@@ -11601,6 +12103,7 @@ components:
         available:
           type: integer
           format: int32
+          minimum: 0
         unit:
           type: string
           description: 'Stock unit, one of: UNIT, PAIR, SET'
@@ -11610,14 +12113,17 @@ components:
         failed:
           type: integer
           format: int32
+          minimum: 0
           description: Current number of failed offers updates
         success:
           type: integer
           format: int32
+          minimum: 0
           description: Current number of success offers updates
         total:
           type: integer
           format: int32
+          minimum: 0
           description: Total number of scheduled offers updates
       description: Offers updates summary
     TaskReport:
@@ -11719,11 +12225,13 @@ components:
             total:
               type: integer
               format: int64
+              minimum: 0
               example: 100
               description: Total number of negative feedbacks received.
             unique:
               type: integer
               format: int64
+              minimum: 0
               example: 80
               description: Number of unique users.
         recommended:
@@ -11736,11 +12244,13 @@ components:
             total:
               type: integer
               format: int64
+              minimum: 0
               example: 100
               description: Total number of positive feedbacks received.
             unique:
               type: integer
               format: int64
+              minimum: 0
               example: 75
               description: Number of unique users.
         recommendedPercentage:
@@ -11833,6 +12343,7 @@ components:
         count:
           type: integer
           format: int32
+          minimum: 0
         impliedWarranties:
           type: array
           items:
@@ -11867,14 +12378,17 @@ components:
         numberOfBigPhotos:
           type: integer
           format: int32
+          minimum: 0
           description: 'If set, minimum value 0'
         numberOfPhotos:
           type: integer
           format: int32
+          minimum: 0
           description: 'If set, minimum value 0'
         quantity:
           type: integer
           format: int32
+          minimum: 1
           description: 'Quantity of items to be sold. If set, minimum value 1'
         shop:
           type: boolean
@@ -11886,6 +12400,7 @@ components:
         soldQuantity:
           type: integer
           format: int32
+          minimum: 0
           description: >-
             Quantity of sold items. Relates to commission success fee. If set,
             minimum value 1
@@ -11901,6 +12416,7 @@ components:
             - advertisement
         unitPrice:
           type: number
+          minimum: 0
         bold:
           type: boolean
         highlight:
@@ -11935,6 +12451,7 @@ components:
         count:
           type: integer
           format: int32
+          minimum: 0
         returnPolicies:
           type: array
           items:
@@ -11945,6 +12462,7 @@ components:
         count:
           type: integer
           format: int32
+          minimum: 0
         warranties:
           type: array
           items:
@@ -12024,6 +12542,7 @@ components:
       properties:
         count:
           type: integer
+          minimum: 0
           description: Total number of variant sets matching the query.
         offerVariants:
           type: array
@@ -12093,6 +12612,7 @@ components:
         count:
           type: integer
           example: 123
+          minimum: 0
           description: Results count in this category.
     ListingCategory:
       type: object
@@ -12154,6 +12674,7 @@ components:
           description: The unit type of the stock.
         available:
           type: integer
+          minimum: 0
           description: The available stock value.
           example: 23
       description: Information about the stock.
@@ -12236,10 +12757,12 @@ components:
           $ref: '#/components/schemas/OfferFixedPrice'
         popularity:
           type: integer
+          minimum: 0
           description: Popularity of the offer for *BUY_NOW* selling format.
           example: 38
         bidCount:
           type: integer
+          minimum: 0
           description: Number of bidders for *AUCTION* selling format.
           example: 12
       description: This section describes the selling format and prices.
@@ -12329,6 +12852,7 @@ components:
           type: integer
           description: Number of search results matching this filter value.
           example: 123
+          minimum: 0
         selected:
           type: boolean
           description: Indicates whether this filter value was used in the current request.
@@ -12368,10 +12892,12 @@ components:
           type: number
           description: Minimum valid value for filters of type NUMERIC.
           example: 0
+          minimum: 0
         maxValue:
           type: number
           description: Maximum valid value for filters of type NUMERIC.
           example: 1000
+          minimum: 1
         unit:
           type: string
           description: Unit of the NUMERIC/NUMERIC_SINGLE filter.
@@ -12380,6 +12906,7 @@ components:
       properties:
         availableCount:
           type: integer
+          minimum: 0
           description: >-
             The number of results available for navigation. If this number is less
             than total count, the search criteria (categories, filters, etc.) should
@@ -12387,6 +12914,7 @@ components:
           example: 6000
         totalCount:
           type: integer
+          minimum: 0
           description: The total number of search results with given parameters.
           example: 319203
         fallback:
@@ -12433,10 +12961,12 @@ components:
             $ref: '#/components/schemas/OfferListingDto'
         count:
           type: integer
+          minimum: 0
           description: Number of offers in the search result.
           example: 1
         totalCount:
           type: integer
+          minimum: 0
           description: The total number of offers matching the request's criteria.
           example: 1234
     OfferListingDto:
@@ -12562,6 +13092,7 @@ components:
           $ref: '#/components/schemas/CurrentPrice'
         biddersCount:
           type: integer
+          minimum: 0
           description: The number of bidders.
           example: 4
     OfferListingDtoV1Stock:
@@ -12570,10 +13101,12 @@ components:
       properties:
         available:
           type: integer
+          minimum: 1
           description: The available stock value.
           example: 23
         sold:
           type: integer
+          minimum: 0
           description: The number of sold items in the last 30 days.
           example: 3
     OfferListingDtoV1Stats:
@@ -12582,10 +13115,12 @@ components:
       properties:
         watchersCount:
           type: integer
+          minimum: 0
           description: The number of users who added this offer to their watch lists.
           example: 99
         visitsCount:
           type: integer
+          minimum: 0
           description: The number of unique users viewing this offer in the past 30 days.
     OfferListingDtoV1Publication:
       type: object
@@ -12742,6 +13277,7 @@ components:
         quantity:
           type: number
           format: integer
+          minimum: 0
           description: quantity
           example: 1
         originalPrice:
@@ -12832,11 +13368,13 @@ components:
         count:
           type: number
           format: integer
+          minimum: 1
           description: number of returned objects
           example: 1
         totalCount:
           type: number
           format: integer
+          minimum: 1
           description: >
             Number of all objects of requested status(es) available (regardless of the provided limit and offset)
           example: 1
@@ -13046,6 +13584,7 @@ components:
         calculatedNumberOfPackages:
           type: integer
           format: int32
+          minimum: 0
           description: Calculated number of packages.
           example: 1
     CheckoutFormDeliveryAddress:
@@ -13242,6 +13781,7 @@ components:
           type: number
           format: integer
           description: quantity
+          minimum: 1
           example: 1
         originalPrice:
           $ref: '#/components/schemas/Price'
@@ -13273,6 +13813,7 @@ components:
         quantity:
           type: integer
           format: int32
+          minimum: 1
           description: Quantity of an additional service
           example: 1
     CheckoutFormDiscount:
@@ -13335,6 +13876,7 @@ components:
         messagesCount:
           type: integer
           format: int32
+          minimum: 0
       required:
         - id
         - subject
@@ -13444,6 +13986,8 @@ components:
           type: string
         size:
           type: integer
+          minimum: 1
+          example: 128
       required:
         - fileName
         - size
@@ -13612,6 +14156,7 @@ components:
         totalCount:
           type: integer
           format: int64
+          minimum: 0
     PromotionCampaignResponseDto:
       type: object
       required:
@@ -13937,6 +14482,7 @@ components:
           type: integer
           description: Total number of products matching query criteria in this category.
           format: int32
+          minimum: 0
     ProductsCategoryPath:
       type: object
       properties:
@@ -14353,11 +14899,13 @@ components:
           format: int32
           description: Number of payment operations returned in search result for the given parameters.
           example: 50
+          minimum: 0
         totalCount:
           type: integer
           format: int32
           description: Total number of payment operations for the given parameters.
           example: 123
+          minimum: 0
     BaseOperation:
       type: object
       required:
@@ -14760,10 +15308,13 @@ components:
             $ref: '#/components/schemas/BlackListResponse'
         offset:
           type: integer
+          minimum: 0
         limit:
           type: integer
+          minimum: 1
         total:
           type: integer
+          minimum: 0
     BlacklistRequest:
       type: object
       properties:
@@ -14778,6 +15329,7 @@ components:
       properties:
           id:
             type: number
+            minimum: 1
             description: Id of excluded user.
             example: 123456
           login:
@@ -15480,6 +16032,7 @@ components:
                 description: "Identifier of score: 5, 4, 3, 2, 1."
               count:
                 type: integer
+                minimum: 0
                 description: "Count of score."
           example:
             [{name: "5", count: 1},
@@ -15489,6 +16042,7 @@ components:
              {name: "1", count: 0}]
         totalResponses:
           type: integer
+          minimum: 0
           description: 'Number of total responses.'
           example: 5
         sizeFeedback:
@@ -15502,7 +16056,9 @@ components:
                 description: "Identifier of sizeFeedback: BIGGER, FIT, SMALLER."
               count:
                 type: integer
+                minimum: 0
                 description: "Count of sizeFeedback responses."
+                example: 0
           example:
             [{name: "BIGGER", count: 0},
              {name: "FIT", count: 2},
@@ -15603,6 +16159,7 @@ components:
           type: integer
           description: Delivery service Id.
           example: 12345
+          minimum: 1
         service:
           type: string
           description: Delivery service.
@@ -15664,6 +16221,7 @@ components:
           type: integer
           description: Delivery service id.
           example: 12345
+          minimum: 1
         receiver:
           $ref: '#/components/schemas/Receiver'
         pickup:
@@ -15931,6 +16489,7 @@ components:
           type: integer
           description: Delivery service id.
           example: 3456
+          minimum: 1
         receiver:
           $ref: '#/components/schemas/Receiver'
         pickup:
@@ -16195,6 +16754,7 @@ components:
           type: integer
           description: Dimension value.
           example: 12
+          minimum: 1
         unit:
           type: string
           description: Dimension unit. Currently only `CENTIMETER` is accepted.
