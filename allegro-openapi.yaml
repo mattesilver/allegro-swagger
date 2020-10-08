@@ -10837,6 +10837,8 @@ components:
           $ref: '#/components/schemas/Delivery'
         description:
           $ref: '#/components/schemas/StandardizedDescription'
+        discounts:
+          $ref: '#/components/schemas/Discounts'
         ean:
           type: string
           maxLength: 18
@@ -12097,6 +12099,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DescriptionSection'
+    Discounts:
+      type: object
+      properties:
+        wholesalePriceList:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Wholesale price list id
     Stock:
       type: object
       properties:
