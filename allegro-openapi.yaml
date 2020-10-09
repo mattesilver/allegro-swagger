@@ -5822,6 +5822,58 @@ paths:
       security:
       - bearer-token-for-user:
         - allegro:api:sale:offers:write
+  '/sale/product-offers/{offerId}':
+    patch:
+      tags:
+        - Offer management
+      summary: "Edit an offer"
+      description: >-
+        Use this resource to edit offer. Read more <a href="../../product_offers/#jak-edytować-ofertę" target="_blank">PL</a> / <a href="../../en/product_offers/#how-to-edit-an-offer" target="_blank">EN</a>.
+      operationId: editProductOffers
+      parameters:
+        - name: offerId
+          in: path
+          description: The offer identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offer edited successfully.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden - not allowed to access.
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferPatchRequest'
+        required: true
   /sale/compatibility-list/supported-categories:
     get:
       tags:
@@ -14598,6 +14650,27 @@ components:
           properties:
             product:
               $ref: '#/components/schemas/ProductOffer'
+            afterSalesServices:
+              $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
+            delivery:
+              $ref: '#/components/schemas/DeliveryProductOfferRequest'
+            parameters:
+              type: array
+              items:
+                $ref: '#/components/schemas/ParameterProductOfferRequest'
+    SaleProductOfferPatchRequest:
+      allOf:
+        - $ref: '#/components/schemas/SaleProductOffer'
+        - type: object
+          properties:
+            product:
+              allOf:
+                - type: object
+                  properties:
+                    parameters:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/ProductParameterDto'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
