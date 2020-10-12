@@ -14617,15 +14617,11 @@ components:
       description: Product's parameter
     SaleProductOffer:
       type: object
-      required:
-        - stock
       properties:
         payments:
           $ref: '#/components/schemas/Payments'
         sellingMode:
           $ref: '#/components/schemas/SellingMode'
-        stock:
-          $ref: '#/components/schemas/Stock'
         location:
           $ref: '#/components/schemas/Location'
         publication:
@@ -14647,9 +14643,13 @@ components:
       allOf:
         - $ref: '#/components/schemas/SaleProductOffer'
         - type: object
+          required:
+            - stock
           properties:
             product:
               $ref: '#/components/schemas/ProductOffer'
+            stock:
+              $ref: '#/components/schemas/Stock'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
@@ -14671,6 +14671,8 @@ components:
                       type: array
                       items:
                         $ref: '#/components/schemas/ProductParameterDto'
+            stock:
+              $ref: '#/components/schemas/Stock'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
@@ -14688,6 +14690,8 @@ components:
               type: string
             product:
               $ref: '#/components/schemas/ProductOfferResponse'
+            stock:
+              $ref: '#/components/schemas/Stock'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServices'
             delivery:
