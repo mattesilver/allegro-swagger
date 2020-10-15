@@ -2268,7 +2268,12 @@ paths:
                           variantsAllowed: true
                           variantsEqual: false
                           ambiguousValueId: null
-                          dependsOnParameterId: null
+                          dependsOnParameterId: "202870"
+                          requiredDependsOnValueIds:
+                            - "202870_1"
+                          displayDependsOnValueIds:
+                            - "202870_1"
+                            - "202870_2"
                           describesProduct: false
                           customValuesEnabled: false
                         restrictions:
@@ -2288,7 +2293,12 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
-                          dependsOnParameterId: null
+                          dependsOnParameterId: "202870"
+                          requiredDependsOnValueIds:
+                            - "202870_1"
+                          displayDependsOnValueIds:
+                            - "202870_1"
+                            - "202870_2"
                           describesProduct: false
                           customValuesEnabled: false
                         restrictions:
@@ -2309,28 +2319,40 @@ paths:
                           variantsAllowed: false
                           variantsEqual: true
                           ambiguousValueId: null
-                          dependsOnParameterId: null
+                          dependsOnParameterId: "202870"
+                          requiredDependsOnValueIds:
+                            - "202870_1"
+                          displayDependsOnValueIds:
+                            - "202870_1"
+                            - "202870_2"
                           describesProduct: false
                           customValuesEnabled: false
                         dictionary:
                           - id: "11323_1"
                             value: "Nowy"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_1"
                           - id: "11323_2"
                             value: "Używany"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_2"
                           - id: "11323_238066"
                             value: "Po zwrocie"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_1"
+                              - "202870_2"
                           - id: "11323_238058"
                             value: "Powystawowy"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_1"
                           - id: "11323_238062"
                             value: "Uszkodzony"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_1"
                           - id: "11323_246534"
                             value: "Odnowiony przez producenta"
-                            "dependsOnValueIds": []
+                            dependsOnValueIds:
+                              - "202870_2"
                         restrictions:
                           multipleChoices: false
                 float:
@@ -2347,7 +2369,12 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
-                          dependsOnParameterId: null
+                          dependsOnParameterId: "202870"
+                          requiredDependsOnValueIds:
+                            - "202870_1"
+                          displayDependsOnValueIds:
+                            - "202870_1"
+                            - "202870_2"
                           describesProduct: false
                           customValuesEnabled: false
                         restrictions:
@@ -2369,7 +2396,12 @@ paths:
                           variantsAllowed: false
                           variantsEqual: false
                           ambiguousValueId: null
-                          dependsOnParameterId: null
+                          dependsOnParameterId: "202870"
+                          requiredDependsOnValueIds:
+                            - "202870_1"
+                          displayDependsOnValueIds:
+                            - "202870_1"
+                            - "202870_2"
                           describesProduct: true
                           customValuesEnabled: false
                         restrictions:
@@ -11410,10 +11442,42 @@ components:
           example: "128788_36"
         dependsOnParameterId:
           type: string
-          description: >-
-            Values in the dictionary depend on the parameter referenced by this field.
-            Only parameters with dictionaries can have this option defined.
+          nullable: true
+          description: |
+            Indicates whether this parameter's behaviour depends on another parameter's values:
+            - allowed values (only for dictionary parameters; see: `dictionary[].dependsOnValueIds`),
+            - optionality (see: `requiredDependsOnValueIds`),
+            - visibility (see: `displayDependsOnValueIds`).
           example: "211062"
+        requiredDependsOnValueIds:
+          type: array
+          nullable: true
+          description: |
+            Indicates whether this parameter's optionality depends on another parameter's values.
+
+            This parameter is required if `require` is `true` and either:
+            - this field is `null` **or**
+            - the parameter that this parameter depends on (see: `dependsOnParameterId`) has set any value ID from this array.
+
+            Otherwise this parameter is optional.
+          items:
+            type: string
+            example: "211062_1"
+        displayDependsOnValueIds:
+          type: array
+          nullable: true
+          description: |
+            Indicates whether this parameter's visibility depends on another parameter's values.
+
+            This parameter is visible if and only if:
+            - this field is `null` **or**
+            - the parameter that this parameter depends on (see: `dependsOnParameterId`) has set any value ID from this array.
+
+            Otherwise this parameter will not be displayed anywhere.
+            Setting a value of a hidden parameter is permitted, nonetheless.
+          items:
+            type: string
+            example: "211062_2"
         describesProduct:
           type: boolean
           description: Indicates if parameter is used to define products.
