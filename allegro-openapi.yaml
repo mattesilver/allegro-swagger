@@ -8001,6 +8001,16 @@ paths:
                 type: integer
                 minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The unique command UUID provided in the input.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  input:
+                    $ref: '#/components/schemas/ParcelCreationParameters'
         '400':
           description: Bad request
           content:
@@ -8317,6 +8327,16 @@ paths:
                 type: integer
                 minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The unique command UUID provided in the input.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  input:
+                    $ref: '#/components/schemas/PickupParcelParameters'
         '400':
           description: Bad request
           content:
@@ -8646,6 +8666,16 @@ paths:
                 type: integer
                 minimum: 1
               description: Suggested time interval (in seconds) between follow-up command status queries.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The unique command UUID provided in the input.
+                    example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+                  input:
+                    $ref: '#/components/schemas/CancelParcelParameters'
         '400':
           description: Bad request
           content:
