@@ -14748,6 +14748,8 @@ components:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
+            sizeTable:
+              $ref: '#/components/schemas/JustId'
             parameters:
               type: array
               items:
@@ -14771,6 +14773,8 @@ components:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
+            sizeTable:
+              $ref: '#/components/schemas/JustId'
             parameters:
               type: array
               items:
@@ -14788,6 +14792,8 @@ components:
               $ref: '#/components/schemas/Stock'
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServices'
+            sizeTable:
+              $ref: '#/components/schemas/JustId'
             delivery:
               type: object
               properties:
