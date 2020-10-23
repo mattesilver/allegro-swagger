@@ -14750,6 +14750,8 @@ components:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
             sizeTable:
               $ref: '#/components/schemas/JustId'
+            tax:
+              $ref: '#/components/schemas/Tax'
             parameters:
               type: array
               items:
@@ -14775,6 +14777,8 @@ components:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
             sizeTable:
               $ref: '#/components/schemas/JustId'
+            tax:
+              $ref: '#/components/schemas/Tax'
             parameters:
               type: array
               items:
@@ -14794,6 +14798,8 @@ components:
               $ref: '#/components/schemas/AfterSalesServices'
             sizeTable:
               $ref: '#/components/schemas/JustId'
+            tax:
+              $ref: '#/components/schemas/Tax'
             delivery:
               type: object
               properties:
