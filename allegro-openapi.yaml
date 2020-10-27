@@ -5651,7 +5651,7 @@ paths:
             maxLength: 1024
         - name: category.id
           in: query
-          description: The category identifier to filter results.
+          description: The category identifier to filter results. This can only be used when searching by phrase.
           required: false
           schema:
             type: string
