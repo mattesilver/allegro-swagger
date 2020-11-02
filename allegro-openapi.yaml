@@ -977,28 +977,41 @@ paths:
       description: >-
         This endpoint creates a new promotion. You can define the following types of promotions:
 
-        1. Wholesale price list
+        1. Large order discount
+        <br>
+        Only company users will see and be eligible for this type of promotion.
+        In order to create a large order discount, you also have to be a company user. Furthermore, you are allowed to have only one active order discount at a time.
+        Define a promotion with a single benefit of type **LARGE_ORDER_DISCOUNT** and a single criterion of type **ALL_OFFERS**.
+        The benefit specification should contain a list of order value based discount thresholds.
+        Threshold's order value defines the minimum total value of an order for which the threshold is applicable (`lowerBound`).
+        Threshold's discount defines the discount percentage applied when the threshold is applied. The percentage's fractional part must be equal to 0.
+        Only the highest applicable threshold (if any) will be applied to the total value of the order.
+        A threshold with a higher order value than another threshold in the order discount must also have a higher discount.
+        Large order discount is assigned automatically to all seller's offers. Moreover, it will be assigned to all newly added seller's offers once activated.
+        Please note that it may take some time to propagate this type of promotion to all of your offers.
+
+        2. Wholesale price list
         <br>
         Only company users will see and be eligible for this type of promotion.
         In order to create a wholesale price list, you also have to be a company user. Define a promotion with a single benefit
         of type **WHOLESALE_PRICE_LIST** and a single criterion of type **OFFERS_ASSIGNED_EXTERNALLY**.
-        The benefit specification should contain a name (it will be visible to you only) and a list of discount thresholds.
+        The benefit specification should contain a name (it will be visible to you only) and a list of quantity based discount thresholds.
         Threshold's quantity defines the minimum number of units of an offer for which the threshold is applicable (`lowerBound`).
         Threshold's discount defines the discount percentage applied when the threshold is applied. The percentage's fractional part must be equal to 0.
         Only the highest applicable threshold (if any) will be applied to the total price of units of the offer bought.
-        A threshold with higher quantity than another threshold in the price list must also have a higher discount.
+        A threshold with a higher quantity than another threshold in the price list must also have a higher discount.
         In order to assign offers to a wholesale price list, use `discounts` field in <a href="#operation/modificationCommandUsingPUT">batch offer modification</a>.
 
-        2. Bundle
+        3. Bundle
         <br>
         In order to create a new bundle, you have to define a
          promotion with a single benefit of type **ORDER_FIXED_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. In the benefit specification you have to declare the discount amount that you want to be deducted from the sum of bundled offers prices. In the offer criterion you need to pass a list of offers that are to be grouped as a bundle. For each offer you have to define a fixed quantity (that many pieces of your offer will be part of the bundle) and you also have to set a promotionEntryPoint flag (offers with this flag set to true will have a section that allows the users to purchase your bundle).
 
-        3. Multipack
+        4. Multipack
         <br>
         In order to create a new multipack, you have to define a promotion with a single benefit of type **UNIT_PERCENTAGE_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. The benefit specification should contain a configuration section with a percentage which indicates the specific discount for the discounted offer. This percentage should be an integer value greater than 15 for quantity 2, greater than 30 for quantity 3, greater than 40 for quantity 4, greater than 50 for quantity 5 and lower than or equal to 100. The specification should also contain a trigger section with a field forEachQuantity that defines the amount of items in the multipack which is necessary to trigger the benefit. Additionally, the discountedNumber field must be set to 1 by default as you can only discount one unit in a multipack. Finally, the offer criterion specifies the offer for which the multipack promotion will take effect.
 
-        4. Cross-offer multipack
+        5. Cross-offer multipack
         <br>
         A cross-offer multipack is created in the same fashion as a standard multipack. The only difference is that you need to pass
         more than 1 offer in the offer criterion section. This group of offers is then considered as a pool from which users can
@@ -1015,6 +1028,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/SellerRebateDto'
               examples:
+                large-order-discount:
+                  summary: Large Order Discount
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: LARGE_ORDER_DISCOUNT
+                          thresholds:
+                            - orderValue:
+                                lowerBound:
+                                  amount: "1000.00"
+                                  currency: "PLN"
+                              discount:
+                                percentage: "5"
+                            - orderValue:
+                                lowerBound:
+                                  amount: "1500.00"
+                                  currency: "PLN"
+                              discount:
+                                percentage: "8"
+                    offerCriteria:
+                      - type: ALL_OFFERS
                 wholesale-price-list:
                   summary: Wholesale Price List
                   value:
@@ -1124,6 +1161,27 @@ paths:
             schema:
               $ref: '#/components/schemas/SellerCreateRebateRequestDto'
             examples:
+              large-order-discount:
+                summary: Large Order Discount
+                value:
+                  benefits:
+                    - specification:
+                        type: LARGE_ORDER_DISCOUNT
+                        thresholds:
+                          - orderValue:
+                              lowerBound:
+                                amount: "1000.00"
+                                currency: "PLN"
+                            discount:
+                              percentage: "5.00"
+                          - orderValue:
+                              lowerBound:
+                                amount: "1500.00"
+                                currency: "PLN"
+                            discount:
+                              percentage: "8.00"
+                  offerCriteria:
+                    - type: ALL_OFFERS
               wholesale-price-list:
                 summary: Wholesale Price List
                 value:
@@ -1240,7 +1298,7 @@ paths:
             default: 0
         - name: offer.id
           in: query
-          description: Filter by offer id. No promotions with `OFFERS_ASSIGNED_EXTERNALLY` criteria will be returned if this parameter is present.
+          description: Filter by offer id. No promotions with `OFFERS_ASSIGNED_EXTERNALLY` or `ALL_OFFERS` criteria will be returned if this parameter is present.
           schema:
             type: string
           example: "8226673525"
@@ -1322,8 +1380,15 @@ paths:
       summary: "Modify a promotion"
       description: >-
         Use this resource to update a promotion by its unique id.
-        Only wholesale price lists can be updated. Benefit type cannot be changed.
+        Only wholesale price lists or large order discounts can be updated. Benefit type cannot be changed.
       operationId: updatePromotionUsingPUT
+      parameters:
+        - name: promotionId
+          in: path
+          description: Promotion identifier.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Successfully updated the requested promotion
@@ -1332,6 +1397,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/SellerRebateDto'
               examples:
+                large-order-discount:
+                  summary: Large Order Discount
+                  value:
+                    status: "ACTIVE"
+                    createdAt: "2019-05-12T10:02:31.123Z"
+                    id: "72c40ffb-6127-4719-a473-867bf5775601"
+                    benefits:
+                      - specification:
+                          type: LARGE_ORDER_DISCOUNT
+                          thresholds:
+                            - orderValue:
+                                lowerBound:
+                                  amount: "1000.00"
+                                  currency: "PLN"
+                              discount:
+                                percentage: "5"
+                            - orderValue:
+                                lowerBound:
+                                  amount: "1500.00"
+                                  currency: "PLN"
+                              discount:
+                                percentage: "8"
+                            - orderValue:
+                                lowerBound:
+                                  amount: "2000.00"
+                                  currency: "PLN"
+                              discount:
+                                percentage: "10"
+                    offerCriteria:
+                      - type: ALL_OFFERS
                 wholesale-price-list:
                   summary: Wholesale Price List
                   value:
@@ -1383,6 +1478,33 @@ paths:
             schema:
               $ref: '#/components/schemas/SellerCreateRebateRequestDto'
             examples:
+              large-order-discount:
+                summary: Large Order Discount
+                value:
+                  benefits:
+                    - specification:
+                        type: LARGE_ORDER_DISCOUNT
+                        thresholds:
+                          - orderValue:
+                              lowerBound:
+                                amount: "1000.00"
+                                currency: "PLN"
+                            discount:
+                              percentage: "5.00"
+                          - orderValue:
+                              lowerBound:
+                                amount: "1500.00"
+                                currency: "PLN"
+                            discount:
+                              percentage: "8.00"
+                          - orderValue:
+                              lowerBound:
+                                amount: "2000.00"
+                                currency: "PLN"
+                            discount:
+                              percentage: "10.00"
+                  offerCriteria:
+                    - type: ALL_OFFERS
               wholesale-price-list:
                 summary: Wholesale Price List
                 value:
@@ -9744,7 +9866,7 @@ components:
           $ref: '#/components/schemas/BenefitSpecification'
     BenefitSpecification:
       type: object
-      description: "One of: WholesalePriceListBenefitSpecification, BundleBenefitSpecification, MultiPackBenefitSpecification"
+      description: "One of: LargeOrderDiscountBenefitSpecification, WholesalePriceListBenefitSpecification, BundleBenefitSpecification, MultiPackBenefitSpecification"
       properties:
         type:
           type: string
@@ -9754,9 +9876,45 @@ components:
       discriminator:
         propertyName: type
         mapping:
+          LARGE_ORDER_DISCOUNT:  '#/components/schemas/LargeOrderDiscountBenefitSpecification'
           WHOLESALE_PRICE_LIST: '#/components/schemas/WholesalePriceListBenefitSpecification'
           ORDER_FIXED_DISCOUNT: '#/components/schemas/BundleBenefitSpecification'
           UNIT_PERCENTAGE_DISCOUNT: '#/components/schemas/MultiPackBenefitSpecification'
+    LargeOrderDiscountBenefitSpecification:
+      allOf:
+        - $ref: "#/components/schemas/BenefitSpecification"
+        - type: object
+          required:
+            - thresholds
+          properties:
+            type:
+              type: string
+              default: 'LARGE_ORDER_DISCOUNT'
+            thresholds:
+              type: array
+              description: 'List of order discount thresholds. A threshold with a higher orderValue.lowerBound.amount than another one must also have a higher discount.percentage.'
+              items:
+                type: object
+                required:
+                  - orderValue
+                  - discount
+                properties:
+                  orderValue:
+                    type: object
+                    required:
+                      - lowerBound
+                    properties:
+                      lowerBound:
+                        $ref: '#/components/schemas/Price'
+                  discount:
+                    type: object
+                    required:
+                      - percentage
+                    properties:
+                      percentage:
+                        type: string
+                        example: "5"
+                        description: 'Discount percentage applied when the threshold is applied. The fractional part must be equal to 0.'
     WholesalePriceListBenefitSpecification:
       allOf:
         - $ref: "#/components/schemas/BenefitSpecification"
@@ -9764,8 +9922,6 @@ components:
           required:
             - name
             - thresholds
-            - configuration
-            - trigger
           properties:
             type:
               type: string
@@ -9776,9 +9932,12 @@ components:
               example: "Cardboard boxes"
             thresholds:
               type: array
-              description: 'List of discount thresholds. A threshold with higher quantity.lowerBound than another must also have higher discount.percentage.'
+              description: 'List of discount thresholds. A threshold with a higher quantity.lowerBound than another must also have a higher discount.percentage.'
               items:
                 type: object
+                required:
+                  - quantity
+                  - discount
                 properties:
                   quantity:
                     type: object
@@ -11167,6 +11326,7 @@ components:
           enum:
             - CONTAINS_OFFERS
             - OFFERS_ASSIGNED_EXTERNALLY
+            - ALL_OFFERS
     OfferCriterium:
       type: object
       properties:
