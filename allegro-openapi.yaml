@@ -9684,7 +9684,7 @@ components:
           maxLength: 200
           description: City name.
           example: "Poznań"
-        countyCode:
+        countryCode:
           type: string
           description: Country code.
           example: "PL"
@@ -14528,7 +14528,6 @@ components:
         - carrierId
         - waybill
         - lineItems
-        - lineItem.id
       properties:
         carrierId:
           type: string
@@ -14552,6 +14551,8 @@ components:
           description: >-
             List of order line items. They must be from the order specified in the path parameter. List cannot be empty.
           items:
+            required:
+              - lineItem.id
             properties:
               id:
                 type: string
@@ -15511,7 +15512,6 @@ components:
     Participant:
       type: object
       required:
-        - id
         - login
         - firstName
         - lastName
@@ -15537,6 +15537,8 @@ components:
     SellerParticipant:
       title: SellerParticipant
       description: The seller's data.
+      required:
+        - id
       allOf:
         - $ref: '#/components/schemas/Participant'
         - type: object
@@ -15547,6 +15549,8 @@ components:
     BuyerParticipant:
       title: BuyerParticipant
       description: The buyer's data.
+      required:
+        - id
       allOf:
         - $ref: '#/components/schemas/Participant'
         - type: object
