@@ -337,7 +337,7 @@ paths:
         - User's offer information
       summary: 'Get all fields of the particular offer'
       description:
-        'Use this resource to retrieve all fields of the particular offer. Read more: <a href="../../sale/#wystaw-podobną-ofertę" target="_blank">PL</a> / <a href="../../en/sale/#list-a-similar-offer" target="_blank">EN</a>.'
+        'Use this resource to retrieve all fields of the particular offer.'
       operationId: getOfferUsingGET
       parameters:
         - name: offerId
@@ -5938,11 +5938,29 @@ paths:
       operationId: createProductOffers
       responses:
         '201':
-          description: Offer created successfully.
+          description: Offer created successfully. BETA.V1 is deprecated.
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/SaleProductOfferResponse'
+            application/vnd.allegro.beta.v2+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+        '202':
+          description: The product-offer creation request has been accepted for processing, but the processing has not been completed.
+          content:
+            application/vnd.allegro.beta.v2+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location URI points to a resource that will display the status of the asynchronous processing.
+            Retry-after:
+              schema:
+                type: integer
+              description: An estimate time of when you should poll the location uri to get the status of the asynchronous processing.
         '400':
           description: Bad request
           content:
@@ -5972,6 +5990,9 @@ paths:
           application/vnd.allegro.beta.v1+json:
             schema:
               $ref: '#/components/schemas/SaleProductOfferRequest'
+          application/vnd.allegro.beta.v2+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferRequest'
         required: true
       security:
       - bearer-token-for-user:
@@ -5993,11 +6014,29 @@ paths:
             type: string
       responses:
         '200':
-          description: Offer edited successfully.
+          description: Offer edited successfully. Version BETA.V1 is deprecated.
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/SaleProductOfferResponse'
+            application/vnd.allegro.beta.v2+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+        '202':
+          description: The request to edit product-offer has been accepted for processing, but the processing has not been completed.
+          content:
+            application/vnd.allegro.beta.v2+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location URI points to a resource that will display the status of the asynchronous processing.
+            Retry-after:
+              schema:
+                type: integer
+              description: An estimate time in seconds of when you should poll the location uri to get the status of the asynchronous processing.
         '400':
           description: Bad request
           content:
@@ -6027,7 +6066,84 @@ paths:
           application/vnd.allegro.beta.v1+json:
             schema:
               $ref: '#/components/schemas/SaleProductOfferPatchRequest'
+          application/vnd.allegro.beta.v2+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferPatchRequest'
         required: true
+    get:
+      tags:
+        - Offer management
+      summary: 'Get all data of the particular product-offer'
+      description:
+        'Use this resource to retrieve all data of the particular product-offer.'
+      operationId: getProductOffer
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offer returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponse'
+        '400':
+          description: Syntactically incorrect request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:read
+  '/sale/product-offers/{offerId}/operations/{operationId}':
+    get:
+      tags:
+        - Offer management
+      summary: 'Check the processing status of a POST or PATCH request'
+      description:
+        'The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}.
+        Use this resource to check processing status of a POST or PATCH request.'
+      operationId: getProductOfferProcessingStatus
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer identifier.
+          required: true
+          schema:
+            type: string
+        - name: operationId
+          in: path
+          description: Operation identifier provided in location header of POST or PATCH request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: The request processing has not been completed.
+          content:
+            application/vnd.allegro.beta.v2+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferStatusResponse'
+        '303':
+          description: 'The processing of product-offer has been completed. The Location header provide information about the location of processed resource.'
+        '400':
+          description: Syntactically incorrect request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:read
   /sale/compatibility-list/supported-categories:
     get:
       tags:
@@ -11347,6 +11463,7 @@ components:
         id:
           type: string
           description: Offer id
+          example: '123456789'
     OfferQuoteDto:
       type: object
       properties:
@@ -14984,6 +15101,32 @@ components:
               description: >-
                 Last update date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
                 Cannot be modified.
+    SaleProductOfferStatusResponse:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferId'
+        operation:
+          type: object
+          properties:
+            id:
+              type: string
+              description: 'The unique operation identifier (UUID).'
+              example: "b572cdd0-7f2c-4800-9165-15795bd95f3c"
+            status:
+              type: string
+              description: 'Parcel creation status.'
+              enum:
+                - "PENDING"
+                - "IN_PROGRESS"
+                - "COMPLETED"
+              example: "IN_PROGRESS"
+            startedAt:
+              type: string
+              format: ISO 8601
+              description: 'The starting date and time of operation.'
+              example: '2019-05-29T12:00:00Z'
+      description: Single opertion data.
     ProductOffer:
       type: object
       properties:
