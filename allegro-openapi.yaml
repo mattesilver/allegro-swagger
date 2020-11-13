@@ -14644,7 +14644,6 @@ components:
       required:
         - carrierId
         - waybill
-        - lineItems
       properties:
         carrierId:
           type: string
@@ -14666,10 +14665,11 @@ components:
         lineItems:
           type: array
           description: >-
-            List of order line items. They must be from the order specified in the path parameter. List cannot be empty.
+            List of order line items. They must be from the order specified in the path parameter.
+            When list is not provided or it is empty it means that every item from an order is included in shipment.
           items:
             required:
-              - lineItem.id
+              - id
             properties:
               id:
                 type: string
