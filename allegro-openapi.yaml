@@ -5686,6 +5686,7 @@ paths:
         - name: offerId
           in: path
           description: Offer identifier.
+          example: "9991337999"
           required: true
           schema:
             type: string
@@ -5707,6 +5708,268 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthError'
 
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offer-promotion-packages:
+    get:
+      tags:
+        - Offer management
+      summary: 'Get all available offer promotion packages'
+      description:
+        'Use this resource to retrieve all available offer promotion packages. Read more: <a href="../../my_offers/#jak-pobrać-dostępne-opcje-promowania" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-retrieve-available-promo-options" target="_blank">EN</a>.'
+      operationId: getAvailableOfferPromotionPackages
+      responses:
+        '200':
+          description: Offer promotion packages returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AvailablePromotionPackages'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+  /sale/offers/{offerId}/promo-options-modification:
+    post:
+      tags:
+        - Offer management
+      summary: 'Modify offer promotion packages'
+      description:
+        'Use this resource to modify offer promotion packages. Read more: <a href="../../my_offers/#jak-dodać-lub-zmienić-opcje-promowania-w-pojedynczej-ofercie" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-add-or-change-promo-options-in-a-single-offer" target="_blank">EN</a>.'
+      operationId: modifyOfferPromoOptionsUsingPOST
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer identifier.
+          example: "9991337999"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offer promotion packages modified successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferPromoOptions'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Offer does not belong to seller.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Offer does not exist or unsupported package name or unsupported change type.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/PromoOptionsModifications'
+        description: request
+        required: true
+      security:
+      - bearer-token-for-user:
+         - allegro:api:sale:offers:write
+  /sale/offers/{offerId}/promo-options:
+    get:
+      tags:
+        - Offer management
+      summary: 'Get offer promotion packages'
+      description:
+        'Use this resource to get promotion packages assigned to an offer. Read more: <a href="../../my_offers/#jak-pobrać-opcje-promowania-przypisane-do-oferty" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-retrieve-promo-options-assigned-to-an-offer" target="_blank">EN</a>.'
+      operationId: getOfferPromoOptionsUsingGET
+      parameters:
+        - name: offerId
+          in: path
+          description: Offer identifier.
+          example: "9991337999"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offer promotion packages returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferPromoOptions'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Offer does not belong to seller.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offers/promo-options-commands/{commandId}:
+    put:
+      tags:
+        - Offer management
+      summary: 'Batch offer promotion package modification'
+      description:
+        'Use this resource to modify promotion packages on multiple offers at once. Read more: <a href="../../my_offers/#jak-dodać-lub-edytować-opcje-promowania-na-wielu-ofertach" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-add-or-change-promo-options-in-multiple-offers" target="_blank">EN</a>.'
+      operationId: promoModificationCommandUsingPUT
+      parameters:
+        - name: commandId
+          in: path
+          description: Command identifier. Must be a UUID.
+          example: "aca8103b-14eb-4855-b9b3-de5bef06bd30"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Command was registered
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/GeneralReport'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '409':
+          description: Command id already in use.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Size of batch should be between 1 and 1000 offers or unsupported modification time.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        $ref: '#/components/requestBodies/PromoOptionsCommand'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:write
+    get:
+      tags:
+        - Offer management
+      summary: 'Modification command summary'
+      description:
+        'Use this resource to find out how many offers were edited within one {commandId}. You will receive a summary
+        with a number of successfully edited offers and errors.'
+      operationId: getPromoModificationCommandResultUsingGET
+      parameters:
+        - name: commandId
+          in: path
+          description: Command identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Summary successfully returned.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/GeneralReport'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Batch modification command does not belong to seller.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Batch modification command does not exist.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
+  /sale/offers/promo-options-commands/{commandId}/tasks:
+    get:
+      tags:
+        - Offer management
+      summary: 'Modification command detailed result'
+      description:
+        'Use this resource to retrieve the result of an offer modification command. Read more: <a href="../../my_offers/#jak-sprawdzić-szczegółowy-raport-zadania " target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-check-a-detailed-report-of-your-task " target="_blank">EN</a>.'
+      operationId: getPromoModificationCommandDetailedResultUsingGET
+      parameters:
+        - name: commandId
+          in: path
+          description: Command identifier.
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The limit of returned items.'
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: offset
+          in: query
+          description: 'The offset of returned items.'
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Report successfully returned.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/PromoModificationReport'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Batch modification command does not belong to seller.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Batch modification command does not exist.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
       security:
       - bearer-token-for-user:
         - allegro:api:sale:offers:read
@@ -9213,6 +9476,13 @@ components:
           schema:
             $ref: '#/components/schemas/UserRatingRemovalRequest'
       description: 'User rating removal request.'
+      required: true
+    PromoOptionsCommand:
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/PromoOptionsCommand'
+      description: 'Promo packages modification command request.'
       required: true
   schemas:
     InitializeRefund:
@@ -17261,3 +17531,168 @@ components:
           description: Dimension unit. Currently only `CENTIMETER` is accepted.
           example: "CENTIMETER"
           default: "CENTIMETER"
+    AvailablePromotionPackages:
+      type: object
+      properties:
+        basePackages:
+          type: array
+          description: "Available base promotion packages. Only one base package can be set on an offer."
+          items:
+            $ref: '#/components/schemas/AvailablePromotionPackage'
+        extraPackages:
+          type: array
+          description: "Available extra promotion packages. Multiple different extra packages can be set on an offer."
+          items:
+            $ref: '#/components/schemas/AvailablePromotionPackage'
+    AvailablePromotionPackage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Promotion package identifier."
+          example: "promoPackage"
+        name:
+          type: string
+          description: "Promotion package name."
+          example: "Promo Package"
+        cycleDuration:
+          type: string
+          description: "Promo package cycle duration."
+          example: "PT240H"
+    PromoOptionsModifications:
+      type: object
+      properties:
+        modifications:
+          type: array
+          description: "Promo package modifications to be applied."
+          items:
+            $ref: '#/components/schemas/PromoOptionsModification'
+    PromoOptionsModification:
+      type: object
+      properties:
+        modificationType:
+          type: string
+          description: "Type of modification to be applied."
+          enum:
+            - CHANGE
+            - REMOVE_WITH_END_OF_CYCLE
+            - REMOVE_NOW
+        packageType:
+          type: string
+          description: "Type of promotion package to be changed/removed."
+          enum:
+            - BASE
+            - EXTRA
+        packageId:
+          type: string
+          description: "Promotion package identifier."
+          example: "promoPackage"
+    OfferPromoOptions:
+      type: object
+      properties:
+        basePackage:
+          $ref: '#/components/schemas/OfferPromoOption'
+        extraPackages:
+          type: array
+          description: "Extra promotion packages set on offer."
+          items:
+            $ref: '#/components/schemas/OfferPromoOption'
+        pendingChanges:
+          $ref: '#/components/schemas/OfferPromoOptionsPendingChanges'
+    OfferPromoOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Promotion package identifier."
+          example: "promoPackage"
+        validFrom:
+          type: string
+          format: date-time
+          description: >-
+            Date from which the promotion package is valid: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+          example: "2020-01-01T00:00:00Z"
+        validTo:
+          type: string
+          format: date-time
+          description: >-
+            Date to which the promotion package is valid: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+          example: "2020-01-01T00:00:00Z"
+        nextCycleDate:
+          type: string
+          format: date-time
+          description: >-
+            Date on which the promotion package will be renewed for a new cycle: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+          example: "2020-01-01T00:00:00Z"
+    OfferPromoOptionsPendingChanges:
+      type: object
+      properties:
+        basePackage:
+          $ref: '#/components/schemas/OfferPromoOption'
+    PromoOptionsCommand:
+      type: object
+      properties:
+        offerCriteria:
+          type: array
+          description: "Offer choice criteria."
+          items:
+            $ref: '#/components/schemas/OfferCriterium'
+        modification:
+          $ref: '#/components/schemas/PromoOptionsCommandModification'
+    PromoOptionsCommandModification:
+      type: object
+      properties:
+        basePackage:
+          $ref: '#/components/schemas/PromoOptionsCommandModificationPackage'
+        extraPackages:
+          type: array
+          description: "Extra packages to be set on offer. Omitting this parameter will preserve the packages already present."
+          items:
+            $ref: '#/components/schemas/PromoOptionsCommandModificationPackage'
+        modificationTime:
+          type: string
+          description: "Time at which the modification will be applied."
+          enum:
+            - NOW
+            - END_OF_CYCLE
+    PromoOptionsCommandModificationPackage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "promoPackage"
+    PromoModificationReport:
+      type: object
+      properties:
+        tasks:
+          type: array
+          description: "Offer promotion modification tasks."
+          items:
+            $ref: '#/components/schemas/PromoModificationTask'
+        modification:
+          $ref: '#/components/schemas/PromoOptionsCommandModification'
+    PromoModificationTask:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferId'
+        scheduledAt:
+          type: string
+          format: date-time
+          description: >-
+            Date on which the promotion modification task was scheduled: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+          example: "2020-01-01T00:00:00Z"
+        finishedAt:
+          type: string
+          format: date-time
+          description: >-
+            Date on which the promotion modification task finished processing: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
+          example: "2020-01-01T00:00:00Z"
+        status:
+          type: string
+          enum:
+            - FINISHED
+            - ERROR
+            - IN_PROGRESS
+        errors:
+          $ref: '#/components/schemas/Error'
