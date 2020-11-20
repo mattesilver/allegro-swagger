@@ -2650,6 +2650,68 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/categories/parameters/required-changes':
+    get:
+      tags:
+        - Categories and parameters
+      summary: 'Get planned require changes in category parameters'
+      description: >-
+        Use this resource to get information about planned changes in parameter requirements.
+      operationId: getCategoriesParametersRequireChangesUsingGET_1
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      parameters:
+        - name: scheduledFor.gte
+          in: query
+          description: >-
+            The minimum date and time of requirement change in ISO 8601 format.
+            Should be greater than current date time and less than 3 months from current date.
+          example: "2020-11-13T12:45:20.818Z"
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: scheduledFor.lte
+          in: query
+          description: >-
+            The maximum date and time of requirement change in ISO 8601 format.
+            Should be greater than current date time.
+          required: false
+          example: "2020-11-13T12:45:20.818Z"
+          schema:
+            type: string
+            format: date-time
+        - name: offset
+          in: query
+          description: The offset of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          description: The limit of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: Category parameters require changes returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/RequireChangesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
   /sale/offer-additional-services/definitions:
     get:
       tags:
@@ -6407,6 +6469,59 @@ paths:
       security:
         - bearer-token-for-user:
             - allegro:api:sale:offers:read
+  '/sale/offers/unfilled-parameters':
+    get:
+      tags:
+        - Offer management
+      summary: 'Get offers unfilled parameters'
+      description: >-
+        Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers.
+      operationId: getOffersUnfilledParametersUsingGET_1
+      parameters:
+        - name: offer.id
+          in: query
+          description: 'List of offer ids. If empty all offers with unfilled parameters will be returned.'
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: offset
+          in: query
+          description: The offset of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          description: The limit of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: Unfilled offer parameters were returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/UnfilledParametersResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      security:
+      - bearer-token-for-user:
+        - allegro:api:sale:offers:read
   /sale/compatibility-list/supported-categories:
     get:
       tags:
@@ -10479,6 +10594,46 @@ components:
           type: boolean
           description: Indicates whether custom parameters can be added to offers in this category.
       description: A list of the different options which can be used with this category.
+    RequireChangesResponse:
+      type: object
+      properties:
+        changes:
+          type: array
+          description: 'Category parameters with changed requirements.'
+          items:
+            type: object
+            properties:
+              category:
+                type: object
+                description: 'Category of changed requirement'
+                properties:
+                  id:
+                    type: string
+                    description: 'Category identifier.'
+                    example: '257931'
+              parameter:
+                type: object
+                description: 'Parameter of changed requirement'
+                properties:
+                  id:
+                    type: string
+                    description: 'Parameter identifier.'
+                    example: '14228'
+              scheduledFor:
+                type: string
+                format: date-time
+                description: 'Date and time for scheduling require change: Format (ISO 8601) - yyyy-MM-ddTHH:mm:ss.SSSZ.'
+                example: '2020-12-01T08:00:00.000Z'
+        count:
+          type: integer
+          minimum: 0
+          description: 'Number of returned elements.'
+          example: 3
+        totalCount:
+          type: integer
+          minimum: 0
+          description: 'Total number of available elements.'
+          example: 256
     CategorySuggestionResponse:
       type: object
       required:
@@ -10516,6 +10671,47 @@ components:
             required:
               - id
               - name
+    UnfilledParametersResponse:
+      type: object
+      properties:
+        offers:
+          type: array
+          description: 'List of offers unfilled parameters.'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: 'Identifier of the offer.'
+                example: '8888203028'
+              parameters:
+                type: array
+                description: 'List of unfilled parameters.'
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: 'Parameter identifier.'
+                      example: '14228'
+              category:
+                type: object
+                description: 'Category of offer with unfilled parameters'
+                properties:
+                  id:
+                    type: string
+                    description: 'Category identifier.'
+                    example: '257931'
+        count:
+          type: integer
+          minimum: 0
+          description: 'Number of returned elements.'
+          example: 3
+        totalCount:
+          type: integer
+          minimum: 0
+          description: 'Total number of available elements.'
+          example: 256
     CompatibilityListSupportedCategoriesDto:
       type: object
       properties:
