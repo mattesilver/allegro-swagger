@@ -2654,7 +2654,7 @@ paths:
     get:
       tags:
         - Categories and parameters
-      summary: 'Get planned require changes in category parameters'
+      summary: 'Get planned required parameters'
       description: >-
         Use this resource to get information about planned changes in parameter requirements.
       operationId: getCategoriesParametersRequireChangesUsingGET_1
@@ -6473,7 +6473,7 @@ paths:
     get:
       tags:
         - Offer management
-      summary: 'Get offers unfilled parameters'
+      summary: 'Get offers with missing parameters'
       description: >-
         Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers.
       operationId: getOffersUnfilledParametersUsingGET_1
