@@ -7322,7 +7322,7 @@ paths:
         You can apply for a badge, which - depending on a type - will be displayed on your offer page of on the list of offers.
 
         First - use this resource to get a list of all available badge campaigns at the moment, then use *POST /sale/badges* to apply for badge.
-        <a href="/badge/#1" target="_blank">Read more</a>.
+        Read more: <a href="../../badge/#1-lista-dostępnych-kampanii" target="_blank">PL</a> / <a href="../../en/badge/#1-list-of-available-campaigns" target="_blank">EN</a>.
       operationId: badgeCampaigns_get_all
       responses:
         '200':
@@ -7415,7 +7415,7 @@ paths:
         or
           <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-0KPkAE7wkcv"
             target="_blank">Commission discount terms and conditions</a>.
-        <a href="/badge/#2" target="_blank">Read more</a>.
+        Read more: <a href="../../badge/#2-zgłoś-ofertę-do-kampanii" target="_blank">PL</a> / <a href="../../en/badge/#2-submit-offer-to-a-campaign" target="_blank">EN</a>.
       operationId: postBadges
       responses:
         '202':
@@ -7584,7 +7584,7 @@ paths:
       summary: '[BETA] Get a list of badges'
       description: >-
         Use this resource to get a list of badges in authorized seller's offers.
-        <a href="/badge/#5" target="_blank">Read more</a>.
+        Read more: <a href="../../badge/#5-kampanie-przypisane-do-ofert" target="_blank">PL</a> / <a href="../../en/badge/#5-check-badges-assigned-to-offers" target="_blank">EN</a>.
       operationId: getBadges
       parameters:
         - name: offer.id
@@ -7716,7 +7716,7 @@ paths:
       summary: '[BETA] Get a badge application details'
       description: >-
         Use this resource to get a badge application details.
-        <a href="/badge/#3" target="_blank">Read more</a>.
+        Read more: <a href="../../badge/#3-pobierz-dane-zgłoszenie" target="_blank">PL</a> / <a href="../../en/badge/#3-retrieve-campaign-application" target="_blank">EN</a>.
       operationId: badgeApplications_get_one
       parameters:
         - name: applicationId
@@ -7837,7 +7837,7 @@ paths:
       summary: '[BETA] Get a list of badge applications'
       description: >-
         Use this resource to get a list of badge applications.
-        <a href="/badge/#4" target="_blank">Read more</a>.
+        Read more: <a href="../../badge/#4-pobierz-swoje-zgłoszenia" target="_blank">PL</a> / <a href="../../en/badge/#4-retrieve-all-campaign-applications" target="_blank">EN</a>.
       operationId: badgeApplications_get_all
       parameters:
         - name: campaign.id
