@@ -988,7 +988,7 @@ paths:
         Only the highest applicable threshold (if any) will be applied to the total value of the order.
         A threshold with a higher order value than another threshold in the order discount must also have a higher discount.
         Large order discount is assigned automatically to all seller's offers. Moreover, it will be assigned to all newly added seller's offers once activated.
-        Please note that it may take some time to propagate this type of promotion to all of your offers.
+        Please note that it may take some time to propagate this type of promotion to all of your offers. Read more: <a href="../../offer_bundles/#dodaj-rabat" target="_blank">PL</a> / <a href="../../en/offer_bundles/#add-large-order-discount" target="_blank">EN</a>.
 
         2. Wholesale price list
         <br>
@@ -1000,16 +1000,16 @@ paths:
         Threshold's discount defines the discount percentage applied when the threshold is applied. The percentage's fractional part must be equal to 0.
         Only the highest applicable threshold (if any) will be applied to the total price of units of the offer bought.
         A threshold with a higher quantity than another threshold in the price list must also have a higher discount.
-        In order to assign offers to a wholesale price list, use `discounts` field in <a href="#operation/modificationCommandUsingPUT">batch offer modification</a>.
+        In order to assign offers to a wholesale price list, use `discounts` field in <a href="#operation/modificationCommandUsingPUT">batch offer modification</a>. Read more: <a href="../../offer_bundles/#dodaj-cennik-hurtowy" target="_blank">PL</a> / <a href="../../en/offer_bundles/#add-wholesale-price-list" target="_blank">EN</a>.
 
         3. Bundle
         <br>
         In order to create a new bundle, you have to define a
-         promotion with a single benefit of type **ORDER_FIXED_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. In the benefit specification you have to declare the discount amount that you want to be deducted from the sum of bundled offers prices. In the offer criterion you need to pass a list of offers that are to be grouped as a bundle. For each offer you have to define a fixed quantity (that many pieces of your offer will be part of the bundle) and you also have to set a promotionEntryPoint flag (offers with this flag set to true will have a section that allows the users to purchase your bundle).
+         promotion with a single benefit of type **ORDER_FIXED_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. In the benefit specification you have to declare the discount amount that you want to be deducted from the sum of bundled offers prices. In the offer criterion you need to pass a list of offers that are to be grouped as a bundle. For each offer you have to define a fixed quantity (that many pieces of your offer will be part of the bundle) and you also have to set a promotionEntryPoint flag (offers with this flag set to true will have a section that allows the users to purchase your bundle). Read more: <a href="../../offer_bundles/#dodaj-promocyjny-zestaw" target="_blank">PL</a> / <a href="../../en/offer_bundles/#create-new-promotional-set-of-offers" target="_blank">EN</a>
 
         4. Multipack
         <br>
-        In order to create a new multipack, you have to define a promotion with a single benefit of type **UNIT_PERCENTAGE_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. The benefit specification should contain a configuration section with a percentage which indicates the specific discount for the discounted offer. This percentage should be an integer value greater than 15 for quantity 2, greater than 30 for quantity 3, greater than 40 for quantity 4, greater than 50 for quantity 5 and lower than or equal to 100. The specification should also contain a trigger section with a field forEachQuantity that defines the amount of items in the multipack which is necessary to trigger the benefit. Additionally, the discountedNumber field must be set to 1 by default as you can only discount one unit in a multipack. Finally, the offer criterion specifies the offer for which the multipack promotion will take effect.
+        In order to create a new multipack, you have to define a promotion with a single benefit of type **UNIT_PERCENTAGE_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. The benefit specification should contain a configuration section with a percentage which indicates the specific discount for the discounted offer. This percentage should be an integer value greater than 15 for quantity 2, greater than 30 for quantity 3, greater than 40 for quantity 4, greater than 50 for quantity 5 and lower than or equal to 100. The specification should also contain a trigger section with a field forEachQuantity that defines the amount of items in the multipack which is necessary to trigger the benefit. Additionally, the discountedNumber field must be set to 1 by default as you can only discount one unit in a multipack. Finally, the offer criterion specifies the offer for which the multipack promotion will take effect. Read more: <a href="../../offer_bundles/#dodaj-rabat-ilościowy" target="_blank">PL</a> / <a href="../../en/offer_bundles/#create-new-quantitative-discount" target="_blank">EN</a>
 
         5. Cross-offer multipack
         <br>
@@ -1017,8 +1017,6 @@ paths:
         more than 1 offer in the offer criterion section. This group of offers is then considered as a pool from which users can
         pick and choose forEachQuantity offers and the cheapest of them gets a discount.
 
-
-        Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/" target="_blank">bundles</a>, <a href="../../news/2018-02-01-rabaty_ilosciowe/" target="_blank">multipack</a> and <a href="../../news/2018-10-08-rabaty_ilosciowe/" target="_blank">cross-offer multipack</a>.
       operationId: createPromotionUsingPOST_1
       responses:
         '201':
@@ -1272,8 +1270,8 @@ paths:
         <p>offset = 0 and limit = 5000 will return promotions</p>
         <p>offset = 0 and limit = 5001 will return 422 http error</p>
 
-        <p>Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/#2" target="_blank">Bundles</a>
-        and <a href="../../news/2018-02-01-rabaty_ilosciowe/#2" target="_blank">Multipack</a>.</p>
+        <p>Read more about: Large order discount <a href="../../offer_bundles/#pobierz-dostępny-rabat" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#pobierz-dostępne-cenniki" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-wholesale-price-lists" target="_blank">EN</a>, Bundles and Multipack <a href="../../offer_bundles/#pobierz-listę-promocji" target="_blank">PL</a> / <a href="../../en/offer_bundles/#list-of-promotional-features" target="_blank">EN</a>.</p>
+        
       operationId: listSellerPromotionsUsingGET_1
       parameters:
         - name: limit
@@ -1348,8 +1346,8 @@ paths:
       summary: "Get a promotion data by id"
       description:
         'Use this resource to returns the requested promotion. You need to use its unique id.
-         Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/#3" target="_blank">bundles</a>
-         and <a href="../../news/2018-02-01-rabaty_ilosciowe/#3" target="_blank">multipack</a>.'
+         Read more about: Large order discount <a href="../../offer_bundles/#pobierz-informacje-o-rabacie" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-information-about-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#pobierz-informacje-o-cenniku" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-information-about-wholesale-price-list" target="_blank">EN</a>, Bundles <a href="../../offer_bundles/#pobierz-informacje-o-zestawie" target="_blank">PL</a> / <a href="../../en/offer_bundles/#information-about-a-promotional-set-of-offers" target="_blank">EN</a>, Multipack <a href="../../offer_bundles/#pobierz-informacje-o-rabacie-ilościowym" target="_blank">PL</a> / <a href="../../en/offer_bundles/#information-about-an-quantitative-discount" target="_blank">EN</a>.'
+         
       operationId: getPromotionUsingGET
       parameters:
         - name: promotionId
@@ -1380,7 +1378,7 @@ paths:
       summary: "Modify a promotion"
       description: >-
         Use this resource to update a promotion by its unique id.
-        Only wholesale price lists or large order discounts can be updated. Benefit type cannot be changed.
+        Only wholesale price lists or large order discounts can be updated. Benefit type cannot be changed. Read more about: Large order discount <a href="../../offer_bundles/#edytuj-progi-rabatowe" target="_blank">PL</a> / <a href="../../en/offer_bundles/#edit-discount-thresholds" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#edytuj-cennik" target="_blank">PL</a> / <a href="../../en/offer_bundles/#edit-wholesale-price-list" target="_blank">EN</a>.
       operationId: updatePromotionUsingPUT
       parameters:
         - name: promotionId
@@ -1537,8 +1535,7 @@ paths:
       summary: "Deactivate a promotion by id"
       description:
         'Use this resource to deactivate the requested promotion. You need to use its unique id.
-         Read more about <a href="../../news/2017-10-18-news_promocyjne_zestawy_ofert/#4" target="_blank">bundles</a>
-         and <a href="../../news/2018-02-01-rabaty_ilosciowe/#4" target="_blank">multipack</a>.'
+         Read more about: Large order discount <a href="../../offer_bundles/#usuń-rabat" target="_blank">PL</a> / <a href="../../en/offer_bundles/#remove-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#usuń-cennik" target="_blank">PL</a> / <a href="../../en/offer_bundles/#remove-wholesale-price-list" target="_blank">EN</a>, Bundles <a href="../../offer_bundles/#usuń-promocyjny-zestaw" target="_blank">PL</a> / <a href="../../en/offer_bundles/#remove-a-promotional-set-of-offers" target="_blank">EN</a>, Multipack <a href="../../offer_bundles/#usuń-rabat-ilościowy" target="_blank">PL</a> / <a href="../../en/offer_bundles/#remove-an-quantitative-discount" target="_blank">EN</a>.'
       operationId: deactivatePromotionUsingDELETE
       parameters:
         - name: promotionId
@@ -1576,7 +1573,7 @@ paths:
                 You have to define promotion id and campaign section giving LISTING_BADGE as the id.
                 Your promotion campaign application will be verified and you will be notified about the verification status via e-mail.
                 Fees will be charged in accordance with Annex No. 1 to the Daily deals zone regulations.
-                <a href="../../offer_bundles/#11" target="_blank">Read more</a>.
+                Read more: <a href="../../offer_bundles/#złóż-wniosek" target="_blank">PL</a> / <a href="../../en/offer_bundles/#submit-an-application" target="_blank">EN</a>.
 
       operationId: addPromotionToCampaignUsingPOST
       responses:
@@ -1628,7 +1625,7 @@ paths:
       summary: "Get the user's promotion campaigns"
       description: >-
         Use this resource to retrieve promotion campaigns. You can find promotion campaign by
-        promotion id. <a href="../../offer_bundles/#13" target="_blank">Read more</a>.
+        promotion id. Read more: <a href="../../offer_bundles/#pobierz-listę-kampanii" target="_blank">PL</a> / <a href="../../en/offer_bundles/#information-about-promotional-campaigns" target="_blank">EN</a>.
       operationId: getPromotionCampaignsUsingGET
       parameters:
         - name: promotion.id
@@ -1689,7 +1686,7 @@ paths:
       summary: "Delete a campaign in a promotion"
       description:
         'Use this resource to delete campaign from promotion by promotion id and campaign id.
-         <a href="../../offer_bundles/#16" target="_blank">Read more</a>.'
+         Read more: <a href="../../offer_bundles/#usuń-kampanię" target="_blank">PL</a> / <a href="../../en/offer_bundles/#remove-a-promotional-campaign" target="_blank">EN</a>.'
       operationId: deleteCampaignFromPromotionUsingDELETE
       parameters:
         - name: promotion.id
@@ -1741,7 +1738,7 @@ paths:
       summary: "Get an application for promotion campaign"
       description:
         'Use this resource to retrieve promotion campaign application. You need to use its unique id.
-         <a href="../../offer_bundles/#12" target="_blank">Read more</a>.'
+         Read more: <a href="../../offer_bundles/#sprawdź-status-wniosku" target="_blank">PL</a> / <a href="../../en/offer_bundles/#check-application-status" target="_blank">EN</a>.'
       operationId: getPromotionCampaignApplicationUsingGET
       parameters:
         - name: applicationId
@@ -1786,7 +1783,7 @@ paths:
       summary: "Delete an application for promotion campaign"
       description: >-
         Use this resource to delete promotion campaign application by application id. You need to
-        use its unique id. <a href="../../offer_bundles/#15" target="_blank">Read more</a>.
+        use its unique id. Read more: <a href="../../offer_bundles/#usuń-wniosek" target="_blank">PL</a> / <a href="../../en/offer_bundles/#delete-an-application" target="_blank">EN</a>.
       operationId: deletePromotionCampaignApplicationUsingDELETE
       parameters:
         - name: applicationId
