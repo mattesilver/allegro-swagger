@@ -2542,7 +2542,7 @@ paths:
       description: >-
         Use this resource to get the list of product parameters available in given category.
         You can use these parameters to create a new product.
-        <a href="../../productization" target="_blank">Read more</a>.
+        Read more: <a href="../../productization/#6-jak-dodać-produkt" target="_blank">PL</a> / <a href="../../en/productization/#6-how-to-create-a-product" target="_blank">EN</a>.
       operationId: getFlatProductParametersUsingGET
       security:
         - bearer-token-for-application: []
@@ -6014,7 +6014,7 @@ paths:
       summary: "Get search products results"
       description: >-
         Use this resource to get a list of products according to provided parameters.
-        At least ean or phrase parameter is required. <a href="../../productization/#search" target="_blank">Read more</a>.
+        At least ean or phrase parameter is required. Read more: <a href="../../productization/#2-jak-wyszukać-produkt" target="_blank">PL</a> / <a href="../../en/productization/#2-how-to-search-for-products" target="_blank">EN</a>.
       operationId: getSaleProducts
       parameters:
         - name: ean
@@ -6102,7 +6102,7 @@ paths:
       tags:
         - Products
       summary: 'Get all data of the particular product'
-      description: 'Use this resource to retrieve all data of the particular product. <a href="../../productization/#details" target="_blank">Read more</a>.'
+      description: 'Use this resource to retrieve all data of the particular product. Read more: <a href="../../productization/#3-jak-pobrać-pełne-dane-o-produkcie" target="_blank">PL</a> / <a href="../../en/productization/#3-how-to-get-the-complete-data-on-a-product" target="_blank">EN</a>.'
       operationId: getSaleProduct
       parameters:
         - name: productId
@@ -6139,7 +6139,7 @@ paths:
         - Products
       summary: "Propose a product"
       description: >-
-        Use this resource to propose a product.
+        Use this resource to propose a product. Read more: <a href="../../productization/#6-jak-dodać-produkt" target="_blank">PL</a> / <a href="../../en/productization/#6-how-to-create-a-product" target="_blank">EN</a>.
       operationId: proposeSaleProduct
       responses:
         '201':
