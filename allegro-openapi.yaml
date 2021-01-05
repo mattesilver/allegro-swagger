@@ -6422,6 +6422,14 @@ paths:
             type: array
             items:
               type: string
+        - name: parameterType
+          in: query
+          description: Filter by parameter type.
+          schema:
+            type: string
+            enum:
+              - REQUIRED
+              - REQUIREMENT_PLANNED
         - name: offset
           in: query
           description: The offset of elements in the response.
@@ -13896,7 +13904,7 @@ components:
       properties:
         available:
           type: integer
-          minimum: 1
+          minimum: 0
           description: The available stock value.
           example: 23
         sold:
