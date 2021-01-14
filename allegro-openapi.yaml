@@ -2647,6 +2647,241 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/category-parameters-scheduled-changes':
+    get:
+      tags:
+        - Categories and parameters
+      summary: 'Get planned changes in category parameters'
+      description: >-
+        Use this resource to get information about planned changes in category parameters.
+        Please note that in some cases, the returned events may finally not happen in the future.
+
+        At present we support the following changes:
+        - REQUIREMENT_CHANGE - the parameter will be required in the category.
+
+      operationId: getCategoryParametersScheduledChangesUsingGET_1
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      parameters:
+        - name: scheduledFor.gte
+          in: query
+          description: >-
+            The minimum date and time from which the change will be effective from in ISO 8601 format.
+            Should be greater than the current date time and less than 3 months from the current date.
+          example: "2020-11-13T12:45:20.818Z"
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: scheduledFor.lte
+          in: query
+          description: >-
+            The maximum date and time from which the change will be effective from in ISO 8601 format.
+            Should be greater than the current date time and less than 3 months from the current date.
+          required: false
+          example: "2020-11-13T12:45:20.818Z"
+          schema:
+            type: string
+            format: date-time
+        - name: scheduledAt.gte
+          in: query
+          description: >-
+            The minimum date and time at which the change was scheduled in ISO 8601 format.
+          example: "2020-11-13T12:45:20.818Z"
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: scheduledAt.lte
+          in: query
+          description: >-
+            The maximum date and time at which the change was scheduled in ISO 8601 format.
+          required: false
+          example: "2020-11-13T12:45:20.818Z"
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: type
+          required: false
+          description: >-
+            The types of changes that will be returned in the response. All types of changes are returned by default.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - REQUIREMENT_CHANGE
+        - name: offset
+          in: query
+          description: The offset of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          description: The limit of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: Category parameters changes returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CategoryParametersScheduledChangesResponse'
+              examples:
+                CategoryParameterChange:
+                  summary: Category parameter requirement change
+                  value:
+                    scheduledAt: "2019-06-26T15:26:43.891Z"
+                    scheduledFor: "2019-07-26T15:26:43.891Z"
+                    type: "REQUIREMENT_CHANGE"
+                    category:
+                      id: "165"
+                    parameter:
+                      id: "11323"
+        '400':
+          description: Invalid parameters supplied in the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+  /sale/category-events:
+    get:
+      tags:
+        - Categories and parameters
+      summary: 'Get changes in categories'
+      description: >-
+        Use this resource to get information about changes in categories. It returns changes that occurred in the last 3 months.
+
+        At present we support the following changes:
+          - CATEGORY_CREATED - new category was created.
+          - CATEGORY_RENAMED - category name has been changed.
+          - CATEGORY_MOVED - category has been moved to a different place in category tree, category parent id field is changed.
+          - CATEGORY_DELETED - category is no longer available, category from redirectCategory field should be used instead.
+
+      operationId: getCategoryEventsUsingGET_1
+      security:
+        - bearer-token-for-application: []
+        - bearer-token-for-user: []
+      parameters:
+        - in: query
+          name: from
+          required: false
+          description: The ID of the last seen event. Changes that occurred after the given event will be returned.
+          schema:
+            type: string
+            example: "MTEzMjQzODU3NA"
+            maxLength: 256
+        - in: query
+          name: limit
+          required: false
+          description: The number of events that will be returned in the response.
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - in: query
+          name: type
+          required: false
+          description: >-
+            The types of events that will be returned in the response. All types of events are returned by default.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - CATEGORY_CREATED
+                - CATEGORY_RENAMED
+                - CATEGORY_MOVED
+                - CATEGORY_DELETED
+      responses:
+        '200':
+          description: The list of category changes returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CategoryEventsResponse'
+              examples:
+                CategoryCreatedEvent:
+                  summary: Category created event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "CATEGORY_CREATED"
+                    category:
+                      id: "165"
+                      name: "Smartphones and Cell Phones"
+                      parent:
+                        id: "4"
+                      leaf: false
+                CategoryRenamedEvent:
+                  summary: Category renamed event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "CATEGORY_RENAMED"
+                    category:
+                      id: "165"
+                      name: "Smartphones and Cell Phones Renamed"
+                      parent:
+                        id: "4"
+                      leaf: false
+                CategoryMovedEvent:
+                  summary: Category moved event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "CATEGORY_MOVED"
+                    category:
+                      id: "165"
+                      name: "Smartphones and Cell Phones"
+                      parent:
+                        id: "7"
+                      leaf: false
+                CategoryDeletedEvent:
+                  summary: Category deleted event
+                  value:
+                    id: "MTEzMjQzODU3NA"
+                    occurredAt: "2019-06-26T15:26:43.891Z"
+                    type: "CATEGORY_DELETED"
+                    category:
+                      id: "165"
+                      name: "Smartphones and Cell Phones"
+                      parent:
+                        id: "4"
+                      leaf: false
+                    redirectCategory:
+                      id: "7"
+        '400':
+          description: Invalid parameters supplied in the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
   /sale/offer-additional-services/definitions:
     get:
       tags:
@@ -10615,6 +10850,197 @@ components:
           minimum: 0
           description: 'Total number of available elements.'
           example: 256
+    CategoryParametersScheduledChangesResponse:
+      type: object
+      required:
+        - scheduledChanges
+      properties:
+        scheduledChanges:
+          type: array
+          description: The list of scheduled changes.
+          items:
+            $ref: '#/components/schemas/CategoryParametersScheduledBaseChange'
+    CategoryParametersScheduledBaseChange:
+      type: object
+      required:
+        - type
+        - scheduledAt
+        - scheduledFor
+      description: The data of an scheduled change.
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+          description: The date and time when the change was scheduled, provided in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          example: "2019-06-26T15:26:43.891Z"
+        scheduledFor:
+          type: string
+          format: date-time
+          description: The date and time when the change will be effective from, provided in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          example: "2019-07-26T15:26:43.891Z"
+        type:
+          type: string
+          description: The type of the change.
+          example: "REQUIREMENT_CHANGE"
+      discriminator:
+        propertyName: type
+        mapping:
+          REQUIREMENT_CHANGE: '#/components/schemas/RequirementChange'
+    RequirementChange:
+      allOf:
+        - $ref: '#/components/schemas/CategoryParametersScheduledBaseChange'
+        - type: object
+          required:
+            - category
+            - parameter
+          properties:
+            type:
+              type: string
+              default: 'REQUIREMENT_CHANGE'
+            category:
+              $ref: '#/components/schemas/CategoryParametersScheduledBaseChangeCategory'
+            parameter:
+              $ref: '#/components/schemas/CategoryParametersScheduledBaseChangeParameter'
+    CategoryParametersScheduledBaseChangeCategory:
+      type: object
+      description: Category parameter scheduled change category data.
+      properties:
+        id:
+          type: string
+          description: >-
+            The ID of the category. This can be either in UUID format or an integer format. You should be ready to
+            accept any string value as the category ID.
+          example: "165"
+    CategoryParametersScheduledBaseChangeParameter:
+      type: object
+      description: Category parameter scheduled change parameter data.
+      properties:
+        id:
+          type: string
+          description: >-
+            The ID of the Parameter. This can be either in UUID format or an integer format. You should be ready to
+            accept any string value as the parameter ID.
+          example: "11323"
+    CategoryEventsResponse:
+      type: object
+      required:
+        - events
+      properties:
+        events:
+          type: array
+          description: The list of events.
+          items:
+            $ref: '#/components/schemas/CategoryBaseEvent'
+    CategoryBaseEvent:
+      type: object
+      required:
+        - id
+        - type
+        - occurredAt
+      description: The data of an event.
+      properties:
+        id:
+          type: string
+          description: The ID of the event. It can be used in the `from` parameter of the query.
+          example: "MTEzMjQzODU3NA"
+          maxLength: 256
+        occurredAt:
+          type: string
+          format: date-time
+          description: The date and time when the change occurred, provided in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          example: "2019-06-26T15:26:43.891Z"
+        type:
+          type: string
+          description: The type of the change.
+          example: "CATEGORY_CREATED"
+      discriminator:
+        propertyName: type
+        mapping:
+          CATEGORY_CREATED: '#/components/schemas/CategoryCreatedEvent'
+          CATEGORY_RENAMED: '#/components/schemas/CategoryRenamedEvent'
+          CATEGORY_MOVED: '#/components/schemas/CategoryMovedEvent'
+          CATEGORY_DELETED: '#/components/schemas/CategoryDeletedEvent'
+    CategoryCreatedEvent:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBaseEvent'
+        - type: object
+          required:
+            - category
+          properties:
+            type:
+              type: string
+              default: 'CATEGORY_CREATED'
+            category:
+              $ref: '#/components/schemas/CategoryEventBaseCategory'
+    CategoryRenamedEvent:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBaseEvent'
+        - type: object
+          required:
+            - category
+          properties:
+            type:
+              type: string
+              default: 'CATEGORY_RENAMED'
+            category:
+              $ref: '#/components/schemas/CategoryEventBaseCategory'
+    CategoryMovedEvent:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBaseEvent'
+        - type: object
+          required:
+            - category
+          properties:
+            type:
+              type: string
+              default: 'CATEGORY_MOVED'
+            category:
+              $ref: '#/components/schemas/CategoryEventBaseCategory'
+    CategoryDeletedEvent:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBaseEvent'
+        - type: object
+          required:
+            - category
+          properties:
+            type:
+              type: string
+              default: 'CATEGORY_DELETED'
+            category:
+              $ref: '#/components/schemas/CategoryEventBaseCategory'
+            redirectCategory:
+              type: object
+              description: Category that should be used instead of deleted one.
+              properties:
+                id:
+                  type: string
+                  description: The ID of the category.
+                  example: "7"
+    CategoryEventBaseCategory:
+      type: object
+      description: Category event category data.
+      properties:
+        id:
+          type: string
+          description: >-
+            The ID of the category. This can be either in UUID format or an integer format. You should be ready to
+            accept any string value as the category ID.
+          example: "165"
+        leaf:
+          type: boolean
+          description: Indicates whether the category is at the lowest level. Leaf categories do not have any children. Offers can be listed only in leaf categories.
+        name:
+          type: string
+          description: Name of the category.
+          example: Smartphones and Cell Phones
+        parent:
+          type: object
+          description: The parent category data.
+          properties:
+            id:
+              type: string
+              description: The ID of the parent category.
+              example: "4"
     CompatibilityListSupportedCategoriesDto:
       type: object
       properties:
