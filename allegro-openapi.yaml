@@ -1271,7 +1271,7 @@ paths:
         <p>offset = 0 and limit = 5001 will return 422 http error</p>
 
         <p>Read more about: Large order discount <a href="../../offer_bundles/#pobierz-dostępny-rabat" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#pobierz-dostępne-cenniki" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-wholesale-price-lists" target="_blank">EN</a>, Bundles and Multipack <a href="../../offer_bundles/#pobierz-listę-promocji" target="_blank">PL</a> / <a href="../../en/offer_bundles/#list-of-promotional-features" target="_blank">EN</a>.</p>
-        
+
       operationId: listSellerPromotionsUsingGET_1
       parameters:
         - name: limit
@@ -1347,7 +1347,7 @@ paths:
       description:
         'Use this resource to returns the requested promotion. You need to use its unique id.
          Read more about: Large order discount <a href="../../offer_bundles/#pobierz-informacje-o-rabacie" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-information-about-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../offer_bundles/#pobierz-informacje-o-cenniku" target="_blank">PL</a> / <a href="../../en/offer_bundles/#retrieve-information-about-wholesale-price-list" target="_blank">EN</a>, Bundles <a href="../../offer_bundles/#pobierz-informacje-o-zestawie" target="_blank">PL</a> / <a href="../../en/offer_bundles/#information-about-a-promotional-set-of-offers" target="_blank">EN</a>, Multipack <a href="../../offer_bundles/#pobierz-informacje-o-rabacie-ilościowym" target="_blank">PL</a> / <a href="../../en/offer_bundles/#information-about-an-quantitative-discount" target="_blank">EN</a>.'
-         
+
       operationId: getPromotionUsingGET
       parameters:
         - name: promotionId
@@ -11544,7 +11544,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FullDefinitionResponse'
-    Delivery:
+    DeliveryBasic:
       type: object
       properties:
         additionalInfo:
@@ -11557,13 +11557,18 @@ components:
             Handling time, ISO 8601 duration format.
             This field must be set to one of the following:
             PT0S for immediately, PT24H, P2D, P3D, P4D, P5D, P7D, P10D, P14D, P21D, P30D, P60D.
+        shippingRates:
+          $ref: '#/components/schemas/JustId'
+    DeliveryFull:
+      allOf:
+        - $ref: '#/components/schemas/DeliveryBasic'
+      type: object
+      properties:
         shipmentDate:
           type: string
           format: date-time
           example: '2018-04-01T08:00:00Z'
           description: 'Shipment date, Format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ'
-        shippingRates:
-          $ref: '#/components/schemas/JustId'
     DescriptionSection:
       type: object
       properties:
@@ -11811,7 +11816,7 @@ components:
         promotion:
           $ref: '#/components/schemas/ModificationPromotion'
         sizeTable:
-          $ref: '#/components/schemas/ModificationSizeTable'
+          $ref: '#/components/schemas/SizeTable'
         publication:
           $ref: '#/components/schemas/ModificationPublication'
       description: Contains fields to change
@@ -11891,7 +11896,7 @@ components:
           type: boolean
           example: false
           description: 'Highlight flag: true, false, null'
-    ModificationSizeTable:
+    SizeTable:
       type: object
       properties:
         id:
@@ -12018,7 +12023,7 @@ components:
           items:
             $ref: '#/components/schemas/CustomParameter'
         delivery:
-          $ref: '#/components/schemas/Delivery'
+          $ref: '#/components/schemas/DeliveryFull'
         description:
           $ref: '#/components/schemas/StandardizedDescription'
         discounts:
@@ -12930,30 +12935,20 @@ components:
       type: object
       properties:
         duration:
-          type: string
-          example: PDT12H30M5S
-          description: 'Publication duration, ISO 8601 duration format'
+          $ref: '#/components/schemas/OfferDuration'
         endingAt:
-          type: string
-          format: date-time
-          description: >-
-            Publication ending date: Format (ISO 8601) -
-            yyyy-MM-dd'T'HH:mm:ss.SSSZ. Cannot be modified
+          $ref: '#/components/schemas/OfferEndingAt'
         startingAt:
-          type: string
-          format: date-time
-          description: >-
-            Publication starting date: Format (ISO 8601) -
-            yyyy-MM-dd'T'HH:mm:ss.SSSZ. Cannot be modified
+          $ref: '#/components/schemas/OfferStartingAt'
         status:
           $ref: '#/components/schemas/OfferStatus'
         endedBy:
           type: string
           enum:
-          - USER
-          - ADMIN
-          - EXPIRATION
-          - ERROR
+            - USER
+            - ADMIN
+            - EXPIRATION
+            - ERROR
           description: >-
             Indicates the reason for ending the offer:
              - `USER` - offer ended by the seller.
@@ -12970,6 +12965,24 @@ components:
             - `BUY_NOW` offer type are republished with initial stock, regardless of how many items you have sold.</br>
             - `AUCTION` offer type are republished only if they were not concluded with purchase.</br>
             - `ADVERTISEMENT` offer type cannot be republished.
+    OfferDuration:
+      type: string
+      example: PDT12H30M5S
+      description: 'Publication duration, ISO 8601 duration format'
+    OfferEndingAt:
+      type: string
+      example: "2031-01-04T11:01:59Z"
+      format: date-time
+      description: >-
+        Publication ending date: Format (ISO 8601) -
+        yyyy-MM-dd'T'HH:mm:ss.SSSZ. Cannot be modified
+    OfferStartingAt:
+      type: string
+      example: "2031-01-04T11:01:59Z"
+      format: date-time
+      description: >-
+        Publication starting date: Format (ISO 8601) -
+        yyyy-MM-dd'T'HH:mm:ss.SSSZ. Cannot be modified after activation or ending of the offer.
     PublicationChangeCommandDto:
       type: object
       properties:
@@ -15785,56 +15798,81 @@ components:
     SaleProductOffer:
       type: object
       properties:
+        name:
+          type: string
+          description: Name of the offer. Words used in the name field cannot be longer than 50 characters.
+          maxLength: 50
         payments:
           $ref: '#/components/schemas/Payments'
         sellingMode:
           $ref: '#/components/schemas/SellingMode'
         location:
           $ref: '#/components/schemas/Location'
-        publication:
-          $ref: '#/components/schemas/Publication'
         images:
           type: array
           items:
             type: string
         description:
           $ref: '#/components/schemas/StandardizedDescription'
-        name:
-          type: string
-          description: Name of the offer. Words used in the name field cannot be longer than 50 characters.
-          maxLength: 50
         external:
           $ref: '#/components/schemas/ExternalId'
+        stock:
+          $ref: '#/components/schemas/Stock'
+        sizeTable:
+          $ref: '#/components/schemas/SizeTable'
+        tax:
+          $ref: '#/components/schemas/Tax'
       description: Single offer data.
     SaleProductOfferRequest:
       allOf:
-        - $ref: '#/components/schemas/SaleProductOffer'
         - type: object
           required:
             - stock
           properties:
             product:
-              $ref: '#/components/schemas/ProductOffer'
-            stock:
-              $ref: '#/components/schemas/Stock'
+              allOf:
+                - $ref: '#/components/schemas/ProductOffer'
+              description: You should enter the product identifier (UUID or EAN) or a complete product definition.
             afterSalesServices:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
-              $ref: '#/components/schemas/DeliveryProductOfferRequest'
-            sizeTable:
-              $ref: '#/components/schemas/JustId'
-            tax:
-              $ref: '#/components/schemas/Tax'
+              allOf:
+                - $ref: '#/components/schemas/DeliveryProductOfferRequest'
+                - type: object
+                  properties:
+                    shippingRates:
+                      description: You should enter the shippingrates identifier or name.
             parameters:
               type: array
               items:
                 $ref: '#/components/schemas/ParameterProductOfferRequest'
+            publication:
+              type: object
+              properties:
+                duration:
+                  $ref: '#/components/schemas/OfferDuration'
+                startingAt:
+                  $ref: '#/components/schemas/OfferStartingAt'
+                status:
+                  $ref: '#/components/schemas/OfferStatus'
+            sizeTable:
+              allOf:
+                - $ref: '#/components/schemas/SizeTable'
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the size table definition.
+              description: The size table information. You should enter the size tabe identifier or name.
+            discounts:
+              $ref: '#/components/schemas/DiscountsProductOfferRequest'
+        - $ref: '#/components/schemas/SaleProductOffer'
     SaleProductOfferPatchRequest:
       allOf:
-        - $ref: '#/components/schemas/SaleProductOffer'
         - type: object
           properties:
             product:
+              description: You should eneter the product's parametres which you want modify.
               allOf:
                 - type: object
                   properties:
@@ -15848,42 +15886,51 @@ components:
               $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             delivery:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
-            sizeTable:
-              $ref: '#/components/schemas/JustId'
             tax:
               $ref: '#/components/schemas/Tax'
             parameters:
               type: array
               items:
                 $ref: '#/components/schemas/ParameterProductOfferRequest'
+            publication:
+              type: object
+              properties:
+                duration:
+                  $ref: '#/components/schemas/OfferDuration'
+                startingAt:
+                  $ref: '#/components/schemas/OfferStartingAt'
+                status:
+                  $ref: '#/components/schemas/OfferStatus'
+            sizeTable:
+              allOf:
+                - $ref: '#/components/schemas/SizeTable'
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the size table definition.
+              description: The size table information. You should enter the size tabe identifier or name.
+            discounts:
+              $ref: '#/components/schemas/DiscountsProductOfferRequest'
+        - $ref: '#/components/schemas/SaleProductOffer'
     SaleProductOfferResponse:
       allOf:
-        - $ref: '#/components/schemas/SaleProductOffer'
         - type: object
           properties:
             id:
               type: string
             product:
               $ref: '#/components/schemas/ProductOfferResponse'
-            stock:
-              $ref: '#/components/schemas/Stock'
-            afterSalesServices:
-              $ref: '#/components/schemas/AfterSalesServices'
-            sizeTable:
-              $ref: '#/components/schemas/JustId'
-            tax:
-              $ref: '#/components/schemas/Tax'
-            delivery:
-              type: object
-              properties:
-                handlingTime:
-                  type: string
-                  example: PDT12H30M5S
-                  description: 'Handling time, ISO 8601 duration format'
-                shippingRates:
-                  $ref: '#/components/schemas/JustId'
             validation:
               $ref: '#/components/schemas/Validation'
+            publication:
+              $ref: '#/components/schemas/Publication'
+            afterSalesServices:
+              $ref: '#/components/schemas/AfterSalesServices'
+            delivery:
+              $ref: '#/components/schemas/DeliveryBasic'
+            discounts:
+              $ref: '#/components/schemas/DiscountsProductOfferResponse'
             createdAt:
               type: string
               format: date-time
@@ -15896,6 +15943,7 @@ components:
               description: >-
                 Last update date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
                 Cannot be modified.
+        - $ref: '#/components/schemas/SaleProductOffer'
     SaleProductOfferStatusResponse:
       type: object
       properties:
@@ -16032,6 +16080,23 @@ components:
           items:
             type: string
       description: Offer's parameter.
+    DiscountsProductOfferRequest:
+      type: object
+      properties:
+        wholesalePriceList:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Wholesale price list id
+            name:
+              type: string
+              description: The name of the wholesale price list definition.
+    DiscountsProductOfferResponse:
+      type: object
+      properties:
+        wholesalePriceList:
+          $ref: '#/components/schemas/JustId'
     OfferRequirements:
       description: 'Conditions which an offer must meet to be assigned with the product, i.e. Condition parameter must be set to New.'
       properties:
