@@ -5511,7 +5511,7 @@ paths:
                 - allegro.pl
                 - allegro.pl.allegrosandbox.pl
       responses:
-        '201':
+        '200':
           description: File uploaded correctly
         '400':
           description: Syntactically incorrect request
