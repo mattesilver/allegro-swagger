@@ -6433,11 +6433,8 @@ paths:
       operationId: createProductOffers
       responses:
         '201':
-          description: Offer created successfully. BETA.V1 is deprecated.
+          description: Offer created successfully.
           content:
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
             application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/SaleProductOfferResponse'
@@ -6459,32 +6456,29 @@ paths:
         '400':
           description: Bad request
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden - not allowed to access.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Unprocessable Entity
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
-          application/vnd.allegro.beta.v1+json:
-            schema:
-              $ref: '#/components/schemas/SaleProductOfferRequest'
           application/vnd.allegro.beta.v2+json:
             schema:
               $ref: '#/components/schemas/SaleProductOfferRequest'
@@ -6509,11 +6503,8 @@ paths:
             type: string
       responses:
         '200':
-          description: Offer edited successfully. Version BETA.V1 is deprecated.
+          description: Offer edited successfully.
           content:
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
             application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/SaleProductOfferResponse'
@@ -6535,32 +6526,29 @@ paths:
         '400':
           description: Bad request
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Unauthorized
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '403':
           description: Forbidden - not allowed to access.
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Unprocessable Entity
           content:
-            application/vnd.allegro.beta.v1+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
       requestBody:
         content:
-          application/vnd.allegro.beta.v1+json:
-            schema:
-              $ref: '#/components/schemas/SaleProductOfferPatchRequest'
           application/vnd.allegro.beta.v2+json:
             schema:
               $ref: '#/components/schemas/SaleProductOfferPatchRequest'
@@ -6583,7 +6571,7 @@ paths:
         '200':
           description: Offer returned successfully
           content:
-            application/vnd.allegro.public.v1+json:
+            application/vnd.allegro.public.v2+json:
               schema:
                 $ref: '#/components/schemas/SaleProductOfferResponse'
         '400':
@@ -10711,11 +10699,12 @@ components:
             $ref: '#/components/schemas/CategoryDto'
     Category:
       type: object
-      required:
-        - id
+      description: 'Category in which the offer is listed for sale'
       properties:
         id:
           type: string
+          description: 'Category identifier.'
+          example: '257931'
     CategoryDto:
       type: object
       properties:
@@ -12006,7 +11995,11 @@ components:
           items:
             $ref: '#/components/schemas/Attachment'
         category:
-          $ref: '#/components/schemas/Category'
+          allOf:
+            - $ref: '#/components/schemas/Category'
+          type: object
+          required:
+            - id
         compatibilityList:
           $ref: '#/components/schemas/CompatibilityList'
         contact:
@@ -15982,7 +15975,9 @@ components:
           description: Product name.
           example: iPhone 5s
         category:
-          $ref: '#/components/schemas/Category'
+          allOf:
+            - $ref: '#/components/schemas/Category'
+          description: Category identifier of product
         images:
           type: array
           items:
