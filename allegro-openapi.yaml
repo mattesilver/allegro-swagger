@@ -7788,7 +7788,7 @@ paths:
                   value:
                     badges:
                       - offer:
-                          id: '123456'
+                          id: '4814482399'
                         campaign:
                           id: 'BARGAIN'
                           name: 'Strefa okazji'
@@ -7801,7 +7801,28 @@ paths:
                           status: 'IN_VERIFICATION'
                           rejectionReasons: []
                       - offer:
-                          id: '1234567'
+                          id: '2091846836'
+                        campaign:
+                          id: 'SUBSIDY'
+                          name: 'Allegro Cena'
+                        publication:
+                          type: 'SINCE'
+                          from: '2019-05-08T05:54:46.966Z'
+                          to: null
+                        prices:
+                          market: null
+                          subsidy:
+                            sellerPrice:
+                              amount: '40.00'
+                              currency: 'PLN'
+                            targetPrice:
+                              amount: '32.00'
+                              currency: 'PLN'
+                        process:
+                          status: 'WAITING_FOR_PUBLICATION'
+                          rejectionReasons: [ ]
+                      - offer:
+                          id: '7386670824'
                         campaign:
                           id: 'HIT'
                           name: 'Hit'
@@ -7814,7 +7835,7 @@ paths:
                           status: 'FINISHED'
                           rejectionReasons: []
                       - offer:
-                          id: '1235567'
+                          id: '5303917450'
                         campaign:
                           id: 'NOVELTY'
                           name: 'Nowość'
