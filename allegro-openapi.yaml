@@ -6346,6 +6346,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: category.id
+          in: query
+          description: The similar category identifier. You can choose a category from 'similar categories' to filter the list of parameters available in the category context.
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Product returned successfully
@@ -15634,7 +15640,15 @@ components:
           description: Product name.
           example: iPhone 5s
         category:
-          $ref: '#/components/schemas/Category'
+          allOf:
+            - $ref: '#/components/schemas/Category'
+          type: object
+          properties:
+            similar:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
+              description: A list of similar categories in which you can sell this product.
         eans:
           type: array
           description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
@@ -15816,6 +15830,8 @@ components:
           type: string
           description: Name of the offer. Words used in the name field cannot be longer than 50 characters.
           maxLength: 50
+        category:
+          $ref: '#/components/schemas/Category'
         payments:
           $ref: '#/components/schemas/Payments'
         sellingMode:
@@ -15869,6 +15885,12 @@ components:
                   $ref: '#/components/schemas/OfferStartingAt'
                 status:
                   $ref: '#/components/schemas/OfferStatus'
+            category:
+              type: object
+              properties:
+                id:
+                  type: string
+              description: You can indicate a category from the product's 'similar categories' to set the offer's category.
             sizeTable:
               allOf:
                 - $ref: '#/components/schemas/SizeTable'
