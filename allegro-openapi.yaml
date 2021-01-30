@@ -5589,45 +5589,6 @@ paths:
       security:
       - bearer-token-for-user:
         - allegro:api:disputes
-  /order/line-item-id-mappings:
-    get:
-      tags:
-        - Order management
-      summary: "Get mapping for line item id"
-      description:
-        "Allows mapping identifiers from dealId to lineItemId and vice-versa. One of defined query parameters
-         has to be provided."
-      operationId: "findMapping"
-      parameters:
-        - in: "query"
-          name: "lineItemId"
-          description: Line item identifier.
-          required: false
-          schema:
-            type: string
-            format: uuid
-        - in: "query"
-          name: "dealId"
-          description: Deal identifier.
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/LineItemIdMappings'
-        '401':
-          description: Unauthorized
-        '404':
-          description: Not Found
-        '422':
-          description: Missing required parameter. Provide lineItemId or dealId.
-      security:
-      - bearer-token-for-user:
-        - allegro:api:orders:read
   /sale/offer-tags:
     post:
       tags:
@@ -15354,26 +15315,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagId'
-    LineItemIdMappings:
-      type: object
-      properties:
-        mappings:
-          type: array
-          items:
-            type: object
-            properties:
-              dealId:
-                type: string
-                description: WebAPI deal id
-                example: "12345678"
-              lineItemId:
-                type: string
-                format: uuid
-                description: Order API line item id
-                example: "4e9d1d43-0da5-466e-9c4a-679625b7a617"
-            required:
-              - dealId
-              - lineItemId
     PromotionResponseDto:
       type: object
       required:
