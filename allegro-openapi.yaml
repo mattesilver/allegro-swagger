@@ -5278,6 +5278,144 @@ paths:
       security:
       - bearer-token-for-user:
         - allegro:api:orders:write
+  /order/checkout-forms/{id}/invoices:
+    get:
+      tags:
+        - Order management
+      summary: "Get order invoices details"
+      description: "Use to get invoices details including antivirus scan results and EPT invoice verification status."
+      operationId: getOrderInvoicesDetails
+      parameters:
+        - name: id
+          in: path
+          description: Order identifier.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invoices fetched successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CheckoutFormsOrderInvoices'
+        '403':
+          description: You do not have permission to access this order
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Order with given id does not exist
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+    post:
+      tags:
+        - Order management
+      summary: "Post new invoice"
+      description: "Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters."
+      operationId: addOrderInvoicesMetadata
+      parameters:
+        - name: id
+          in: path
+          description: Order identifier.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/CheckFormsNewOrderInvoice'
+        description: request
+        required: true
+      responses:
+        '201':
+          description: Invoice created successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/CheckFormsNewOrderInvoiceId'
+        '403':
+          description: You do not have permission to access this order
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Order with given id does not exist
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '409':
+          description: Order with given id already has seller invoice
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Some of the provided data is invalid or order does not allow an invoice
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  /order/checkout-forms/{id}/invoices/{invoiceId}/file:
+    put:
+      tags:
+        - Order management
+      summary: "Upload invoice file"
+      description: "Use to upload invoice file to match created invoice metadata."
+      operationId: uploadOrderInvoiceFile
+      parameters:
+        - name: id
+          in: path
+          description: Order identifier.
+          required: true
+          schema:
+            type: string
+        - name: invoiceId
+          in: path
+          description: Invoice identifier.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+              description: File in a binary format
+      responses:
+        '200':
+          description: Invoice file uploaded successfully
+        '403':
+          description: You do not have permission to access this order
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Order or invoice with given id does not exist
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '409':
+          description: Invoice with given id already has invoice file uploaded
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '413':
+          description: The file is too large. Max file size is 2MB
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/disputes:
     get:
       tags:
@@ -15067,6 +15205,84 @@ components:
             - $ref: '#/components/schemas/Price'
             - type: object
               description: Total to pay including additional services and delivery
+    CheckoutFormsOrderInvoices:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormsOrderInvoice'
+    CheckoutFormsOrderInvoice:
+      type: object
+      properties:
+        id:
+          type: string
+        invoiceNumber:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        file:
+          $ref: '#/components/schemas/CheckoutFormsOrderInvoiceFile'
+        eptVerification:
+          $ref: '#/components/schemas/CheckoutFormsOrderInvoiceEptVerification'
+    CheckoutFormsOrderInvoiceFile:
+      type: object
+      properties:
+        name:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+        securityVerification:
+          $ref: '#/components/schemas/CheckoutFormsOrderInvoiceFileSecurityVerification'
+    CheckoutFormsOrderInvoiceFileSecurityVerification:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ACCEPTED
+            - REJECTED
+            - WAITING
+        verifiedAt:
+          type: string
+          format: date-time
+    CheckoutFormsOrderInvoiceEptVerification:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ACCEPTED
+            - REJECTED
+            - WAITING
+        verifiedAt:
+          type: string
+          format: date-time
+        reason:
+          type: string
+    CheckFormsNewOrderInvoice:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/CheckFormsNewOrderInvoiceFile'
+        invoiceNumber:
+          type: string
+    CheckFormsNewOrderInvoiceFile:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    CheckFormsNewOrderInvoiceId:
+      type: object
+      properties:
+        id:
+          type: string
     DisputeListResponse:
       type: object
       properties:
