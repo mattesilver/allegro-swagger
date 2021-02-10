@@ -14888,6 +14888,7 @@ components:
         - WIRE_TRANSFER
         - ONLINE
         - SPLIT_PAYMENT
+        - EXTENDED_TERM
     CheckoutFormPaymentProvider:
       description: Payment provider
       type: string
@@ -14895,6 +14896,7 @@ components:
         - P24
         - PAYU
         - OFFLINE
+        - EPT
     CheckoutFormFulfillment:
       type: object
       properties:
