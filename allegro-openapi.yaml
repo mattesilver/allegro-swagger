@@ -10880,9 +10880,6 @@ components:
         productCreationEnabled:
           type: boolean
           description: Indicates whether the category supports creating products.
-        productEANRequired:
-          type: boolean
-          description: Indicates whether at least one EAN is required when creating products.
         customParametersEnabled:
           type: boolean
           description: Indicates whether custom parameters can be added to offers in this category.
