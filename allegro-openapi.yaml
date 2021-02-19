@@ -10032,6 +10032,16 @@ components:
                 name:
                   type: string
                   description: Name of the offer associated with the purchase.
+        type:
+          type: string
+          description: Type of commission refund application.
+
+            - `MANUAL` - the application was created manually by the seller.
+
+            - `AUTOMATIC` - the application was created automatically.
+          enum:
+            - "MANUAL"
+            - "AUTOMATIC"
     RefundClaimRequest:
       type: object
       properties:
