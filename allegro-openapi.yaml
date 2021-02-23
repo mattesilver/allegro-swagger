@@ -17722,17 +17722,21 @@ components:
       properties:
         id:
           type: integer
-          description: Delivery service Id.
+          description: Delivery service id.
           example: 12345
           minimum: 1
         service:
           type: string
-          description: Delivery service.
-          example: "UPS"
+          description: Discriminator of delivery service to distinguish multiple agreement types of a single carrier.
+          example: "INPOST_KURIER"
         name:
           type: string
           description: Delivery service name.
-          example: "Allegro UPS"
+          example: "InPost"
+        carrierId:
+          type: string
+          description: Carrier id consistent with <a href="#operation/getOrdersCarriersUsingGET" target="_blank">shipping carriers resource</a>.
+          example: "INPOST"
         additionalServices:
           $ref: '#/components/schemas/ParcelAdditionalServicesAvailability'
         owner:
