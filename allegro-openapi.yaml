@@ -17784,7 +17784,6 @@ components:
         - receiver
         - pickup
         - items
-        - type
       properties:
         serviceId:
           type: integer
@@ -17802,6 +17801,7 @@ components:
             $ref: '#/components/schemas/ParcelItemDetails'
         type:
           type: string
+          description: Value will be applied to type for all items. If item will have type value assigned - validation will check if all types have the same value.
           enum:
             - PACKAGE
             - DOX
@@ -18002,6 +18002,12 @@ components:
               type: string
               description: ISO 4217 currency code. Currently only PLN is available.
               example: "PLN"
+        type:
+          type: string
+          enum:
+            - PACKAGE
+            - DOX
+            - PALLET
     ParcelItemDetails:
       type: object
       description: Parcel item details.
@@ -18047,6 +18053,12 @@ components:
               type: string
               description: ISO 4217 currency code. Currently only PLN is available.
               example: "PLN"
+        type:
+          type: string
+          enum:
+            - PACKAGE
+            - DOX
+            - PALLET
     ParcelDetails:
       type: object
       properties:
@@ -18070,6 +18082,7 @@ components:
             $ref: '#/components/schemas/ParcelItemDetailsWithWaybill'
         type:
           type: string
+          description: Value will be returned if all items will have the same type.
           enum:
             - PACKAGE
             - DOX
