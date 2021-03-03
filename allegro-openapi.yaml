@@ -4582,13 +4582,15 @@ paths:
         We will present them under the offer description in the Additional information section.
 
         You can attach up to 7 files to one offer – one per each type from the list:
-          * \- Guide (MANUAL)
-          * \- Special offer terms (SPECIAL_OFFER_RULES)
-          * \- Competition terms (COMPETITION_RULES)
-          * \- Book excerpt (BOOK_EXCERPT)
-          * \- Manual (USER_MANUAL)
-          * \- Installation manual (INSTALLATION_INSTRUCTIONS)
-          * \- Game manual (GAME_INSTRUCTIONS)
+          * Guide (MANUAL)
+          * Special offer terms (SPECIAL_OFFER_RULES)
+          * Competition terms (COMPETITION_RULES)
+          * Book excerpt (BOOK_EXCERPT)
+          * Manual (USER_MANUAL)
+          * Installation manual (INSTALLATION_INSTRUCTIONS)
+          * Game manual (GAME_INSTRUCTIONS)
+          * Energy label (ENERGY_LABEL)
+          * Product information sheet (PRODUCT_INFORMATION_SHEET)
 
         Uploading attachments flow:
           1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
@@ -12075,6 +12077,8 @@ components:
         - USER_MANUAL
         - INSTALLATION_INSTRUCTIONS
         - GAME_INSTRUCTIONS
+        - ENERGY_LABEL
+        - PRODUCT_INFORMATION_SHEET
     AttachmentFile:
       type: object
       properties:
