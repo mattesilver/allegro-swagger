@@ -16087,12 +16087,16 @@ components:
         - type: object
           properties:
             product:
-              description: You should eneter the product's parametres which you want modify.
+              description: You should enter the product's data which you want to modify.
               allOf:
                 - type: object
                   properties:
+                    id:
+                      type: string
+                      description: Product identificator.
                     parameters:
                       type: array
+                      description: Product parameters.
                       items:
                         $ref: '#/components/schemas/ProductParameterDto'
             stock:
