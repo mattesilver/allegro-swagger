@@ -290,6 +290,12 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: The user has no rights to query offers or provided token is invalid.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
       security:
       - bearer-token-for-user:
         - allegro:api:sale:offers:read
@@ -4333,8 +4339,7 @@ paths:
          You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
 
 
-         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
-         more information about variant sets API can be found <a href="https://developer.allegro.pl/multi_variant_offers/#3" target="_blank">here</a>.
+         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../multi_variant_offers/#utwórz-ofertę-wielowariantową" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#create-a-multi-variant-offer" target="_blank">EN</a>.
       operationId: createVariantSet
       responses:
         '201':
@@ -4362,7 +4367,7 @@ paths:
       description: >-
         Use this resource to get created variant sets.
         The returned variant sets are ordered by name.
-        <a href="https://developer.allegro.pl/multi_variant_offers/#6" target="_blank">Read more</a>.
+        Read more: <a href="../../multi_variant_offers/#pobierz-listę-ofert-wielowariantowych" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#retrieve-a-multi-variant-offer" target="_blank">EN</a>.
       operationId: getVariantSets
       parameters:
         - name: offset
@@ -4410,7 +4415,7 @@ paths:
         - Offer variants
       summary: 'Update variant set'
       description: >-
-        Use this resource to create variant set.
+        Use this resource to edit variant set.
 
          A valid variant set must consist of three required elements:
          - name:
@@ -4437,8 +4442,7 @@ paths:
          You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
 
 
-         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje),
-         more information about variant sets API can be found <a href="https://developer.allegro.pl/multi_variant_offers/#3" target="_blank">here</a>.
+         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../multi_variant_offers/#edytuj-ofertę-wielowariantową" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#update-a-multi-variant-offer" target="_blank">EN</a>.
       operationId: updateVariantSet
       parameters:
         - name: setId
@@ -4470,7 +4474,7 @@ paths:
         - Offer variants
       summary: 'Get a variant set'
       description:
-        'Use this resource to get variant set by set id. <a href="https://developer.allegro.pl/multi_variant_offers/#4" target="_blank">Read more</a>.'
+        'Use this resource to get variant set by set id. Read more: <a href="../../multi_variant_offers/#edytuj-ofertę-wielowariantową" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#update-a-multi-variant-offer" target="_blank">EN</a>.'
       operationId: getVariantSet
       parameters:
         - name: setId
@@ -4502,7 +4506,7 @@ paths:
       description: >-
         Use this resource to delete variant set by id.
         Offers included in variant set will not be stopped or modified by this operation.
-        <a href="https://developer.allegro.pl/multi_variant_offers/#5" target="_blank">Read more</a>.
+        Read more: <a href="../../multi_variant_offers/#usuń-ofertę-wielowariantową" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#remove-a-multi-variant-offer" target="_blank">EN</a>.
       operationId: deleteVariantSet
       parameters:
         - name: setId
@@ -5434,7 +5438,7 @@ paths:
       summary: "Get the user's disputes"
       description: >-
         Use this resource to get the list of your disputes.
-        <a href="../../news/2018-09-18-dyskusje/#GetAll" target="_blank">Read more</a>.
+        Read more: <a href="../../dispute/#dyskusje-na-danym-koncie" target="_blank">PL</a> / <a href="../../en/dispute/#all-disputes" target="_blank">EN</a>.
       operationId: getListOfDisputesUsingGET
       parameters:
         - name: checkoutForm.id
@@ -5484,7 +5488,7 @@ paths:
         - Disputes
       summary: "Get a single dispute"
       description: >-
-        Use this resource to get a single dispute. <a href="../../news/2018-09-18-dyskusje/#GetOne" target="_blank">Read more</a>.
+        Use this resource to get a single dispute. Read more: <a href="../../dispute/#szczegółowe-informacje" target="_blank">PL</a> / <a href="../../en/dispute/#information-about-a-particular-dispute" target="_blank">EN</a>.
       operationId: getDisputeUsingGET
       parameters:
         - name: disputeId
@@ -5516,7 +5520,7 @@ paths:
         - Disputes
       summary: "Get the messages within a dispute"
       description: >-
-        Use this resource to get the list of messages within dispute. <a href="../../news/2018-09-18-dyskusje/#GetMessage" target="_blank">Read more</a>.
+        Use this resource to get the list of messages within dispute. Read more: <a href="../../dispute/#wiadomości-z-dyskusji" target="_blank">PL</a> / <a href="../../en/dispute/#all-messages-within-a-dispute" target="_blank">EN</a>.
       operationId: getMessagesFromDisputeUsingGET
       parameters:
         - name: disputeId
@@ -5575,7 +5579,7 @@ paths:
             format: uuid
       description: >-
         Use this resource to post a message in certain dispute. At least one of fields: 'text', 'attachment' has to
-        be present. <a href="../../news/2018-09-18-dyskusje/#PostMessage" target="_blank">Read more</a>.
+        be present. Read more: <a href="../../dispute/#nowa-wiadomość-w-dyskusji" target="_blank">PL</a> / <a href="../../en/dispute/#add-a-message-to-a-dispute" target="_blank">EN</a>.
       operationId: addMessageToDisputeUsingPOST
       responses:
         '201':
@@ -5603,7 +5607,7 @@ paths:
         - Disputes
       summary: "Create an attachment declaration"
       description: >-
-        Use this resource to post an attachment declaration. <a href="../../news/2018-09-18-dyskusje/#PostAttach" target="_blank">Read more</a>.
+        Use this resource to post an attachment declaration. Read more: <a href="../../dispute/#deklaracja-załącznika" target="_blank">PL</a> / <a href="../../en/dispute/#attachment-declaration" target="_blank">EN</a>.
       operationId: createAnAttachmentUsingPOST
       responses:
         '201':
@@ -5640,7 +5644,7 @@ paths:
 
         **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/dispute-attachments*.
         The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
-        Do not compose the address on your own.
+        Do not compose the address on your own. Read more: <a href="../../dispute/#dodanie-załącznika" target="_blank">PL</a> / <a href="../../en/dispute/#attach-a-file" target="_blank">EN</a>.
 
       operationId: uploadDisputeAttachmentUsingPUT
       parameters:
@@ -5711,7 +5715,7 @@ paths:
         - Disputes
       summary: "Get an attachment"
       description: >-
-        Use this resource to get an attachment. <a href="../../news/2018-09-18-dyskusje/#GetAttach" target="_blank">Read more</a>.
+        Use this resource to get an attachment. Read more: <a href="../../dispute/#pobranie-załącznika" target="_blank">PL</a> / <a href="../../en/dispute/#attachment-related-to-the-dispute" target="_blank">EN</a>.
       operationId: getAttachmentUsingGET
       parameters:
         - name: attachmentId
@@ -6608,7 +6612,7 @@ paths:
         - Offer management
       summary: "Edit an offer"
       description: >-
-        Use this resource to edit offer. Read more <a href="../../product_offers/#jak-edytować-ofertę" target="_blank">PL</a> / <a href="../../en/product_offers/#how-to-edit-an-offer" target="_blank">EN</a>.
+        Use this resource to edit offer. Read more: <a href="../../product_offers/#jak-edytować-ofertę" target="_blank">PL</a> / <a href="../../en/product_offers/#how-to-edit-an-offer" target="_blank">EN</a>.
       operationId: editProductOffers
       parameters:
         - name: offerId
@@ -6674,7 +6678,7 @@ paths:
         - Offer management
       summary: 'Get all data of the particular product-offer'
       description:
-        'Use this resource to retrieve all data of the particular product-offer.'
+        'Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../product_offers/#publikacja-oferty-w-asynchronicznym-api" target="_blank">PL</a> / <a href="../../en/product_offers/#offer-publication-in-asynchronous-api" target="_blank">EN</a>.'
       operationId: getProductOffer
       parameters:
         - name: offerId
@@ -6708,7 +6712,7 @@ paths:
       summary: 'Check the processing status of a POST or PATCH request'
       description:
         'The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}.
-        Use this resource to check processing status of a POST or PATCH request.'
+        Use this resource to check processing status of a POST or PATCH request. Read more: <a href="../../product_offers/#publikacja-oferty-w-asynchronicznym-api" target="_blank">PL</a> / <a href="../../en/product_offers/#offer-publication-in-asynchronous-api" target="_blank">EN</a>.'
       operationId: getProductOfferProcessingStatus
       parameters:
         - name: offerId
@@ -8850,7 +8854,7 @@ paths:
         - Parcel management
       summary: "Get available delivery services"
       description: >-
-        Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI.
+        Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../wza/#jak-pobrać-listę-usług-dostawy" target="_blank">PL</a> / <a href="../../en/wza/#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.
       operationId: getAvailableDeliveryServices
       responses:
         '200':
@@ -8966,7 +8970,7 @@ paths:
         - Parcel management
       summary: "Get parcel creation status"
       description:
-        'Use this resource to get parcel creation status.'
+        'Use this resource to get parcel creation status. Read more: <a href="../../wza/#jak-sprawdzić-status-utworzenia-paczki" target="_blank">PL</a> / <a href="../../en/wza/#how-to-check-parcel-creation-status" target="_blank">EN</a>.'
       operationId: getParcelCreationStatus
       parameters:
         - name: commandId
@@ -9059,7 +9063,7 @@ paths:
         - Parcel management
       summary: "Get parcel details"
       description:
-        'Use this resource to get parcel details.'
+        'Use this resource to get parcel details. Read more: <a href="../../wza/#jak-pobrać-szczegółowe-informacje-o-paczce" target="_blank">PL</a> / <a href="../../en/wza/#how-to-retrieve-parcel-details" target="_blank">EN</a>.'
       operationId: getParcelDetails
       parameters:
         - name: parcelId
@@ -9134,7 +9138,7 @@ paths:
         - Parcel management
       summary: 'Get parcels pickup date proposals'
       description: >-
-        Use this resource to get parcels pickup date proposals. Pickup takes place, when courier arrives to take parcels for shipment.
+        Use this resource to get parcels pickup date proposals. Pickup takes place, when courier arrives to take parcels for shipment. Read more: <a href="../../wza/#jak-sprawdzić-proponowaną-datę-odbioru-paczek-przez-kuriera" target="_blank">PL</a> / <a href="../../en/wza/#how-to-check-pickup-date-proposals" target="_blank">EN</a>.
       operationId: getParcelsPickupDateProposals
       parameters:
         - name: parcelId
@@ -9222,7 +9226,7 @@ paths:
         - Parcel management
       summary: "Request parcel pickup"
       description:
-        'Use this resource to request pickup for parcels.'
+        'Use this resource to request pickup for parcels. Read more: <a href="../../wza/#jak-zamówić-odbiór-paczek-przez-kuriera" target="_blank">PL</a> / <a href="../../en/wza/#how-to-request-parcel-pickup-by-a-courier" target="_blank">EN</a>.'
       operationId: requestParcelPickup
       parameters:
         - name: commandId
@@ -9292,7 +9296,7 @@ paths:
         - Parcel management
       summary: "Get parcel pickup status"
       description:
-        'Use this resource to get parcel pickup status.'
+        'Use this resource to get parcel pickup status. Read more: <a href="../../wza/#jak-sprawdzić-status-zamówienia-odbioru-paczek" target="_blank">PL</a> / <a href="../../en/wza/#how-to-check-parcel-pickup-request-status" target="_blank">EN</a>.'
       operationId: getParcelPickupStatus
       parameters:
         - name: commandId
@@ -9383,7 +9387,7 @@ paths:
       summary: 'Get parcel label'
       description: >-
         Use this resource to get label for created parcel.
-        <br/>Returned content type depends on created parcel.
+        <br/>Returned content type depends on created parcel. Read more: <a href="../../wza/#jak-utworzyć-etykietę-na-paczkę" target="_blank">PL</a> / <a href="../../en/wza/#how-to-create-a-label-for-parcel" target="_blank">EN</a>.
       operationId: getParcelLabel
       parameters:
         - name: parcelId
@@ -9476,7 +9480,7 @@ paths:
         - Parcel management
       summary: 'Get parcels protocol'
       description: >-
-        Use this resource to get parcels protocol.
+        Use this resource to get parcels protocol. Read more: <a href="../../wza/#jak-pobrać-protokół-nadania-przesyłek" target="_blank">PL</a> / <a href="../../en/wza/#how-to-retrieve-parcel-protocol" target="_blank">EN</a>.
       operationId: getParcelsProtocol
       parameters:
         - name: parcelId
@@ -9561,7 +9565,7 @@ paths:
         - Parcel management
       summary: "Cancel parcel"
       description:
-        'Use this resource to cancel parcel.'
+        'Use this resource to cancel parcel. Read more: <a href="../../wza/#jak-anulować-paczkę" target="_blank">PL</a> / <a href="../../en/wza/#how-to-cancel-a-parcel" target="_blank">EN</a>.'
       operationId: cancelParcel
       parameters:
         - name: commandId
@@ -9631,7 +9635,7 @@ paths:
         - Parcel management
       summary: "Get parcel cancellation status"
       description:
-        'Use this resource to get parcel cancellation status.'
+        'Use this resource to get parcel cancellation status. Read more: <a href="../../wza/#jak-sprawdzić-status-anulowania-paczki" target="_blank">PL</a> / <a href="../../en/wza/#how-to-check-parcel-cancellation-status" target="_blank">EN</a>.'
       operationId: getParcelCancellationStatus
       parameters:
         - name: commandId
