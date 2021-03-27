@@ -4585,7 +4585,7 @@ paths:
         You can attach PDF files to your offers.
         We will present them under the offer description in the Additional information section.
 
-        You can attach up to 7 files to one offer – one per each type from the list:
+        You can attach up to 9 files to one offer – one per each type from the list:
           * Guide (MANUAL)
           * Special offer terms (SPECIAL_OFFER_RULES)
           * Competition terms (COMPETITION_RULES)
