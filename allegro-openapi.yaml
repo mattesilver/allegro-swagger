@@ -12171,9 +12171,6 @@ components:
           $ref: '#/components/schemas/StandardizedDescription'
         discounts:
           $ref: '#/components/schemas/Discounts'
-        ean:
-          type: string
-          maxLength: 18
         external:
           $ref: '#/components/schemas/ExternalId'
         fundraisingCampaign:
@@ -15787,14 +15784,6 @@ components:
           maxLength: 50
         category:
           $ref: '#/components/schemas/Category'
-        eans:
-          type: array
-          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
-          items:
-            type: string
-          example:
-            - "0019062113399"
-            - "0000007905193"
         images:
           type: array
           items:
@@ -15832,14 +15821,6 @@ components:
               items:
                 $ref: '#/components/schemas/Category'
               description: A list of similar categories in which you can sell this product.
-        eans:
-          type: array
-          description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
-          items:
-            type: string
-          example:
-            - "0019062113399"
-            - "0000007905193"
         images:
           type: array
           items:
@@ -15862,12 +15843,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseSaleProductResponseDto'
         - type: object
-          properties:
-            eans:
-              type: array
-              description: A list of codes that identify this product. Currently this can include EAN, ISBN, and UPC identifier types.
-              items:
-                type: string
     BaseSaleProductResponseDto:
       type: object
       required:
