@@ -14901,6 +14901,8 @@ components:
           description: 'Date when the event occurred'
         paidAmount:
           $ref: '#/components/schemas/Price'
+        reconciliation:
+          $ref: '#/components/schemas/Price'
     CheckoutFormPaymentType:
       description: Payment type
       type: string
@@ -15171,6 +15173,8 @@ components:
           $ref: '#/components/schemas/Price'
         price:
           $ref: '#/components/schemas/Price'
+        reconciliation:
+          $ref: '#/components/schemas/LineItemReconciliation'
         selectedAdditionalServices:
           type: array
           items:
@@ -15181,6 +15185,26 @@ components:
           description: ISO date when offer was bought
           example: "2018-01-01T10:23:43.123Z"
       description: Order item
+    LineItemReconciliation:
+      type: object
+      properties:
+        value:
+          $ref: '#/components/schemas/Price'
+        type:
+          type: string
+          enum:
+            - BILLING
+            - WALLET
+          description: >
+            Reconciliation type used in the Allegro Prices program, in which the offer is included. The following values are possible:
+            * `BILLING` - a reconciliation value is counted as a new entry in the billing
+            * `WALLET` - a reconciliation value is added to the checkout form payment
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Quantity of reconciled items
+          example: 1
     CheckoutFormAdditionalService:
       type: object
       properties:
@@ -15212,12 +15236,14 @@ components:
             - BUNDLE
             - MULTIPACK
             - CROSSMULTIPACK
+            - ALLEGRO_PRICES
           description: >
-            Describes type of discount used in checkout form. The types of discounts can be as follows:
-            * `COUPON` - coupon was used during payment
-            * `BUNDLE` - some of the line items were bought as a bundle
-            * `MULTIPACK` - at least one line item was bought with multipack option
-            * `CROSSMULTIPACK` - some of line items each from different offers were bought together as multipack
+            Describes the types of discounts used in the checkout form. The types of discounts can be as follows:
+            * `COUPON` - a coupon was used during payment
+            * `BUNDLE` - some items were bought as a bundle
+            * `MULTIPACK` - at least one item was bought with a multipack option turned on
+            * `CROSSMULTIPACK` - some items, each from a different offer, were bought together as a multipack
+            * `ALLEGRO_PRICES` - some items are included in the Allegro Prices program
     CheckoutFormSummary:
       type: object
       required:
