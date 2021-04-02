@@ -5798,7 +5798,7 @@ paths:
         - Offer tags
       summary: "Get the user's tags"
       description: >-
-        Use this resource to get a list of tags defined by the specified user (Defaults: limit = 1000, offset = 0).
+        Use this resource to get a list of tags defined by the specified user (Defaults: limit = 100, offset = 0).
         <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagi" target="_blank">Read more</a>.
       operationId: listSellerTagsGET_1
       parameters:
@@ -7930,13 +7930,9 @@ paths:
                           from: '2019-05-08T05:54:46.966Z'
                           to: null
                         prices:
-                          market: null
                           subsidy:
-                            sellerPrice:
-                              amount: '40.00'
-                              currency: 'PLN'
                             targetPrice:
-                              amount: '32.00'
+                              amount: '10.00'
                               currency: 'PLN'
                         process:
                           status: 'WAITING_FOR_PUBLICATION'
@@ -17415,6 +17411,8 @@ components:
           $ref: '#/components/schemas/BadgeApplicationMarketPrice'
         bargain:
           $ref: '#/components/schemas/BadgeApplicationBargainPrice'
+        subsidy:
+          $ref: '#/components/schemas/BadgeApplicationSubsidyPrices'
       title: 'BadgePrices'
       description: 'Required by DISCOUNT and SOURCING campaign.'
     BadgeApplicationMarketPrice:
@@ -17443,6 +17441,26 @@ components:
           example: 'PLN'
       title: BadgeApplicationBargainPrice
       description: 'Bargain price. Required by DISCOUNT and SOURCING campaign.'
+    BadgeApplicationSubsidyPrices:
+      type: object
+      properties:
+        targetPrice:
+          $ref: '#/components/schemas/BadgeApplicationSubsidyTargetPrice'
+      title: 'SubsidyPrices'
+      description: 'Prices that relate to the price reconciliation.'
+    BadgeApplicationSubsidyTargetPrice:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Positive number. Must be equal to or greater than 1.'
+          example: '1.23'
+        currency:
+          type: string
+          description: 'The currency provided as a 3-letter code in accordance with ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217). Only PLN values is supported.'
+          example: 'PLN'
+      title: BadgeApplicationSubsidyTargetPrice
+      description: 'The price visible as the Buy Now price.'
     BadgeApplicationPurchaseConstraints:
       type: object
       properties:
