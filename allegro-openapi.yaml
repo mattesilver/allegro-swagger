@@ -4679,7 +4679,13 @@ paths:
         Use this resource to get a list of offers based on the provided query parameters.
         At least one of: phrase, seller.id or category.id is required.
         Additional available parameters vary depending on category.id. The
-        parameters are defined in the filters entity. Read more: <a href="../../listing/" target="_blank">PL</a> / <a href="../../en/listing/" target="_blank">EN</a>.
+        parameters are defined in the filters entity.
+
+
+        Note that requests for closed offers and searching by descriptions may be limited.
+
+
+        Read more: <a href="../../listing/" target="_blank">PL</a> / <a href="../../en/listing/" target="_blank">EN</a>.
       operationId: getListing
       security:
         - bearer-token-for-application: []
@@ -4850,6 +4856,14 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: "#/components/schemas/ErrorsHolder"
+        '403':
+          description: >-
+            Access is denied. Application verification required.
+            Read more: <a href="../../listing/" target="_blank">PL</a> / <a href="../../en/listing/" target="_blank">EN</a>
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
         '404':
           description: Given category was not found. Check category.id parameter.
           content:
@@ -4864,10 +4878,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: "#/components/schemas/ErrorsHolder"
-        '403':
+        '429':
           description: >-
-            Access is denied. Application verification required.
-            Read more: <a href="../../listing/" target="_blank">PL</a> / <a href="../../en/listing/" target="_blank">EN</a>
+            Request was rejected because the limit was exceeded.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
