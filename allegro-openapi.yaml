@@ -15101,6 +15101,10 @@ components:
           example: true
         address:
           $ref: '#/components/schemas/CheckoutFormInvoiceAddress'
+        dueDate:
+          type: string
+          description: Due date to put on an invoice for Extended Payment Terms purchases. For other payment methods this field will be null.
+          example: "2021-12-01"
     CheckoutFormInvoiceAddress:
       type: object
       required:
