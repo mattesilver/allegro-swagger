@@ -5444,6 +5444,77 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  '/order/carriers/ALLEGRO/points':
+    get:
+      tags:
+        - Order management
+      summary: "Get Allegro pickup drop off points"
+      description: >-
+        Get a list of Allegro pickup drop off points.
+      operationId: getAllegroPickupDropOffPointsGET
+      parameters:
+        - name: If-Modified-Since
+          in: header
+          description: 'Date of last data modification. If data has been modified after specified date,
+                              full set of data is returned. If header is not specified, full set of data
+                              is returned. Date has to be provided in HTTP-date format.
+                              Information about date (the same HTTP-date format) of last modified data is
+                              available in response - `Last-Modified`.'
+          required: false
+          schema:
+            type: string
+            format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
+            example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+      responses:
+        '200':
+          description: >-
+            Returns a list of Allegro pickup drop off points
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AllegroPickupDropOffPointsResponse'
+        '304':
+          description: 'Data has not been modified after the date provided in If-Modified-Since header.'
+        '401':
+          description: Authentication failed, e.g. token is expired
+      security:
+        - bearer-token-for-application: [ ]
+        - bearer-token-for-user: [ ]
+  '/order/carriers/ALLEGRO/tracking':
+    get:
+      tags:
+        - Order management
+      summary: "Get Allegro parcel tracking history"
+      description: >-
+        Get tracking history for parcels sent via the Send with Allegro tool using <a href="#operation/getAvailableDeliveryServices" target="_blank">a delivery service</a> with carrier `ALLEGRO`. Read more about the Send with Allegro tool: <a href="../../wza/" target="_blank">PL</a> / <a href="../../en/wza/" target="_blank">EN</a>.
+      operationId: getAllegroParcelTrackingUsingGET
+      parameters:
+        - name: waybill
+          in: query
+          description: >-
+            Waybill number (parcel tracking number).
+            Example: `waybill=ALE0000000E5D201&waybill=ALE0000000E5D202` - returns parcel tracking history for `ALE0000000E5D201` as well as `ALE0000000E5D202`.
+          required: true
+          schema:
+            type: array
+            maxItems: 20
+            items:
+              type: string
+      responses:
+        '200':
+          description: >-
+            Returns parcel tracking history for given waybills
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/AllegroParcelTrackingResponse'
+        '400':
+          description: Missing or too many waybill query parameters
+        '401':
+          description: Authentication failed, e.g. token is expired
+      security:
+        - bearer-token-for-application: [ ]
+        - bearer-token-for-user: [ ]
   /sale/disputes:
     get:
       tags:
@@ -15787,6 +15858,30 @@ components:
             List of parcel tracking numbers currently assigned to the order.
           items:
             $ref: '#/components/schemas/CheckoutFormAddWaybillCreated'
+    AllegroPickupDropOffPointsResponse:
+      type: object
+      properties:
+        points:
+          type: array
+          description: >-
+            List of Allegro pickup drop off points.
+          items:
+            $ref: '#/components/schemas/AllegroPickupDropOffPoint'
+    AllegroParcelTrackingResponse:
+      type: object
+      required:
+        - carrierId
+        - waybills
+      properties:
+        carrierId:
+          type: string
+          description: Carrier identifier. In the case of this resource `ALLEGRO`.
+        waybills:
+          type: array
+          description: >-
+            Allegro parcel tracking history for multiple tracking numbers (waybills).
+          items:
+            $ref: '#/components/schemas/ParcelTrackingHistory'
     GetSaleProductsResponse:
       type: object
       required:
@@ -18564,3 +18659,204 @@ components:
             - IN_PROGRESS
         errors:
           $ref: '#/components/schemas/Error'
+    AllegroPickupDropOffPoint:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - services
+        - restrictions
+        - payments
+        - address
+        - opening
+      description: Allegro pickup drop off point.
+      properties:
+        id:
+          type: string
+          description: Point id. You can use it in Send with Allegro.
+          example: "1234567890"
+        name:
+          type: string
+          description: Point name.
+          example: "Kiosk Kolporter 001"
+        type:
+          type: string
+          description: Point type.
+          example: "PUDO"
+          enum:
+            - "PUDO"
+            - "APM"
+        services:
+          type: array
+          description: "Point services."
+          items:
+            type: object
+            required:
+              - type
+            properties:
+              type:
+                type: string
+                description: "Set of values can be extended."
+                example: "PICKUP"
+                enum:
+                  - "PICKUP"
+                  - "DROPOFF"
+        restrictions:
+          type: array
+          description: "Point restrictions."
+          items:
+            type: object
+            required:
+              - type
+            properties:
+              type:
+                type: string
+                description: "Set of values can be extended."
+                example: "OVERLOADED"
+                enum:
+                  - "OVERLOADED"
+        description:
+          type: string
+          description: Point description
+          example: "Sklep z książkami dla dzieci"
+        payments:
+          type: array
+          description: "Point payment type."
+          items:
+            type: object
+            required:
+              - method
+            properties:
+              method:
+                type: string
+                example: "CARD"
+                enum:
+                  - "CASH"
+                  - "CARD"
+        address:
+          type: object
+          required:
+            - postCode
+            - city
+            - street
+            - countryCode
+            - coordinates
+          properties:
+            postCode:
+              type: string
+              description: Postal code
+              example: "60-166"
+            city:
+              type: string
+              description: City name
+              example: "Poznań"
+            street:
+              type: string
+              description: Street
+              example: "Solna"
+            countryCode:
+              type: string
+              description: Country code
+              example: "PL"
+            coordinates:
+              $ref: '#/components/schemas/Coordinates'
+        opening:
+          type: array
+          description: Point working hours information.
+          items:
+            type: object
+            required:
+              - dayOfWeek
+              - from
+              - to
+            properties:
+              dayOfWeek:
+                type: string
+                description: "Day of week (ISO 8601)."
+                example: "MONDAY"
+              from:
+                type: string
+                description: "Start hour."
+                example: "08:00"
+              to:
+                type: string
+                description: "End hour."
+                example: "15:00"
+    ParcelTrackingHistory:
+      type: object
+      required:
+        - waybill
+      properties:
+        waybill:
+          type: string
+          description: Waybill number (parcel tracking number).
+        trackingDetails:
+          type: object
+          description: Parcel tracking history if available.
+          required:
+            - statuses
+            - createdAt
+            - updatedAt
+          properties:
+            statuses:
+              type: array
+              description: List of parcel shipping statuses
+              items:
+                    $ref: '#/components/schemas/ParcelTrackingStatus'
+            createdAt:
+              type: string
+              format: date-time
+              example: "2021-04-14T11:30:22.163Z"
+              description: The start time parcel tracking recording in ISO 8601 format
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2021-04-14T15:21:36.317Z"
+              description: Time of registration of the last shipment status change in ISO 8601 format
+    ParcelTrackingStatus:
+      type: object
+      required:
+        - occurredAt
+        - code
+      properties:
+        occurredAt:
+          type: string
+          format: date-time
+          example: "2021-04-14T15:21:36.317Z"
+          description: Actual shipment status change time in ISO 8601 format
+        code:
+          type: string
+          enum:
+            - "AVAILABLE_FOR_PICKUP"
+            - "DELIVERED"
+            - "IN_TRANSIT"
+            - "ISSUE"
+            - "NOTICE_LEFT"
+            - "PENDING"
+            - "RELEASED_FOR_DELIVERY"
+            - "RETURNED"
+          example: "DELIVERED"
+          description: Status of the shipment.
+
+            - `AVAILABLE_FOR_PICKUP` - The parcel is awaiting for pickup.
+
+            - `DELIVERED` - The parcel was delivered to the receiver / collected by the receiver.
+
+            - `IN_TRANSIT` - The parcel is on its way to the receiver. The status includes events such as acceptance of the shipment by the carrier, arriving at the hub or redirecting to another address.
+
+            - `ISSUE` - Problem with shipment. It includes events such as the parcel was refused by the receiver or was lost.
+
+            - `NOTICE_LEFT` - A notice was left because of an unsuccessful delivery attempt (for example, due to nobody was at the delivery address).
+
+            - `PENDING` - The shipment has been prepared and it is awaiting to be sent.
+
+            - `RELEASED_FOR_DELIVERY` - The parcel has been released for delivery to its final destination.
+
+            - `RETURNED` - The parcel is being or has been returned to the sender.
+        details:
+          type: string
+          description: Optional description for a given status, mainly intended to describe the problem with the shipment
+        terminal:
+          type: boolean
+          description: Indicates the final status, after which there should be no more status changes
