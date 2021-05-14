@@ -5019,7 +5019,9 @@ paths:
               * `NEW`
               * `PROCESSING`
               * `READY_FOR_SHIPMENT`
+              * `READY_FOR_PICKUP`
               * `SENT`
+              * `PICKED_UP`
               * `CANCELLED`.
         - name: fulfillment.shipmentSummary.lineItemsSent
           in: query
@@ -15012,7 +15014,9 @@ components:
         - NEW
         - PROCESSING
         - READY_FOR_SHIPMENT
+        - READY_FOR_PICKUP
         - SENT
+        - PICKED_UP
         - CANCELLED
       example: "SENT"
       description: >
