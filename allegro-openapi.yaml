@@ -5387,7 +5387,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
-          description: Some of the provided data is invalid or order does not allow an invoice
+          description: Some of the provided data is invalid or order does not allow an invoice or order's payment is rejected
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -5441,7 +5441,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '413':
-          description: The file is too large. Max file size is 2MB
+          description: The file is too large. Max file size is 3MB
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Uploaded file is empty or order's payment is rejected
           content:
             application/vnd.allegro.public.v1+json:
               schema:
