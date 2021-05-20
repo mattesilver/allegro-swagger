@@ -54,6 +54,7 @@ tags:
   - name: Commission refunds
   - name: Charity
   - name: Parcel management
+  - name: Tax settings
 
 security:
   - bearer-token-for-user: []
@@ -9847,6 +9848,60 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  /sale/tax-settings:
+    get:
+      tags:
+        - Tax settings
+      summary: 'Get all tax settings for category'
+      description: >-
+        Use this resource to receive tax settings for given category.
+        Based on received settings you may set VAT tax settings for your offers.
+      operationId: getTaxSettingsForCategory
+      parameters:
+        - name: category.id
+          in: query
+          description: An identifier of a category for which all available tax settings will be returned.
+          required: true
+          schema:
+            type: string
+            example: "316194"
+      responses:
+        '200':
+          description: Tax settings for given category returned successfully
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/TaxSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Not Found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '406':
+          description: Not Acceptable
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
 
 components:
   securitySchemes:
@@ -12290,7 +12345,7 @@ components:
         sellingMode:
           $ref: '#/components/schemas/SellingModeWithNetPrice'
         tax:
-          $ref: '#/components/schemas/Tax'
+          $ref: '#/components/schemas/ExtendedTax'
         sizeTable:
           $ref: '#/components/schemas/JustId'
         stock:
@@ -14548,6 +14603,34 @@ components:
           type: string
           description: The buy now tax rate, Format 0.00.
           example: '23.00'
+    ExtendedTax:
+      type: object
+      description: VAT tax settings. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
+      properties:
+        id:
+          type: string
+          description: A unique identifier of an immutable VAT setting consisting of rate, subject and exemption.
+          example: 'ae727432-8b72-4bfe-b732-6f163a2bf32a'
+        rate:
+          type: string
+          description: The tax rate.
+          example: '23.00'
+        subject:
+          type: string
+          description: The subject of taxation.
+          example: 'GOODS'
+        exemption:
+          type: string
+          description: The exemption of taxation.
+          example: 'MONEY_EQUIVALENT'
+        percentage:
+          type: string
+          description: >-
+            The tax rate.
+            This field is deprecated in favor of `rate`.
+            Format `0.00`.
+          example: '23.00'
+          deprecated: true
     OfferListingDtoV1Delivery:
       type: object
       description: Delivery information.
@@ -16153,7 +16236,7 @@ components:
         sizeTable:
           $ref: '#/components/schemas/SizeTable'
         tax:
-          $ref: '#/components/schemas/Tax'
+          $ref: '#/components/schemas/ExtendedTax'
       description: Single offer data.
     SaleProductOfferRequest:
       allOf:
@@ -16229,7 +16312,7 @@ components:
             delivery:
               $ref: '#/components/schemas/DeliveryProductOfferRequest'
             tax:
-              $ref: '#/components/schemas/Tax'
+              $ref: '#/components/schemas/ExtendedTax'
             parameters:
               type: array
               items:
@@ -18870,3 +18953,54 @@ components:
         terminal:
           type: boolean
           description: Indicates the final status, after which there should be no more status changes
+    TaxSettings:
+      type: object
+      properties:
+        settings:
+          type: array
+          description: A list of tax settings.
+          items:
+            $ref: '#/components/schemas/TaxSetting'
+    TaxSetting:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'A unique identifier of an immutable VAT setting.'
+          example: 'f40ae51c-70a2-4882-98a7-6272404f0ec5'
+        rate:
+          type: object
+          description: 'An object representing VAT tax rate assigned to this setting.'
+          properties:
+            id:
+              type: string
+              description: 'A unique identifier of a rate. Use this value to set a VAT tax rate in your offer.'
+              example: 'OUT_OF_SCOPE_OF_VAT'
+            name:
+              type: string
+              description: 'A human-readable name for a rate.'
+              example: 'Out of scope of VAT'
+        subject:
+          type: object
+          description: 'An object representing a subject of taxation assigned to this setting.'
+          properties:
+            id:
+              type: string
+              description: 'A unique identifier of a subject. Use this value to set a taxation subject in your offer.'
+              example: 'GOODS'
+            name:
+              type: string
+              description: 'A human-readable name for a subject.'
+              example: 'Goods'
+        exemption:
+          type: object
+          description: 'An object representing a exemption of taxation assigned to this setting.'
+          properties:
+            id:
+              type: string
+              description: 'A unique identifier of an exemption. Use this value to set an taxation exemption in your offer.'
+              example: 'MPV'
+            name:
+              type: string
+              description: 'A human-readable name for an exemption.'
+              example: 'MPV (multi-purpose voucher)'
