@@ -8662,6 +8662,15 @@ paths:
                         type: string
                         description: Three-letter currency code (ISO-4217) of the balance of the returned billing entry.
                         example: 'PLN'
+                  order:
+                    type: object
+                    description: Order associated with the returned billing entry.
+                    properties:
+                      id:
+                        type: string
+                        description: Order id
+                        format: uuid
+                        example: '09f0b4cc-7880-11e9-8f9e-2a86e4085a59'
         '401':
           description: Unauthorized
           content:
