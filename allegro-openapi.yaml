@@ -5473,7 +5473,7 @@ paths:
           schema:
             type: string
             format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
-            example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+            example: 'Sat, 01 Dec 2018 10:00:00 GMT'
       responses:
         '200':
           description: >-
@@ -6982,7 +6982,7 @@ paths:
           schema:
             type: string
             format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
-            example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+            example: 'Sat, 01 Dec 2018 10:00:00 GMT'
         - name: type
           in: query
           description: 'Type of compatible products. You can find available types in the response
@@ -7047,7 +7047,7 @@ paths:
         schema:
           type: string
           format: '<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT'
-          example: 'Mon, 01 Dec 2018 10:00:00 GMT'
+          example: 'Sat, 01 Dec 2018 10:00:00 GMT'
       - name: type
         in: query
         description: 'Type of compatible products. You can find available types in the response
