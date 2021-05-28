@@ -15496,6 +15496,20 @@ components:
           type: string
           format: date-time
         reason:
+          description: >-
+            This field is deprecated in favor of `reasons`.
+          type: string
+          deprecated: true
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormsOrderInvoiceEptVerificationReasons'
+    CheckoutFormsOrderInvoiceEptVerificationReasons:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
           type: string
     CheckFormsNewOrderInvoice:
       type: object
