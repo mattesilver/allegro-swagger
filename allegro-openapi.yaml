@@ -8639,17 +8639,20 @@ paths:
                   tax:
                     type: object
                     description: Tax rate applied to the returned billing entry.
+                      Optional field percentage is present if the returned billing entry is subject to tax.
+                      In this case, annotation is not returned.
                       Optional field annotation is present if the returned billing entry
-                      is exempt from tax or tax is not applicable; possible values are "EXEMPT" and "NOT_APPLICABLE".
+                      is exempt from tax or tax is not applicable; the possible value is "OUT_OF_SCOPE".
+                      In this case, percentage is not returned.
                     properties:
                       percentage:
                         type: string
-                        description: Tax rate shown as a number in the range 0-100.
+                        description: Optional tax rate shown as a number in the range 0-100.
                         example: '0'
                       annotation:
                         type: string
                         description: Optional annotation explaining the tax rate.
-                        example: 'EXEMPT'
+                        example: 'OUT_OF_SCOPE'
                   balance:
                     type: object
                     description: User account balance calculated on billing date.
