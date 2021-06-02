@@ -4741,14 +4741,12 @@ paths:
         - name: offset
           in: query
           description: >-
-            Index of the first returned offer from all search results. Max offset is:
-            	- `120000 - <limit>` if seller.id parameter is given in request,
-                - `6000 - <limit>` if no seller.id parameter is given in request.
+            Index of the first returned offer from all search results. Max offset is `600 - <limit>`.
           required: false
           schema:
             type: integer
             minimum: 0
-            maximum: 119999
+            maximum: 599
             default: 0
         - name: limit
           in: query
@@ -4774,7 +4772,6 @@ paths:
               - -price
               - +withDeliveryPrice
               - -withDeliveryPrice
-              - -popularity
               - +endTime
               - -startTime
             default: relevance
@@ -14295,8 +14292,14 @@ components:
         popularity:
           type: integer
           minimum: 0
-          description: Popularity of the offer for *BUY_NOW* selling format.
-          example: 38
+          description: Lower bound of popularity range of the offer for *BUY_NOW* selling format.
+          example: 51
+        popularityRange:
+          type: string
+          description: >-
+            Popularity ranges of the offer for *BUY_NOW* selling format.
+            Possible values: 0, [1-5], [6-10], [11-20], [21-50], [51-100] and [101+]
+          example: "[51-100]"
         bidCount:
           type: integer
           minimum: 0
