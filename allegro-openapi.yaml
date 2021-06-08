@@ -55,6 +55,7 @@ tags:
   - name: Charity
   - name: Parcel management
   - name: Tax settings
+  - name: Allegro Prices
 
 security:
   - bearer-token-for-user: []
@@ -344,7 +345,7 @@ paths:
         - User's offer information
       summary: 'Get all fields of the particular offer'
       description:
-        'Use this resource to retrieve all fields of the particular offer.'
+        'Use this resource to retrieve all fields of the particular offer. Read more: <a href="../../sale/#14-jak-wystawić-podobną-ofertę" target="_blank">PL</a> / <a href="../../en/sale/#14-how-to-list-a-similar-offer" target="_blank">EN</a>.'
       operationId: getOfferUsingGET
       parameters:
         - name: offerId
@@ -712,7 +713,7 @@ paths:
         - Public user information
       summary: "Get any user's ratings summary"
       description:
-        'Use this resource to receive feedback statistics. <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">Read more</a>.'
+        'Use this resource to receive feedback statistics. Read more: <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">PL</a> / <a href="../../en/news/2017-10-09-news_informacje_o_ocenach/" target="_blank">EN</a>.'
       operationId: getUserSummaryUsingGET
       parameters:
         - name: userId
@@ -752,7 +753,7 @@ paths:
         - Information about user
       summary: "Get the user's ratings"
       description:
-        'Use this resource to receive your sales score. <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">Read more</a>.'
+        'Use this resource to receive your sales score. Read more: <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">PL</a> / <a href="../../en/news/2017-10-09-news_informacje_o_ocenach/" target="_blank">EN</a>.'
       operationId: getUserRatingsUsingGET
       parameters:
         - name: recommended
@@ -806,7 +807,7 @@ paths:
         - Information about user
       summary: "Answer for user's rating"
       description:
-        'Use this resource to answer for received rating.'
+        'Use this resource to answer for received rating. Read more: <a href="../../news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">PL</a> / <a href="../../en/news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">EN</a>.'
       operationId: answerUserRatingUsingPUT
       parameters:
         - name: ratingId
@@ -846,7 +847,7 @@ paths:
         - Information about user
       summary: "Request removal of user's rating"
       description:
-        'Use this resource to request removal of received rating.'
+        'Use this resource to request removal of received rating. Read more: <a href="../../news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">PL</a> / <a href="../../en/news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">EN</a>.'
       operationId: userRatingRemovalUsingPUT
       parameters:
         - name: ratingId
@@ -886,7 +887,7 @@ paths:
         - Information about user
       summary: "Get basic information about user"
       description:
-        'Use this resource when you need basic information about authenticated user.'
+        'Use this resource when you need basic information about authenticated user. Read more: <a href="../../news/#email-and-address-in-/me" target="_blank">PL</a> / <a href="../../en/news/#email-and-address-in-/me" target="_blank">EN</a>.'
       operationId: meGET
       responses:
         '200':
@@ -916,7 +917,7 @@ paths:
         - Additional services
       summary: 'Create additional services group'
       description:
-        'Use this resource to create a group of additional services. <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#2" target="_blank">Read more</a>.'
+        'Use this resource to create a group of additional services. Read more: <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#2" target="_blank">PL</a> / <a href="../../en/news/2017-10-25-news_uslugi_dodatkowe/#2" target="_blank">EN</a>.'
       operationId: createAdditionalServicesGroupUsingPOST
       responses:
         '201':
@@ -940,7 +941,7 @@ paths:
       summary: "Get the user's additional services groups"
       description:
         'Use this resource to retrieve a list of groups with additional services available to a given user which you
-         may assign to offers. <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#4" target="_blank">Read more</a>.'
+         may assign to offers. Read more: <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#4" target="_blank">PL</a> / <a href="../../en/news/2017-10-25-news_uslugi_dodatkowe/#4" target="_blank">EN</a>.'
       operationId: getListOfAdditionalServicesGroupsUsingGET
       parameters:
         - name: offset
@@ -1886,7 +1887,7 @@ paths:
         - Pricing
       summary: 'Calculate fee and commission for an offer'
       description:
-        'Provides information about fee and commission for an offer.'
+        'Provides information about fee and commission for an offer. Read more: <a href="../../charges/#kalkulator-opłat" target="_blank">PL</a> / <a href="../../en/charges/#fee-calculator" target="_blank">EN</a>.'
       operationId: calculateFeePreviewUsingPOST
       responses:
         '200':
@@ -2095,7 +2096,7 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change price command summary"
-      description: "Returns status and summary of particular command execution."
+      description: 'Returns status and summary of particular command execution. Read more: <a href="../../my_offers/#cena" target="_blank">PL</a> / <a href="../../en/my_offers/#price" target="_blank">EN</a>.'
       operationId: getPriceModificationCommandStatusUsingGET
       parameters:
         - name: commandId
@@ -2123,7 +2124,7 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change price command detailed report"
-      description: 'Defaults: limit = 100, offset = 0.'
+      description: 'Defaults: limit = 100, offset = 0. Read more: <a href="../../my_offers/#cena" target="_blank">PL</a> / <a href="../../en/my_offers/#price" target="_blank">EN</a>.'
       operationId: getPriceModificationCommandTasksStatusesUsingGET
       parameters:
         - name: commandId
@@ -2212,7 +2213,7 @@ paths:
       tags:
         - Batch offer modification
       summary: "Change quantity command summary"
-      description: "Returns status and summary of the command."
+      description: 'Returns status and summary of the command. Read more: <a href="../../my_offers/#liczba-przedmiotów" target="_blank">PL</a> / <a href="../../en/my_offers/#quantity" target="_blank">EN</a>.'
       operationId: getQuantityModificationCommandStatusUsingGET
       parameters:
         - name: commandId
@@ -2240,7 +2241,7 @@ paths:
       tags:
         - Batch offer modification
       summary: 'Change quantity command detailed report'
-      description: 'Defaults: limit = 100, offset = 0.'
+      description: 'Defaults: limit = 100, offset = 0. Read more: <a href="../../my_offers/#liczba-przedmiotów" target="_blank">PL</a> / <a href="../../en/my_offers/#quantity" target="_blank">EN</a>.'
       operationId: getQuantityModificationCommandTasksStatusesUsingGET
       parameters:
         - name: commandId
@@ -2661,10 +2662,10 @@ paths:
       summary: 'Get planned changes in category parameters'
       description: >-
         Use this resource to get information about planned changes in category parameters.
-        Please note that in some cases, the returned events may finally not happen in the future.
+        Please note that in some cases, the returned events may finally not happen in the future. 
 
         At present we support the following changes:
-        - REQUIREMENT_CHANGE - the parameter will be required in the category.
+        - REQUIREMENT_CHANGE - the parameter will be required in the category. Read more: <a href="../../my_offers/#jak-sprawdzi%c4%87-przysz%c5%82e-zmiany-w-parametrach" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-check-future-changes-in-parameters" target="_blank">EN</a>.
 
       operationId: getCategoryParametersScheduledChangesUsingGET_1
       security:
@@ -2782,6 +2783,8 @@ paths:
           - CATEGORY_RENAMED - category name has been changed.
           - CATEGORY_MOVED - category has been moved to a different place in category tree, category parent id field is changed.
           - CATEGORY_DELETED - category is no longer available, category from redirectCategory field should be used instead.
+          
+          Read more: <a href="../../my_offers/#dziennik-zmian-w-kategoriach" target="_blank">PL</a> / <a href="../../en/my_offers/#event-journal-in-categories" target="_blank">EN</a>.
 
       operationId: getCategoryEventsUsingGET_1
       security:
@@ -2895,7 +2898,7 @@ paths:
         - Additional services
       summary: "Get the user's additional services definitions"
       description:
-        'Use this resource to get additional services definitions by user ID. <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#1" target="_blank">Read more</a>.'
+        'Use this resource to get additional services definitions by user ID. Read more: <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#1" target="_blank">PL</a> / <a href="../../en/news/2017-10-25-news_uslugi_dodatkowe/#1" target="_blank">EN</a>.'
       operationId: getListOfAdditionalServicesDefinitionsUsingGET
       parameters:
         - name: offset
@@ -3184,7 +3187,7 @@ paths:
         - Points of service
       summary: 'Create a point of service'
       description:
-        'Use this resource to create a point of service. <a href="../../news/2017-08-11-punkty_odbioru/#1" target="_blank">Read more</a>.'
+        'Use this resource to create a point of service. Read more: <a href="../../news/2017-08-11-punkty_odbioru/#1" target="_blank">PL</a> / <a href="../../en/news/2017-08-11-punkty_odbioru/#1" target="_blank">EN</a>.'
       operationId: createPOSUsingPOST
       responses:
         '201':
@@ -3213,7 +3216,7 @@ paths:
         - Points of service
       summary: "Get the user's points of service"
       description:
-        'Use this resource to get a list of points of service by seller ID. <a href="../../news/2017-08-11-punkty_odbioru/#3" target="_blank">Read more</a>.'
+        'Use this resource to get a list of points of service by seller ID. Read more: <a href="../../news/2017-08-11-punkty_odbioru/#3" target="_blank">PL</a> / <a href="../../en/news/2017-08-11-punkty_odbioru/#3" target="_blank">EN</a>.'
       operationId: getPOSListUsingGET
       parameters:
         - name: seller.id
@@ -3246,8 +3249,7 @@ paths:
         - Points of service
       summary: "Get the details of a point of service"
       description:
-        'Use this resource to get a details of a point of service for a given ID.
-         <a href="../../news/2017-08-11-punkty_odbioru/#4" target="_blank">Read more</a>.'
+        'Use this resource to get a details of a point of service for a given ID. Read more: <a href="../../news/2017-08-11-punkty_odbioru/#4" target="_blank">PL</a> / <a href="../../en/news/2017-08-11-punkty_odbioru/#4" target="_blank">EN</a>.'
       operationId: getPOSDataUsingGET
       parameters:
         - name: id
@@ -3281,7 +3283,7 @@ paths:
         - Points of service
       summary: 'Modify a point of service'
       description:
-        'Use this resource to modify a point of service. <a href="../../news/2017-08-11-punkty_odbioru/#2" target="_blank">Read more</a>.'
+        'Use this resource to modify a point of service. Read more: <a href="../../news/2017-08-11-punkty_odbioru/#2" target="_blank">PL</a> / <a href="../../en/news/2017-08-11-punkty_odbioru/#2" target="_blank">EN</a>.'
       operationId: modifyPOSUsingPUT
       parameters:
         - name: id
@@ -3319,7 +3321,7 @@ paths:
         - Points of service
       summary: 'Delete a point of service'
       description:
-        'Use this resource to delete a point of service. <a href="../../news/2017-08-11-punkty_odbioru/#5" target="_blank">Read more</a>.'
+        'Use this resource to delete a point of service. Read more: <a href="../../news/2017-08-11-punkty_odbioru/#5" target="_blank">PL</a> / <a href="../../en/news/2017-08-11-punkty_odbioru/#5" target="_blank">EN</a>.'
       operationId: deletePOSUsingDELETE
       parameters:
         - name: id
@@ -3612,7 +3614,7 @@ paths:
         - Additional services
       summary: "Get the details of an additional services group"
       description:
-        'Use this resource to get additional services group for a given ID. <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#5" target="_blank">Read more</a>.'
+        'Use this resource to get additional services group for a given ID. Read more: <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#5" target="_blank">PL</a> / <a href="../../en/news/2017-10-25-news_uslugi_dodatkowe/#5" target="_blank">EN</a>.'
       operationId: getAdditionalServicesGroupUsingGET
       parameters:
         - name: groupId
@@ -3640,7 +3642,7 @@ paths:
         - Additional services
       summary: "Modify an additional services group"
       description:
-        'Use this resource to modify existing additional service group. <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#3" target="_blank">Read more</a>.'
+        'Use this resource to modify existing additional service group. Read more: <a href="../../news/2017-10-25-news_uslugi_dodatkowe/#3" target="_blank">PL</a> / <a href="../../en/news/2017-10-25-news_uslugi_dodatkowe/#3" target="_blank">EN</a>.'
       operationId: modifyAdditionalServicesGroupUsingPUT
       parameters:
         - name: groupId
@@ -3671,7 +3673,7 @@ paths:
         - Size tables
       summary: 'Get a size table details'
       description:
-        'Use this resource to get selected size table. <a href="../../news/2018-04-19-news_tabele_rozmiarow/" target="_blank">Read more</a>.'
+        'Use this resource to get selected size table. Read more: <a href="../../sale/#tabele-rozmiarów" target="_blank">PL</a> / <a href="../../en/sale/#size-tables" target="_blank">EN</a>.'
       operationId: getTableUsingGET
       parameters:
         - name: tableId
@@ -3703,7 +3705,7 @@ paths:
       summary: "Get the user's size tables"
       description:
         'Use this resource to get all size tables assigned to a seller account.
-           <a href="../../news/2018-04-19-news_tabele_rozmiarow/" target="_blank">Read more</a>.'
+           Read more: <a href="../../sale/#tabele-rozmiarów" target="_blank">PL</a> / <a href="../../en/sale/#size-tables" target="_blank">EN</a>.'
       operationId: getTablesUsingGET
       responses:
         '200':
@@ -3727,7 +3729,7 @@ paths:
         - After sale services
       summary: "Get the user's return policies"
       description:
-        'Use this resource to get seller return policies listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
+        'Use this resource to get seller return policies listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_1
       parameters:
         - name: limit
@@ -3771,7 +3773,7 @@ paths:
         - After sale services
       summary: "Create new user's return policy"
       description:
-        'Use this resource to create a return policy definition.'
+        'Use this resource to create a return policy definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceReturnPolicyUsingPOST
       responses:
         '201':
@@ -3802,7 +3804,7 @@ paths:
         - After sale services
       summary: "Get the user's return policy"
       description:
-        'Use this resource to get a return policy details.'
+        'Use this resource to get a return policy details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceReturnPolicyUsingGET
       parameters:
         - name: returnPolicyId
@@ -3832,7 +3834,7 @@ paths:
         - After sale services
       summary: "Change the user's return policy"
       description:
-        'Use this resource to modify the return policy details.'
+        'Use this resource to modify the return policy details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceReturnPolicyUsingPUT
       parameters:
         - name: returnPolicyId
@@ -3874,7 +3876,7 @@ paths:
         - After sale services
       summary: "Get the user's implied warranties"
       description:
-        'Use this resource to get seller implied warranties listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
+        'Use this resource to get seller implied warranties listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET
       parameters:
         - name: limit
@@ -3919,7 +3921,7 @@ paths:
         - After sale services
       summary: "Create new user's implied warranty"
       description:
-        'Use this resource to create an implied warranty definition.'
+        'Use this resource to create an implied warranty definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceImpliedWarrantyUsingPOST
       responses:
         '201':
@@ -3950,7 +3952,7 @@ paths:
         - After sale services
       summary: "Get the user's implied warranty"
       description:
-        'Use this resource to get an implied warranty details.'
+        'Use this resource to get an implied warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceImpliedWarrantyUsingGET
       parameters:
         - name: impliedWarrantyId
@@ -3980,7 +3982,7 @@ paths:
         - After sale services
       summary: "Change the user's implied warranty"
       description:
-        'Use this resource to modify the implied warranty details.'
+        'Use this resource to modify the implied warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceImpliedWarrantyUsingPUT
       parameters:
         - name: impliedWarrantyId
@@ -4022,7 +4024,7 @@ paths:
         - After sale services
       summary: "Get the user's warranties"
       description:
-        'Use this resource to get seller warranties listing. <a href="../../news/2017-04-05-news_warunki_oferty/" target="_blank">Read more</a>.'
+        'Use this resource to get seller warranties listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_2
       parameters:
         - name: limit
@@ -4066,7 +4068,7 @@ paths:
         - After sale services
       summary: "Create new user's warranty"
       description:
-        'Use this resource to create a warranty definition.'
+        'Use this resource to create a warranty definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceWarrantyUsingPOST
       responses:
         '201':
@@ -4097,7 +4099,7 @@ paths:
         - After sale services
       summary: "Get the user's warranty"
       description:
-        'Use this resource to get a warranty details.'
+        'Use this resource to get a warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceWarrantyUsingGET
       parameters:
         - name: warrantyId
@@ -4127,7 +4129,7 @@ paths:
         - After sale services
       summary: "Change the user's warranty"
       description:
-        'Use this resource to modify the warranty details.'
+        'Use this resource to modify the warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceWarrantyUsingPUT
       parameters:
         - name: warrantyId
@@ -4175,6 +4177,8 @@ paths:
           1. Create an attachment object to receive an upload URL (*POST /after-sales-service-conditions/attachments*),
           2. Use the upload URL to submit the PDF file (*PUT /after-sales-service-conditions/attachments/{attachmentId}*),
           3. Create (or update) warranty with attachment (*POST /after-sales-service-conditions/warranties*).
+          
+          Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.
 
       operationId: createAfterSalesServiceConditionsAttachmentUsingPOST
       responses:
@@ -4218,7 +4222,7 @@ paths:
 
         **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /after-sales-service-conditions/attachments*.
         The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
-        Do not compose the address on your own.
+        Do not compose the address on your own. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.
       operationId: uploadAfterSalesServiceConditionsAttachmentUsingPUT
       parameters:
         - name: attachmentId
@@ -4543,6 +4547,8 @@ paths:
         **Important!** Remember to use dedicated domain for upload, i.e.
           * \- https://upload.allegro.pl for Production
           * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
+          
+        Read more: <a href="../../sale/#5-zdjęcia" target="_blank">PL</a> / <a href="../../en/sale/#5-images" target="_blank">EN</a>.
 
         More information about rules for photos in an offer's gallery and description you will find
         <a href="https://allegro.pl/dla-sprzedajacych/nowe-zasady-dla-zdjec-w-galerii-i-w-opisie-YLlAAa2oXf7" target="_blank">here</a>.
@@ -4601,6 +4607,8 @@ paths:
           1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
           2. Use the upload URL to submit the PDF file (*PUT /sale/offer-attachments/{attachmentId}*),
           3. Add attachments to the offer (*PUT /sale/offers/{offerId}*).
+          
+        Read more: <a href="../../sale/#załączniki" target="_blank">PL</a> / <a href="../../en/sale/#attachments" target="_blank">EN</a>.
 
       operationId: createOfferAttachmentUsingPOST
       responses:
@@ -4635,7 +4643,7 @@ paths:
 
         **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/offer-attachments*.
         The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
-        Do not compose the address on your own.
+        Do not compose the address on your own. Read more: <a href="../../sale/#załączniki" target="_blank">PL</a> / <a href="../../en/sale/#attachments" target="_blank">EN</a>.
       operationId: uploadOfferAttachmentUsingPUT
       parameters:
         - name: attachmentId
@@ -5147,7 +5155,7 @@ paths:
         Use this resource to get a list of all available shipping carriers.
 
 
-        The response of this resource can be stored in accordance with returned caching headers.
+        The response of this resource can be stored in accordance with returned caching headers. Read more: <a href="../../news/#carriers" target="_blank">PL</a> / <a href="../../en/news/#carriers" target="_blank">EN</a>.
       operationId: getOrdersCarriersUsingGET
       security:
         - bearer-token-for-application: []
@@ -5311,7 +5319,7 @@ paths:
       tags:
         - Order management
       summary: "Get order invoices details"
-      description: "Use to get invoices details including antivirus scan results and EPT invoice verification status."
+      description: 'Use to get invoices details including antivirus scan results and EPT invoice verification status. Read more: <a href="../../orders/#jak-pobrać-informacje-o-fakturach-dodanych-do-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#retrieve-information-about-invoices" target="_blank">EN</a>.'
       operationId: getOrderInvoicesDetails
       parameters:
         - name: id
@@ -5343,7 +5351,7 @@ paths:
       tags:
         - Order management
       summary: "Post new invoice"
-      description: "Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters."
+      description: 'Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../orders/#jak-dodać-fakturę-do-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#add-an-invoice-to-the-order" target="_blank">EN</a>.'
       operationId: addOrderInvoicesMetadata
       parameters:
         - name: id
@@ -5395,7 +5403,7 @@ paths:
       tags:
         - Order management
       summary: "Upload invoice file"
-      description: "Use to upload invoice file to match created invoice metadata."
+      description: 'Use to upload invoice file to match created invoice metadata. Read more: <a href="../../orders/#jak-dodać-fakturę-do-zamówienia" target="_blank">PL</a> / <a href="../../en/orders/#add-an-invoice-to-the-order" target="_blank">EN</a>.'
       operationId: uploadOrderInvoiceFile
       parameters:
         - name: id
@@ -5456,7 +5464,7 @@ paths:
         - Order management
       summary: "Get Allegro pickup drop off points"
       description: >-
-        Get a list of Allegro pickup drop off points.
+        Get a list of Allegro pickup drop off points. Read more: <a href="../../wza/#jak-pobra%c4%87-list%c4%99-punkt%c3%b3w-allegro" target="_blank">PL</a> / <a href="../../en/wza/#how-to-retrieve-list-of-allegro-pickup-drop-off-points" target="_blank">EN</a>.
       operationId: getAllegroPickupDropOffPointsGET
       parameters:
         - name: If-Modified-Since
@@ -5492,7 +5500,7 @@ paths:
         - Order management
       summary: "Get Allegro parcel tracking history"
       description: >-
-        Get tracking history for parcels sent via the Send with Allegro tool using <a href="#operation/getAvailableDeliveryServices" target="_blank">a delivery service</a> with carrier `ALLEGRO`. Read more about the Send with Allegro tool: <a href="../../wza/" target="_blank">PL</a> / <a href="../../en/wza/" target="_blank">EN</a>.
+        Get tracking history for parcels sent via the Send with Allegro tool using <a href="#operation/getAvailableDeliveryServices" target="_blank">a delivery service</a> with carrier `ALLEGRO`. Read more: <a href="../../wza/#jak-pobrać-historię-statusów-przesyłek-allegro" target="_blank">PL</a> / <a href="../../en/wza/#how-to-retrieve-allegro-parcels-statuses-history" target="_blank">EN</a>.
       operationId: getAllegroParcelTrackingUsingGET
       parameters:
         - name: waybill
@@ -5838,7 +5846,7 @@ paths:
         - Offer tags
       summary: "Create a tag"
       description: >-
-        Use this resource to create a new tag. <a href="../../news/2018-09-24-tagi-zalaczniki/#DodajDoKonta" target="_blank">Read more</a>.
+        Use this resource to create a new tag. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#DodajDoKonta" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#DodajDoKonta" target="_blank">EN</a>.
       operationId: createTagPOST_1
       responses:
         '200':
@@ -5888,8 +5896,7 @@ paths:
         - Offer tags
       summary: "Get the user's tags"
       description: >-
-        Use this resource to get a list of tags defined by the specified user (Defaults: limit = 100, offset = 0).
-        <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagi" target="_blank">Read more</a>.
+        Use this resource to get a list of tags defined by the specified user (Defaults: limit = 100, offset = 0). Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagi" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#PobierzTagi" target="_blank">EN</a>.
       operationId: listSellerTagsGET_1
       parameters:
         - name: limit
@@ -5940,7 +5947,7 @@ paths:
         - Offer tags
       summary: "Delete a tag"
       description:
-        'Use this resource to delete the tag. <a href="../../news/2018-09-24-tagi-zalaczniki/#UsunTagZKonta" target="_blank">Read more</a>.'
+        'Use this resource to delete the tag. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#UsunTagZKonta" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#UsunTagZKonta" target="_blank">EN</a>.'
       operationId: deleteTagUsingDELETE
       parameters:
         - name: tagId
@@ -5978,7 +5985,7 @@ paths:
         - Offer tags
       summary: "Modify a tag"
       description:
-        'Use this resource to update a tag. <a href="../../news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">Read more</a>.'
+        'Use this resource to update a tag. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">EN</a>.'
       operationId: updateTagPUT
       parameters:
         - name: tagId
@@ -6026,7 +6033,7 @@ paths:
         - Offer tags
       summary: "Assign tags to an offer"
       description: >-
-        Use this resource to assign a tag to offer. <a href="../../news/2018-09-24-tagi-zalaczniki/#PrzypiszTagiDoOferty" target="_blank">Read more</a>.
+        Use this resource to assign a tag to offer. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#PrzypiszTagiDoOferty" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#PrzypiszTagiDoOferty" target="_blank">EN</a>.
       operationId: assignTagToOfferPOST
       parameters:
         - name: offerId
@@ -6079,7 +6086,7 @@ paths:
         - Offer tags
       summary: "Get tags assigned to an offer"
       description: >-
-        Use this resource to get a list of tags assigned to offer. <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagiZOferty" target="_blank">Read more</a>.
+        Use this resource to get a list of tags assigned to offer. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#PobierzTagiZOferty" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#PobierzTagiZOferty" target="_blank">EN</a>.
       operationId: listAssignedOfferTagsGET
       parameters:
         - name: offerId
@@ -6116,7 +6123,7 @@ paths:
       tags:
         - Offer rating
       summary: "Get offer rating"
-      description: 'Use this resource to get offer rating.'
+      description: 'Use this resource to get offer rating. Read more: <a href="../../news/#offerRating" target="_blank">PL</a> / <a href="../../en/news/#offerRating" target="_blank">EN</a>.'
       operationId: offerRatingGET
       parameters:
         - name: offerId
@@ -6312,7 +6319,7 @@ paths:
       summary: 'Modification command summary'
       description:
         'Use this resource to find out how many offers were edited within one {commandId}. You will receive a summary
-        with a number of successfully edited offers and errors.'
+        with a number of successfully edited offers and errors. Read more: <a href="../../my_offers/#jak-dodać-lub-edytować-opcje-promowania-na-wielu-ofertach" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-add-or-change-promo-options-in-multiple-offers" target="_blank">EN</a>.'
       operationId: getPromoModificationCommandResultUsingGET
       parameters:
         - name: commandId
@@ -6843,7 +6850,7 @@ paths:
         - Offer management
       summary: 'Get offers with missing parameters'
       description: >-
-        Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers.
+        Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers. Read more: <a href="../../my_offers/#jak-sprawdzić-nieuzupełnione-parametry-w-ofertach" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-check-unfilled-parameters-in-offers" target="_blank">EN</a>.
       operationId: getOffersUnfilledParametersUsingGET_1
       parameters:
         - name: offer.id
@@ -6903,7 +6910,7 @@ paths:
       tags:
       - Compatibility List
       summary: 'Get list of categories where compatibility list is supported'
-      description: 'Compatibility list is available in particular categories, this resource allows to get the list of these categories with additional details.'
+      description: 'Compatibility list is available in particular categories, this resource allows to get the list of these categories with additional details. Read more: <a href="../../compatibility_list/#jak-sprawdzić-czy-w-danej-kategorii-mogę-dodać-sekcję-pasuje-do-do-oferty" target="_blank">PL</a> / <a href="../../en/compatibility_list/#which-categories-support-compatibility-section" target="_blank">EN</a>.'
       operationId: "getCategoriesThatSupportCompatibilityList"
       responses:
         '200':
@@ -6922,7 +6929,7 @@ paths:
       tags:
         - Compatibility List
       summary: 'Get suggested compatibility list.'
-      description: 'Resource allows to fetch compatibility list suggestion for given offer or product.'
+      description: 'Resource allows to fetch compatibility list suggestion for given offer or product. Read more: <a href="../../compatibility_list/#jak-wyszukać-sugerowaną-sekcję-compatibilitylist" target="_blank">PL</a> / <a href="../../en/compatibility_list/#how-to-search-for-the-suggested-compatibility-section" target="_blank">EN</a>.'
       operationId: "getCompatibilityListSuggestion"
       parameters:
         - name: offer.id
@@ -6967,7 +6974,7 @@ paths:
       tags:
       - Compatibility List
       summary: 'Get list of compatible product groups'
-      description: 'Compatible products are organized in groups, this resource allows to browse these groups.'
+      description: 'Compatible products are organized in groups, this resource allows to browse these groups. Read more: <a href="../../compatibility_list/#jak-zarządzać-sekcją-pasuje-do-zintegrowaną-z-bazą-pojazdów" target="_blank">PL</a> / <a href="../../en/compatibility_list/#managing-the-compatibility-section-compatibilitylist-integrated-vehicle-database" target="_blank">EN</a>.'
       operationId: 'getCompatibleProductsGroups'
       parameters:
         - name: If-Modified-Since
@@ -7031,7 +7038,7 @@ paths:
       tags:
       - Compatibility List
       summary: 'Get list of compatible products'
-      description: 'Resource allows to fetch compatible products of given type.'
+      description: 'Resource allows to fetch compatible products of given type. Read more: <a href="../../compatibility_list/#jak-zarządzać-sekcją-pasuje-do-zintegrowaną-z-bazą-pojazdów" target="_blank">PL</a> / <a href="../../en/compatibility_list/#managing-the-compatibility-section-compatibilitylist-integrated-vehicle-database" target="_blank">EN</a>.'
       operationId: "getCompatibleProducts"
       parameters:
       - name: If-Modified-Since
@@ -7125,7 +7132,7 @@ paths:
       tags:
         - Information about user
       summary: "Get user's additional emails"
-      description: "Use this resource to get a list of all additional email addresses assigned to account."
+      description: 'Use this resource to get a list of all additional email addresses assigned to account. Read more: <a href="../../mail/#pobierz-adresy-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#retrieve-email-addresses" target="_blank">EN</a>.'
       operationId: getListOfAdditionalEmailsUsingGET
       responses:
         '200':
@@ -7147,7 +7154,7 @@ paths:
       tags:
         - Information about user
       summary: "Add a new additional email address to user's account"
-      description: "Use this resource to add a new additional email address to account."
+      description: 'Use this resource to add a new additional email address to account. Read more: <a href="../../mail/#dodaj-adres-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#add-additional-email" target="_blank">EN</a>.'
       operationId: addAdditionalEmailUsingPOST
       responses:
         '201':
@@ -7189,7 +7196,7 @@ paths:
       tags:
         - Information about user
       summary: "Get information about a particular additional email"
-      description: "Use this resource to retrieve a single additional email."
+      description: 'Use this resource to retrieve a single additional email. Read more: <a href="../../mail/#pobierz-szczegółowe-informacje" target="_blank">PL</a> / <a href="../../en/mail/#retrieve-details" target="_blank">EN</a>.'
       operationId: getAdditionalEmailUsingGET
       parameters:
         - name: emailId
@@ -7224,7 +7231,7 @@ paths:
       tags:
         - Information about user
       summary: "Delete an additional email address"
-      description: "Use this resource to delete one of additional emails."
+      description: 'Use this resource to delete one of additional emails. Read more: <a href="../../mail/#usuń-adres-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#remove-e-mail" target="_blank">EN</a>.'
       operationId: deleteAdditionalEmailUsingDELETE
       parameters:
         - name: emailId
@@ -8371,7 +8378,7 @@ paths:
       tags:
         - Payments
       summary: Initiate a refund of a payment
-      description: Use this endpoint to initiate a refund of a payment.
+      description: 'Use this endpoint to initiate a refund of a payment. Read more: <a href="../../orders/#jak-wykonać-zwrot-płatności" target="_blank">PL</a> / <a href="../../en/orders/#how-to-refund-a-payment" target="_blank">EN</a>.'
       operationId: "initiateRefund"
       requestBody:
         content:
@@ -8416,7 +8423,7 @@ paths:
       tags:
         - Payments
       summary: 'Get a list of refunded payments'
-      description: 'Get a list of refunded payments.'
+      description: 'Get a list of refunded payments. Read more: <a href="../../orders/#jak-pobrać-listę-zwrotów-płatności" target="_blank">PL</a> / <a href="../../en/orders/#how-to-retrieve-a-list-of-refunded-payment" target="_blank">EN</a>.'
       operationId: 'getRefundedPayments'
       parameters:
         - name: limit
@@ -8739,7 +8746,7 @@ paths:
       tags:
         - Commission refunds
       summary: 'Get a refund application details'
-      description: Use this resource to get refund application details.
+      description: 'Use this resource to get refund application details. Read more: <a href="../../orders/#rabaty-transakcyjne-zwroty-prowizji" target="_blank">PL</a> / <a href="../../en/orders/#sale-commission-refunds" target="_blank">EN</a>.'
       operationId: 'getRefundApplication'
       parameters:
         - name: claimId
@@ -8770,7 +8777,7 @@ paths:
       tags:
         - Commission refunds
       summary: 'Cancel a refund application'
-      description: Use this resource to cancel a refund application. This cannot be undone.
+      description: 'Use this resource to cancel a refund application. This cannot be undone. Read more: <a href="../../orders/#rabaty-transakcyjne-zwroty-prowizji" target="_blank">PL</a> / <a href="../../en/orders/#sale-commission-refunds" target="_blank">EN</a>.'
       operationId: 'cancelRefundApplication'
       parameters:
         - name: claimId
@@ -8800,7 +8807,7 @@ paths:
       tags:
         - Commission refunds
       summary: 'Get a list of refund applications'
-      description: Use this resource to get a list of refund applications based on the provided query parameters.
+      description: 'Use this resource to get a list of refund applications based on the provided query parameters. Read more: <a href="../../orders/#rabaty-transakcyjne-zwroty-prowizji" target="_blank">PL</a> / <a href="../../en/orders/#sale-commission-refunds" target="_blank">EN</a>.'
       operationId: 'getRefundApplications'
       parameters:
         - name: lineItem.offer.id
@@ -8880,7 +8887,7 @@ paths:
       tags:
         - Commission refunds
       summary: 'Create a refund application'
-      description: Use this resource to create a refund application.
+      description: 'Use this resource to create a refund application. Read more: <a href="../../orders/#rabaty-transakcyjne-zwroty-prowizji" target="_blank">PL</a> / <a href="../../en/orders/#sale-commission-refunds" target="_blank">EN</a>.'
       operationId: 'createRefundApplication'
       responses:
         '201':
@@ -8907,7 +8914,7 @@ paths:
       tags:
         - Charity
       summary: Search fundraising campaigns
-      description: Use this resource to search fundraising campaigns.
+      description: 'Use this resource to search fundraising campaigns. Read more: <a href="../../news/#charity" target="_blank">PL</a> / <a href="../../en/news/#charity" target="_blank">EN</a>.'
       operationId: searchFundraisingCampaigns
       parameters:
         - name: limit
@@ -9822,7 +9829,7 @@ paths:
         - Categories and parameters
       summary: "Get categories suggestions"
       description:
-        'Use this resource to receive suggested categories for given phrase.'
+        'Use this resource to receive suggested categories for given phrase. Read more: <a href="../../news/#matching-categories" target="_blank">PL</a> / <a href="../../en/news/#matching-categories" target="_blank">EN</a>.'
       operationId: categorySuggestionUsingGET
       parameters:
         - name: name
@@ -9864,7 +9871,7 @@ paths:
       summary: 'Get all tax settings for category'
       description: >-
         Use this resource to receive tax settings for given category.
-        Based on received settings you may set VAT tax settings for your offers.
+        Based on received settings you may set VAT tax settings for your offers. Read more: <a href="../../sale/#ustawienia-vat" target="_blank">PL</a> / <a href="../../en/sale/#tax-rate" target="_blank">EN</a>.
       operationId: getTaxSettingsForCategory
       parameters:
         - name: category.id
@@ -9911,6 +9918,159 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+  /sale/allegro-prices-offer-consents/{offerId}:
+    get:
+      tags:
+        - Allegro Prices
+      operationId: getAllegroPricesConsentForOffer
+      summary: "Get the current consent value for an offer"
+      description: "Use this resource to get the current Allegro Prices consent value for an offer."
+      parameters:
+        - name: "offerId"
+          description: "The offer ID."
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Consent value returned successfully."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/AllegroPricesConsentChangeResponse"
+        401:
+          description: "Unauthorized."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        403:
+          description: "Offer does not belong to seller."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        404:
+          description: "Offer not found."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+    put:
+      tags:
+        - Allegro Prices
+      operationId: updateAllegroPricesConsentForOffer
+      summary: "Update consent value for an offer"
+      description: "Use this resource to update Allegro Prices consent value for an offer."
+      parameters:
+        - name: "offerId"
+          description: "The offer ID."
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: "#/components/schemas/AllegroPricesChangeRequest"
+        required: true
+      responses:
+        200:
+          description: "Allegro Prices consent for the offer updated successfully."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/AllegroPricesConsentChangeResponse"
+        400:
+          description: "Bad request."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        401:
+          description: "Unauthorized."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        403:
+          description: "Offer does not belong to seller."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        404:
+          description: "Offer not found."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        422:
+          description: "Unprocessable Entity."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+  /sale/allegro-prices-account-eligibility:
+    get:
+      tags:
+        - Allegro Prices
+      operationId: "getAllegroPricesEligibilityForAccount"
+      summary: "Get the current eligibility information for the account"
+      description: "Use this resource to get the current Allegro Prices eligibility information for the account."
+      responses:
+        200:
+          description: "Allegro Prices eligibility information for the account returned successfully."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/AllegroPricesEligibilityResponse"
+        401:
+          description: "Unauthorized."
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+  /sale/allegro-prices-account-consent:
+    put:
+      tags:
+        - Allegro Prices
+      operationId: "updateAllegroPricesConsentForAccount"
+      summary: "Update consent value for the account"
+      description: "Use this resource to update the Allegro Prices consent value for the account."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AllegroPricesChangeRequest"
+        required: true
+      responses:
+        200:
+          description: "Allegro Prices consent value for the account was updated successfully"
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/AllegroPricesConsentChangeResponse"
+        400:
+          description: "Bad request"
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        401:
+          description: "Unauthorized"
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
+        422:
+          description: "Unprocessable Entity"
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: "#/components/schemas/ErrorsHolder"
 
 components:
   securitySchemes:
@@ -19033,3 +19193,37 @@ components:
               type: string
               description: 'A human-readable name for an exemption.'
               example: 'MPV (multi-purpose voucher)'
+    AllegroPricesChangeRequest:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum:
+            - "ALLOWED"
+            - "DENIED"
+    AllegroPricesConsentChangeResponse:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum:
+            - "ALLOWED"
+            - "DENIED"
+    AllegroPricesEligibilityResponse:
+      type: "object"
+      properties:
+        consent:
+          type: "string"
+          enum:
+            - "ALLOWED"
+            - "DENIED"
+        qualification:
+          $ref: "#/components/schemas/AllegroPricesQualificationResponse"
+    AllegroPricesQualificationResponse:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          enum:
+            - "QUALIFIED"
+            - "DISQUALIFIED"
