@@ -753,7 +753,7 @@ paths:
         - Information about user
       summary: "Get the user's ratings"
       description:
-        'Use this resource to receive your sales score. Read more: <a href="../../news/2017-10-09-news_informacje_o_ocenach/" target="_blank">PL</a> / <a href="../../en/news/2017-10-09-news_informacje_o_ocenach/" target="_blank">EN</a>.'
+        'Use this resource to receive your sales score. Read more: <a href="../../account/#2-ocena-sprzedaży" target="_blank">PL</a> / <a href="../../en/account/#2-user-s-ratings" target="_blank">EN</a>.'
       operationId: getUserRatingsUsingGET
       parameters:
         - name: recommended
@@ -807,7 +807,7 @@ paths:
         - Information about user
       summary: "Answer for user's rating"
       description:
-        'Use this resource to answer for received rating. Read more: <a href="../../news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">PL</a> / <a href="../../en/news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">EN</a>.'
+        'Use this resource to answer for received rating. Read more: <a href="../../account/#2-ocena-sprzedaży" target="_blank">PL</a> / <a href="../../en/account/#2-user-s-ratings" target="_blank">EN</a>.'
       operationId: answerUserRatingUsingPUT
       parameters:
         - name: ratingId
@@ -847,7 +847,7 @@ paths:
         - Information about user
       summary: "Request removal of user's rating"
       description:
-        'Use this resource to request removal of received rating. Read more: <a href="../../news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">PL</a> / <a href="../../en/news/2020-01-13-nowe_zasoby_do_zarządzania_ocenami_sprzedaży/" target="_blank">EN</a>.'
+        'Use this resource to request removal of received rating. Read more: <a href="../../account/#2-ocena-sprzedaży" target="_blank">PL</a> / <a href="../../en/account/#2-user-s-ratings" target="_blank">EN</a>.'
       operationId: userRatingRemovalUsingPUT
       parameters:
         - name: ratingId
@@ -887,7 +887,7 @@ paths:
         - Information about user
       summary: "Get basic information about user"
       description:
-        'Use this resource when you need basic information about authenticated user. Read more: <a href="../../news/#email-and-address-in-/me" target="_blank">PL</a> / <a href="../../en/news/#email-and-address-in-/me" target="_blank">EN</a>.'
+        'Use this resource when you need basic information about authenticated user. Read more: <a href="../../account/#1-informacje-o-użytkowniku" target="_blank">PL</a> / <a href="../../en/account/#1-information-about-user" target="_blank">EN</a>.'
       operationId: meGET
       responses:
         '200':
@@ -2662,7 +2662,7 @@ paths:
       summary: 'Get planned changes in category parameters'
       description: >-
         Use this resource to get information about planned changes in category parameters.
-        Please note that in some cases, the returned events may finally not happen in the future. 
+        Please note that in some cases, the returned events may finally not happen in the future.
 
         At present we support the following changes:
         - REQUIREMENT_CHANGE - the parameter will be required in the category. Read more: <a href="../../my_offers/#jak-sprawdzi%c4%87-przysz%c5%82e-zmiany-w-parametrach" target="_blank">PL</a> / <a href="../../en/my_offers/#how-to-check-future-changes-in-parameters" target="_blank">EN</a>.
@@ -2783,7 +2783,7 @@ paths:
           - CATEGORY_RENAMED - category name has been changed.
           - CATEGORY_MOVED - category has been moved to a different place in category tree, category parent id field is changed.
           - CATEGORY_DELETED - category is no longer available, category from redirectCategory field should be used instead.
-          
+
           Read more: <a href="../../my_offers/#dziennik-zmian-w-kategoriach" target="_blank">PL</a> / <a href="../../en/my_offers/#event-journal-in-categories" target="_blank">EN</a>.
 
       operationId: getCategoryEventsUsingGET_1
@@ -3352,7 +3352,7 @@ paths:
         - Contacts
       summary: 'Create a new contact'
       description:
-        'Use this resource to create a new contact. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
+        'Use this resource to create a new contact. Read more: <a href="../../account/#5-dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/account/#5-contact-data" target="_blank">EN</a>.'
       operationId: createContactUsingPOST
       responses:
         '201':
@@ -3380,7 +3380,7 @@ paths:
         - Contacts
       summary: "Get the user's contacts"
       description:
-        'Use this resource to get details of many contacts. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
+        'Use this resource to get details of many contacts. Read more: <a href="../../account/#5-dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/account/#5-contact-data" target="_blank">EN</a>.'
       operationId: getListOfContactsUsingGET
       responses:
         '200':
@@ -3402,7 +3402,7 @@ paths:
         - Contacts
       summary: "Get contact details"
       description:
-        'Use this resource to get contact details. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
+        'Use this resource to get contact details. Read more: <a href="../../account/#5-dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/account/#5-contact-data" target="_blank">EN</a>.'
       operationId: getContactUsingGET
       parameters:
         - name: id
@@ -3432,7 +3432,7 @@ paths:
         - Contacts
       summary: "Modify contact details"
       description:
-        'Use this resource to modify contact details. Read more: <a href="../../advertisement/#dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/advertisement/#contact-data" target="_blank">EN</a>.'
+        'Use this resource to modify contact details. Read more: <a href="../../account/#5-dane-kontaktowe" target="_blank">PL</a> / <a href="../../en/account/#5-contact-data" target="_blank">EN</a>.'
       operationId: modifyContactUsingPUT
       parameters:
         - name: id
@@ -3729,7 +3729,7 @@ paths:
         - After sale services
       summary: "Get the user's return policies"
       description:
-        'Use this resource to get seller return policies listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get seller return policies listing. Read more: <a href="../../account/#warunki-zwrotów" target="_blank">PL</a> / <a href="../../en/account/#return-policies" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_1
       parameters:
         - name: limit
@@ -3773,7 +3773,7 @@ paths:
         - After sale services
       summary: "Create new user's return policy"
       description:
-        'Use this resource to create a return policy definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to create a return policy definition. Read more: <a href="../../account/#warunki-zwrotów" target="_blank">PL</a> / <a href="../../en/account/#return-policies" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceReturnPolicyUsingPOST
       responses:
         '201':
@@ -3804,7 +3804,7 @@ paths:
         - After sale services
       summary: "Get the user's return policy"
       description:
-        'Use this resource to get a return policy details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get a return policy details. Read more: <a href="../../account/#warunki-zwrotów" target="_blank">PL</a> / <a href="../../en/account/#return-policies" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceReturnPolicyUsingGET
       parameters:
         - name: returnPolicyId
@@ -3834,7 +3834,7 @@ paths:
         - After sale services
       summary: "Change the user's return policy"
       description:
-        'Use this resource to modify the return policy details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to modify the return policy details. Read more: <a href="../../account/#warunki-zwrotów" target="_blank">PL</a> / <a href="../../en/account/#return-policies" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceReturnPolicyUsingPUT
       parameters:
         - name: returnPolicyId
@@ -3876,7 +3876,7 @@ paths:
         - After sale services
       summary: "Get the user's implied warranties"
       description:
-        'Use this resource to get seller implied warranties listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get seller implied warranties listing. Read more: <a href="../../account/#warunki-reklamacji" target="_blank">PL</a> / <a href="../../en/account/#complaints-policies" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET
       parameters:
         - name: limit
@@ -3921,7 +3921,7 @@ paths:
         - After sale services
       summary: "Create new user's implied warranty"
       description:
-        'Use this resource to create an implied warranty definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to create an implied warranty definition. Read more: <a href="../../account/#warunki-reklamacji" target="_blank">PL</a> / <a href="../../en/account/#complaints-policies" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceImpliedWarrantyUsingPOST
       responses:
         '201':
@@ -3952,7 +3952,7 @@ paths:
         - After sale services
       summary: "Get the user's implied warranty"
       description:
-        'Use this resource to get an implied warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get an implied warranty details. Read more: <a href="../../account/#warunki-reklamacji" target="_blank">PL</a> / <a href="../../en/account/#complaints-policies" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceImpliedWarrantyUsingGET
       parameters:
         - name: impliedWarrantyId
@@ -3982,7 +3982,7 @@ paths:
         - After sale services
       summary: "Change the user's implied warranty"
       description:
-        'Use this resource to modify the implied warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to modify the implied warranty details. Read more: <a href="../../account/#warunki-reklamacji" target="_blank">PL</a> / <a href="../../en/account/#complaints-policies" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceImpliedWarrantyUsingPUT
       parameters:
         - name: impliedWarrantyId
@@ -4024,7 +4024,7 @@ paths:
         - After sale services
       summary: "Get the user's warranties"
       description:
-        'Use this resource to get seller warranties listing. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get seller warranties listing. Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_2
       parameters:
         - name: limit
@@ -4068,7 +4068,7 @@ paths:
         - After sale services
       summary: "Create new user's warranty"
       description:
-        'Use this resource to create a warranty definition. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to create a warranty definition. Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.'
       operationId: createAfterSalesServiceWarrantyUsingPOST
       responses:
         '201':
@@ -4099,7 +4099,7 @@ paths:
         - After sale services
       summary: "Get the user's warranty"
       description:
-        'Use this resource to get a warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to get a warranty details. Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.'
       operationId: getAfterSalesServiceWarrantyUsingGET
       parameters:
         - name: warrantyId
@@ -4129,7 +4129,7 @@ paths:
         - After sale services
       summary: "Change the user's warranty"
       description:
-        'Use this resource to modify the warranty details. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.'
+        'Use this resource to modify the warranty details. Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.'
       operationId: updateAfterSalesServiceWarrantyUsingPUT
       parameters:
         - name: warrantyId
@@ -4177,8 +4177,8 @@ paths:
           1. Create an attachment object to receive an upload URL (*POST /after-sales-service-conditions/attachments*),
           2. Use the upload URL to submit the PDF file (*PUT /after-sales-service-conditions/attachments/{attachmentId}*),
           3. Create (or update) warranty with attachment (*POST /after-sales-service-conditions/warranties*).
-          
-          Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.
+
+          Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.
 
       operationId: createAfterSalesServiceConditionsAttachmentUsingPOST
       responses:
@@ -4222,7 +4222,7 @@ paths:
 
         **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /after-sales-service-conditions/attachments*.
         The URL is unique and one-time. As its format may change in time, you should always use the address from the header.
-        Do not compose the address on your own. Read more: <a href="../../news/#offerTerms" target="_blank">PL</a> / <a href="../../en/news/#offerTerms" target="_blank">EN</a>.
+        Do not compose the address on your own. Read more: <a href="../../account/#informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../en/account/#warranties" target="_blank">EN</a>.
       operationId: uploadAfterSalesServiceConditionsAttachmentUsingPUT
       parameters:
         - name: attachmentId
@@ -4547,7 +4547,7 @@ paths:
         **Important!** Remember to use dedicated domain for upload, i.e.
           * \- https://upload.allegro.pl for Production
           * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
-          
+
         Read more: <a href="../../sale/#5-zdjęcia" target="_blank">PL</a> / <a href="../../en/sale/#5-images" target="_blank">EN</a>.
 
         More information about rules for photos in an offer's gallery and description you will find
@@ -4607,7 +4607,7 @@ paths:
           1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
           2. Use the upload URL to submit the PDF file (*PUT /sale/offer-attachments/{attachmentId}*),
           3. Add attachments to the offer (*PUT /sale/offers/{offerId}*).
-          
+
         Read more: <a href="../../sale/#załączniki" target="_blank">PL</a> / <a href="../../en/sale/#attachments" target="_blank">EN</a>.
 
       operationId: createOfferAttachmentUsingPOST
@@ -6520,6 +6520,16 @@ paths:
           required: false
           schema:
             type: string
+        - name: searchFeatures
+          in: query
+          description: >-
+            Enables additional search options:
+            - *SIMILAR_CATEGORIES* - searching in the indicated category (category.id) and in 'similar categories' (works only if category.id is a leaf category).
+          required: false
+          schema:
+            type: string
+            enum:
+              - SIMILAR_CATEGORIES
       responses:
         '200':
           description: Successful operation.
@@ -7132,7 +7142,7 @@ paths:
       tags:
         - Information about user
       summary: "Get user's additional emails"
-      description: 'Use this resource to get a list of all additional email addresses assigned to account. Read more: <a href="../../mail/#pobierz-adresy-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#retrieve-email-addresses" target="_blank">EN</a>.'
+      description: 'Use this resource to get a list of all additional email addresses assigned to account. Read more: <a href="../../account/#6-adresy-mailowe" target="_blank">PL</a> / <a href="../../en/account/#6-email-addresses" target="_blank">EN</a>.'
       operationId: getListOfAdditionalEmailsUsingGET
       responses:
         '200':
@@ -7154,7 +7164,7 @@ paths:
       tags:
         - Information about user
       summary: "Add a new additional email address to user's account"
-      description: 'Use this resource to add a new additional email address to account. Read more: <a href="../../mail/#dodaj-adres-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#add-additional-email" target="_blank">EN</a>.'
+      description: 'Use this resource to add a new additional email address to account. Read more: <a href="../../account/#6-adresy-mailowe" target="_blank">PL</a> / <a href="../../en/account/#6-email-addresses" target="_blank">EN</a>.'
       operationId: addAdditionalEmailUsingPOST
       responses:
         '201':
@@ -7196,7 +7206,7 @@ paths:
       tags:
         - Information about user
       summary: "Get information about a particular additional email"
-      description: 'Use this resource to retrieve a single additional email. Read more: <a href="../../mail/#pobierz-szczegółowe-informacje" target="_blank">PL</a> / <a href="../../en/mail/#retrieve-details" target="_blank">EN</a>.'
+      description: 'Use this resource to retrieve a single additional email. Read more: <a href="../../account/#6-adresy-mailowe" target="_blank">PL</a> / <a href="../../en/account/#6-email-addresses" target="_blank">EN</a>.'
       operationId: getAdditionalEmailUsingGET
       parameters:
         - name: emailId
@@ -7231,7 +7241,7 @@ paths:
       tags:
         - Information about user
       summary: "Delete an additional email address"
-      description: 'Use this resource to delete one of additional emails. Read more: <a href="../../mail/#usuń-adres-e-mail" target="_blank">PL</a> / <a href="../../en/mail/#remove-e-mail" target="_blank">EN</a>.'
+      description: 'Use this resource to delete one of additional emails. Read more: <a href="../../account/#6-adresy-mailowe" target="_blank">PL</a> / <a href="../../en/account/#6-email-addresses" target="_blank">EN</a>.'
       operationId: deleteAdditionalEmailUsingDELETE
       parameters:
         - name: emailId
@@ -7383,7 +7393,7 @@ paths:
       tags:
         - Blacklist management
       summary: "Get list of blacklisted users"
-      description: "Use this resource to get a list of blacklisted users created on given account."
+      description: 'Use this resource to get a list of blacklisted users created on given account. Read more: <a href="../../account/#4-czarna-lista" target="_blank">PL</a> / <a href="../../en/account/#4-blacklist" target="_blank">EN</a>.'
       operationId: doGetBlackListUsers
       parameters:
         - name: offset
@@ -7424,7 +7434,7 @@ paths:
       tags:
         - Blacklist management
       summary: "Add a users to the blacklist"
-      description: "Use this resource to add new users to the blacklist on given account. At least one of id or login is required."
+      description: 'Use this resource to add new users to the blacklist on given account. At least one of id or login is required. Read more: <a href="../../account/#4-czarna-lista" target="_blank">PL</a> / <a href="../../en/account/#4-blacklist" target="_blank">EN</a>.'
       operationId: doAddToBlackList
       responses:
         '201':
@@ -7475,7 +7485,7 @@ paths:
             format: int64
             minimum: 1
       summary: "Remove users from the blacklist"
-      description: "Use this resource to remove users from the blacklist on given account."
+      description: 'Use this resource to remove users from the blacklist on given account. Read more: <a href="../../account/#4-czarna-lista" target="_blank">PL</a> / <a href="../../en/account/#4-blacklist" target="_blank">EN</a>.'
       operationId: doRemoveFromBlackList
       responses:
         '204':
