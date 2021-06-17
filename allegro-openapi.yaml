@@ -21,41 +21,86 @@ info:
     url: 'https://github.com/allegro/allegro-api/issues'
 
 tags:
-  - name: Public offer information
-  - name: Public user information
-  - name: Categories and parameters
+  - name: Information about user
   - name: User's offer information
   - name: Offer management
-  - name: Products
-  - name: Compatibility List
-  - name: Classifieds
+  - name: Categories and parameters
   - name: Images and attachments
-  - name: Pricing
+  - name: Products
   - name: Batch offer modification
-  - name: Size tables
-  - name: Points of service
-  - name: Contacts
-  - name: Additional services
-  - name: After sale services
   - name: Offer variants
+  - name: Offer tags
+  - name: Tax settings
+  - name: Compatibility List
   - name: Rebates and promotions
   - name: Promotion campaigns
   - name: Badge campaigns
-  - name: Delivery
-  - name: Offer tags
+  - name: Allegro Prices
   - name: Offer rating
+  - name: Classifieds
+  - name: Pricing
   - name: Order management
   - name: Payments
   - name: Disputes
-  - name: Information about user
-  - name: Blacklist management
-  - name: Auctions and Bidding
-  - name: Billing
-  - name: Commission refunds
-  - name: Charity
   - name: Parcel management
-  - name: Tax settings
-  - name: Allegro Prices
+  - name: Commission refunds
+  - name: Blacklist management
+  - name: After sale services
+  - name: Delivery
+  - name: Additional services
+  - name: Size tables
+  - name: Points of service
+  - name: Contacts
+  - name: Billing
+  - name: Auctions and Bidding
+  - name: Charity
+  - name: Public user information
+  - name: Public offer information
+  
+x-tagGroups:
+  - name: Offer
+    tags:
+      - User's offer information
+      - Offer management
+      - Categories and parameters
+      - Images and attachments
+      - Products
+      - Batch offer modification
+      - Offer variants
+      - Offer tags
+      - Tax settings
+      - Compatibility List
+      - Rebates and promotions
+      - Promotion campaigns
+      - Badge campaigns
+      - Allegro Prices
+      - Offer rating
+      - Classifieds
+      - Pricing
+  - name: Orders
+    tags:
+      - Order management
+      - Payments
+      - Disputes
+      - Parcel management
+      - Commission refunds
+      - Blacklist management
+  - name: Sale settings
+    tags:
+      - After sale services
+      - Delivery
+      - Additional services
+      - Size tables
+      - Points of service
+      - Contacts
+  - name: Others
+    tags:
+      - Information about user
+      - Billing
+      - Auctions and Bidding
+      - Charity
+      - Public user information
+      - Public offer information
 
 security:
   - bearer-token-for-user: []
