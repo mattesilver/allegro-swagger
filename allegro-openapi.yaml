@@ -9919,6 +9919,12 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   /sale/tax-settings:
     get:
       tags:
