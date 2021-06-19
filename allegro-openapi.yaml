@@ -2372,7 +2372,7 @@ paths:
         - Categories and parameters
       summary: 'Get a category by ID'
       description: >-
-        Use this resource to get the details of a specific category. Read more: <a href="../../multi_variant_offers/#1" target="_blank">PL</a> / <a href="../../en/multi_variant_offers/#1" target="_blank">EN</a>.
+        Use this resource to get the details of a specific category. Read more: <a href="../../sale/#3-kategorie-i-parametry" target="_blank">PL</a> / <a href="../../en/sale/#3-category-and-parameters" target="_blank">EN</a>.
       operationId: getCategoryUsingGET_1
       security:
         - bearer-token-for-application: []
