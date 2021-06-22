@@ -4617,6 +4617,8 @@ paths:
           description: Syntactically incorrect request
         '401':
           description: Invalid or missing bearer token
+        '403':
+          description: Authorization problem
         '413':
           description: Image is too big
         '415':
@@ -8465,6 +8467,17 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
         '404':
           description: Payment not found.
           content:
@@ -8574,6 +8587,17 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
         '422':
           description: Unprocessable Entity. Returned when any of the given search parameters have an invalid value.
           content:
@@ -11286,8 +11310,42 @@ components:
       type: object
       required:
         - matching_categories
+        - matchingCategories
       properties:
         matching_categories:
+          type: array
+          description: List of categories matching with given phrase.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "2"
+                description: Id of category.
+              name:
+                type: string
+                example: Samochody Osobowe
+                description: Category name.
+              parent:
+                type: object
+                description: Parent category object.
+                example:
+                  id:
+                    type: string
+                    example: "1"
+                    description: Id of category.
+                  name:
+                    type: string
+                    example: Motoryzacja
+                    description: Category name.
+                  parent:
+                    type: object
+                    description: Parent category object.
+            required:
+              - id
+              - name
+            deprecated: true
+        matchingCategories:
           type: array
           description: List of categories matching with given phrase.
           items:
