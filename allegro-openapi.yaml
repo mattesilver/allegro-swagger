@@ -5000,6 +5000,10 @@ paths:
                 $ref: '#/components/schemas/OrderEventsList'
         '401':
           description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity - Returned when query parameters are incorrect.
       security:
       - bearer-token-for-user:
         - allegro:api:orders:read
@@ -5189,6 +5193,9 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+        '422':
+          description: >
+            Unprocessable Entity - Returned when order id is malformed UUID.
       security:
       - bearer-token-for-user:
         - allegro:api:orders:read
