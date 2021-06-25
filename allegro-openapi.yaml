@@ -3531,6 +3531,8 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ContactResponse'
+        '400':
+          description: Bad Request
         '401':
           description: Unauthorized
         '403':
@@ -4387,6 +4389,8 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
           description: Full authentication is required to access this resource
+        '403':
+          description: Forbidden
         '503':
           description: Service is currently unavailable. Please try again later.
           content:
@@ -9215,6 +9219,8 @@ paths:
                     description: Array of errors.
                     items:
                       $ref: '#/components/schemas/Error403'
+        '404':
+          description: Not Found
       security:
       - bearer-token-for-user:
         - allegro:api:orders:write
