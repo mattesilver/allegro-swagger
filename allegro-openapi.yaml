@@ -56,7 +56,7 @@ tags:
   - name: Charity
   - name: Public user information
   - name: Public offer information
-  
+
 x-tagGroups:
   - name: Offer
     tags:
@@ -10549,6 +10549,7 @@ components:
       description: Detailed information about the refund.
       required:
         - id
+        - payment
         - reason
         - status
         - createdAt
@@ -12040,6 +12041,8 @@ components:
       properties:
         type:
           type: string
+      required:
+        - type
       discriminator:
         propertyName: type
         mapping:
@@ -12205,13 +12208,13 @@ components:
     DeliveryFull:
       allOf:
         - $ref: '#/components/schemas/DeliveryBasic'
-      type: object
-      properties:
-        shipmentDate:
-          type: string
-          format: date-time
-          example: '2018-04-01T08:00:00Z'
-          description: 'Shipment date, Format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ'
+        - type: object
+          properties:
+            shipmentDate:
+              type: string
+              format: date-time
+              example: '2018-04-01T08:00:00Z'
+              description: 'Shipment date, Format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ'
     DescriptionSection:
       type: object
       properties:
@@ -12653,9 +12656,9 @@ components:
         category:
           allOf:
             - $ref: '#/components/schemas/Category'
-          type: object
-          required:
-            - id
+            - type: object
+              required:
+                - id
         compatibilityList:
           $ref: '#/components/schemas/CompatibilityList'
         contact:
@@ -13594,13 +13597,14 @@ components:
             - USER
             - ADMIN
             - EXPIRATION
+            - EMPTY_STOCK
             - ERROR
           description: >-
             Indicates the reason for ending the offer:
              - `USER` - offer ended by the seller.
              - `ADMIN` - offer ended by an admin.
-             - `EXPIRATION` - offer ended because all available items had been sold out or offer duration had expired (valid for
-               offers with specified duration).
+             - `EXPIRATION` - offer duration had expired (valid for offers with specified duration).
+             - `EMPTY_STOCK` - offer ended because all available items had been sold out.
              - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
                success status, but further processing failed.
         republish:
@@ -16424,13 +16428,13 @@ components:
         category:
           allOf:
             - $ref: '#/components/schemas/Category'
-          type: object
-          properties:
-            similar:
-              type: array
-              items:
-                $ref: '#/components/schemas/Category'
-              description: A list of similar categories in which you can sell this product.
+            - type: object
+              properties:
+                similar:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Category'
+                  description: A list of similar categories in which you can sell this product.
         images:
           type: array
           items:
@@ -17741,14 +17745,15 @@ components:
                   - USER
                   - ADMIN
                   - EXPIRATION
+                  - EMPTY_STOCK
                   - ERROR
                   - UNKNOWN
                   description: >-
                     Indicates the reason for ending the offer:
                      - `USER` - offer ended by the seller.
                      - `ADMIN` - offer ended by an admin.
-                     - `EXPIRATION` - offer ended because all available items had been sold out or offer duration had expired (valid for
-                       offers with specified duration).
+                     - `EXPIRATION` - offer duration had expired (valid for offers with specified duration).
+                     - `EMPTY_STOCK` - offer ended because all available items had been sold out.
                      - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
                        success status, but further processing failed.
                      - `UNKNOWN` - in rare cases the reason might be unknown.
