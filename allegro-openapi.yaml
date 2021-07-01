@@ -18065,7 +18065,7 @@ components:
       properties:
         perUser:
           $ref: '#/components/schemas/BadgeApplicationPurchaseConstraintsLimitPerUser'
-      description: 'Limits of purchase of this offer while it participates in the campaign.'
+      description: 'Limits of purchase of this offer while it participates in the campaign. Only DISCOUNT and SOURCING campaigns.'
     BadgeApplicationPurchaseConstraintsLimitPerUser:
       type: object
       properties:
