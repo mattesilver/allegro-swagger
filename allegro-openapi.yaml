@@ -5019,7 +5019,8 @@ paths:
               * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
               * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
               * `BUYER_CANCELLED`: purchase was cancelled by buyer
-              * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
+              * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed
+              * `AUTO_CANCELLED`: purchase was cancelled automatically by Allegro.
           required: false
           schema:
             type: array
@@ -5697,6 +5698,8 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+        '422':
+          description: Unprocessable Entity
       security:
       - bearer-token-for-user:
         - allegro:api:disputes
@@ -5892,6 +5895,8 @@ paths:
           description: File is too big
         '415':
           description: Unsupported media type
+        '422':
+          description: Unprocessable Entity
       requestBody:
         required: true
         content:
@@ -11997,6 +12002,8 @@ components:
                                                 be included in the offer in unchanged form.
                           </li>
                         </ul>'
+      required:
+        - type
       discriminator:
         propertyName: type
         mapping:
@@ -15271,6 +15278,7 @@ components:
         - BUYER_CANCELLED
         - FULFILLMENT_STATUS_CHANGED
         - BUYER_MODIFIED
+        - AUTO_CANCELLED
       example: "READY_FOR_PROCESSING"
       description: >
         Type of order event.
@@ -15280,6 +15288,7 @@ components:
         * `BUYER_CANCELLED` - purchase cancelled by buyer
         * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed.
         * `BUYER_MODIFIED` - purchase modified by buyer
+        * `AUTO_CANCELLED` - purchase cancelled automatically by Allegro
     CheckoutForms:
       type: object
       required:
