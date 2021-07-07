@@ -16480,7 +16480,15 @@ components:
           description: Name of the product.
           maxLength: 50
         category:
-          $ref: '#/components/schemas/Category'
+          allOf:
+            - $ref: '#/components/schemas/Category'
+            - type: object
+              properties:
+                similar:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Category'
+                  description: A list of similar categories in which you can sell this product.
         images:
           type: array
           items:
