@@ -6782,6 +6782,7 @@ paths:
       summary: "Create offer based on product"
       description: >-
         Use this resource to create offer based on product. Read more: <a href="../../product_offers/" target="_blank">PL</a> / <a href="../../en/product_offers/" target="_blank">EN</a>.
+        Note that requests may be limited.
       operationId: createProductOffers
       responses:
         '201':
@@ -6845,6 +6846,7 @@ paths:
       summary: "Edit an offer"
       description: >-
         Use this resource to edit offer. Read more: <a href="../../product_offers/#jak-edytować-ofertę" target="_blank">PL</a> / <a href="../../en/product_offers/#how-to-edit-an-offer" target="_blank">EN</a>.
+        Note that requests may be limited.
       operationId: editProductOffers
       parameters:
         - name: offerId
@@ -7788,6 +7790,8 @@ paths:
                     type: "OFFER_ACTIVATED"
                     offer:
                       id: "2865624934"
+                      external:
+                        id: "externalId"
                 offerEndedEvent:
                   summary: offer ended event
                   value:
@@ -7798,6 +7802,8 @@ paths:
                       id: "2865624934"
                       publication:
                         endedBy: "USER"
+                      external:
+                        id: "externalId"
                 offerBidPlaced:
                   summary: offer bid placed event
                   value:
@@ -7806,6 +7812,8 @@ paths:
                     type: "OFFER_BID_PLACED"
                     offer:
                       id: "2865624934"
+                      external:
+                        id: "externalId"
                 offerBidCanceled:
                   summary: offer bid canceled event
                   value:
@@ -7814,6 +7822,8 @@ paths:
                     type: "OFFER_BID_CANCELED"
                     offer:
                       id: "2865624934"
+                      external:
+                        id: "externalId"
         '400':
           description: >-
             Invalid parameters supplied in the request.
@@ -17743,6 +17753,8 @@ components:
           type: string
           example: "2865624934"
           description: The offer ID.
+        external:
+          $ref: '#/components/schemas/ExternalId'
     OfferEventEndedOffer:
       allOf:
         - $ref: '#/components/schemas/OfferEventBaseOffer'
