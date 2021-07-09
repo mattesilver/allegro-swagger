@@ -1192,9 +1192,28 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: >-
             Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Offer/Offers not found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '412':
+          description: >-
+            Validation failed – request had correct syntax, but promotion properties exceeds acceptable limits
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -1377,12 +1396,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
-        '404':
-          description: User id not found
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Restrictions were not satisfied
           content:
@@ -1416,6 +1429,12 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/SellerRebateDto'
+        '401':
+          description: Unauthorized action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: Promotion not found
           content:
@@ -1509,9 +1528,21 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '403':
           description: >-
             Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Promotion not found
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -1600,14 +1631,14 @@ paths:
       responses:
         '204':
           description: Successfully deactivated the requested promotion
+        '401':
+          description: Unauthorized action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
         '404':
           description: Promotion not found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '422':
-          description: Promotion cannot be reactivated
           content:
             '*/*':
               schema:
