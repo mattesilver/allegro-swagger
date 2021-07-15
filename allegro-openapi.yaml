@@ -352,7 +352,8 @@ paths:
         - Offer management
       summary: 'Complete a draft offer or edit an offer'
       description:
-        'Use this resource to complete a draft offer or edit ongoing offers. Read more: <a href="../../sale/#uzupełnij-draft-oferty" target="_blank">PL</a> / <a href="../../en/sale/#new-offer" target="_blank">EN</a>.'
+        'Use this resource to complete a draft offer or edit ongoing offers. Read more: <a href="../../sale/#uzupełnij-draft-oferty" target="_blank">PL</a> / <a href="../../en/sale/#new-offer" target="_blank">EN</a>.
+         This resource is rate limited to 10 requests per second.'
       operationId: updateOfferUsingPUT
       parameters:
         - name: offerId
@@ -449,7 +450,8 @@ paths:
         - Offer management
       summary: 'Batch offer publish / unpublish'
       description:
-        'Use this resource to modify multiple offers publication at once. Read more: <a href="../../sale/#9-publikacja-oferty" target="_blank">PL</a> / <a href="../../en/sale/#9-publish-your-offer" target="_blank">EN</a>.'
+        'Use this resource to modify multiple offers publication at once. Read more: <a href="../../sale/#9-publikacja-oferty" target="_blank">PL</a> / <a href="../../en/sale/#9-publish-your-offer" target="_blank">EN</a>.
+        This resource is rate limited to 10 requests per second.'
       operationId: changePublicationStatusUsingPUT
       parameters:
         - name: commandId
@@ -2011,7 +2013,8 @@ paths:
         - Batch offer modification
       summary: 'Batch offer modification'
       description:
-        'Use this resource to modify multiple offers at once. Read more: <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">PL</a> / <a href="../../en/news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">EN</a>.'
+        'Use this resource to modify multiple offers at once. Read more: <a href="../../news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">PL</a> / <a href="../../en/news/2018-04-19-news_grupowa_edycja_ofert_update/#1" target="_blank">EN</a>.
+        This resource is rate limited to 1 milion offer changes per hour.'
       operationId: modificationCommandUsingPUT
       parameters:
         - name: commandId
@@ -2142,6 +2145,7 @@ paths:
       operationId: priceModificationCommandUsingPUT
       description: >-
         Change price of offers. Read more: <a href="../../my_offers/#cena" target="_blank">PL</a> / <a href="../../en/my_offers/#price" target="_blank">EN</a>.
+        This resource is rate limited to 1 milion offer changes per hour.
       parameters:
         - name: commandId
           in: path
@@ -2258,6 +2262,7 @@ paths:
       summary: "Batch offer quantity modification"
       description: >-
         Change quantity of multiple offers. Read more: <a href="../../my_offers/#liczba-przedmiotów" target="_blank">PL</a> / <a href="../../en/my_offers/#quantity" target="_blank">EN</a>.
+        This resource is rate limited to 1 milion offer changes per hour.
       operationId: quantityModificationCommandUsingPUT
       parameters:
         - name: commandId
@@ -6141,7 +6146,9 @@ paths:
         - Offer tags
       summary: "Modify a tag"
       description:
-        'Use this resource to update a tag. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">EN</a>.'
+        'Use this resource to update a tag. Read more: <a href="../../news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">PL</a> / <a href="../../en/news/2018-09-24-tagi-zalaczniki/#ZmienNazwe" target="_blank">EN</a>.
+        This resource is rate limited to 1 milion offer changes per hour.'
+
       operationId: updateTagPUT
       parameters:
         - name: tagId
