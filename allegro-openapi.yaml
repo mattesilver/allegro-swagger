@@ -4941,28 +4941,28 @@ paths:
             When the filter definition looks like:
               ````
                 {
-                	"id": "parameter.11323",
-                	"type": "MULTI",
-                	"name": "Stan",
-                	"values": [{
-                			"value": "11323_1",
-                			"name": "nowe",
-                			"count": 21,
-                			"selected": false
-                		},
-                		{
-                			"value": "11323_2",
-                			"name": "używane",
-                			"count": 157,
-                			"selected": false
-                		},
-                		{
-                			"value": "11323_238066",
-                			"name": "po zwrocie",
-                			"count": 1,
-                			"selected": false
-                		}
-                	]
+                  "id": "parameter.11323",
+                  "type": "MULTI",
+                  "name": "Stan",
+                  "values": [{
+                      "value": "11323_1",
+                      "name": "nowe",
+                      "count": 21,
+                      "selected": false
+                    },
+                    {
+                      "value": "11323_2",
+                      "name": "używane",
+                      "count": 157,
+                      "selected": false
+                    },
+                    {
+                      "value": "11323_238066",
+                      "name": "po zwrocie",
+                      "count": 1,
+                      "selected": false
+                    }
+                  ]
                 }
               ````
             You can use 'Stan' filter to query results, i.e.:
@@ -6828,13 +6828,19 @@ paths:
           content:
             application/vnd.allegro.beta.v2+json:
               schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
+                $ref: '#/components/schemas/SaleProductOfferResponseV2'
+            application/vnd.allegro.beta.v3+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponseV3'
         '202':
           description: The product-offer creation request has been accepted for processing, but the processing has not been completed.
           content:
             application/vnd.allegro.beta.v2+json:
               schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
+                $ref: '#/components/schemas/SaleProductOfferResponseV2'
+            application/vnd.allegro.beta.v3+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponseV3'
           headers:
             Location:
               schema:
@@ -6872,7 +6878,10 @@ paths:
         content:
           application/vnd.allegro.beta.v2+json:
             schema:
-              $ref: '#/components/schemas/SaleProductOfferRequest'
+              $ref: '#/components/schemas/SaleProductOfferRequestV2'
+          application/vnd.allegro.beta.v3+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferRequestV3'
         required: true
       security:
       - bearer-token-for-user:
@@ -6899,13 +6908,19 @@ paths:
           content:
             application/vnd.allegro.beta.v2+json:
               schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
+                $ref: '#/components/schemas/SaleProductOfferResponseV2'
+            application/vnd.allegro.beta.v3+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponseV3'
         '202':
           description: The request to edit product-offer has been accepted for processing, but the processing has not been completed.
           content:
             application/vnd.allegro.beta.v2+json:
               schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
+                $ref: '#/components/schemas/SaleProductOfferResponseV2'
+            application/vnd.allegro.beta.v3+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponseV3'
           headers:
             Location:
               schema:
@@ -6943,7 +6958,10 @@ paths:
         content:
           application/vnd.allegro.beta.v2+json:
             schema:
-              $ref: '#/components/schemas/SaleProductOfferPatchRequest'
+              $ref: '#/components/schemas/SaleProductOfferPatchRequestV2'
+          application/vnd.allegro.beta.v3+json:
+            schema:
+              $ref: '#/components/schemas/SaleProductOfferPatchRequestV3'
         required: true
     get:
       tags:
@@ -6963,9 +6981,12 @@ paths:
         '200':
           description: Offer returned successfully
           content:
-            application/vnd.allegro.public.v2+json:
+            application/vnd.allegro.beta.v2+json:
               schema:
-                $ref: '#/components/schemas/SaleProductOfferResponse'
+                $ref: '#/components/schemas/SaleProductOfferResponseV2'
+            application/vnd.allegro.beta.v3+json:
+              schema:
+                $ref: '#/components/schemas/SaleProductOfferResponseV3'
         '400':
           description: Syntactically incorrect request
         '401':
@@ -16690,18 +16711,29 @@ components:
         tax:
           $ref: '#/components/schemas/ExtendedTax'
       description: Single offer data.
-    SaleProductOfferRequest:
+    SaleProductOfferRequestBase:
       allOf:
         - type: object
-          required:
-            - stock
           properties:
-            product:
-              allOf:
-                - $ref: '#/components/schemas/ProductOffer'
-              description: You should enter the product identifier (UUID or EAN) or a complete product definition.
-            afterSalesServices:
-              $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
+            category:
+              type: object
+              properties:
+                id:
+                  type: string
+              description: You can indicate a category from the product's 'similar categories' to set the offer's category.
+            parameters:
+              type: array
+              items:
+                $ref: '#/components/schemas/ParameterProductOfferRequest'
+            publication:
+              type: object
+              properties:
+                duration:
+                  $ref: '#/components/schemas/OfferDuration'
+                startingAt:
+                  $ref: '#/components/schemas/OfferStartingAt'
+                status:
+                  $ref: '#/components/schemas/OfferStatus'
             delivery:
               allOf:
                 - $ref: '#/components/schemas/DeliveryProductOfferRequest'
@@ -16709,25 +16741,8 @@ components:
                   properties:
                     shippingRates:
                       description: You should enter the shippingrates identifier or name.
-            parameters:
-              type: array
-              items:
-                $ref: '#/components/schemas/ParameterProductOfferRequest'
-            publication:
-              type: object
-              properties:
-                duration:
-                  $ref: '#/components/schemas/OfferDuration'
-                startingAt:
-                  $ref: '#/components/schemas/OfferStartingAt'
-                status:
-                  $ref: '#/components/schemas/OfferStatus'
-            category:
-              type: object
-              properties:
-                id:
-                  type: string
-              description: You can indicate a category from the product's 'similar categories' to set the offer's category.
+            afterSalesServices:
+              $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
             sizeTable:
               allOf:
                 - $ref: '#/components/schemas/SizeTable'
@@ -16740,64 +16755,56 @@ components:
             discounts:
               $ref: '#/components/schemas/DiscountsProductOfferRequest'
         - $ref: '#/components/schemas/SaleProductOffer'
-    SaleProductOfferPatchRequest:
+    SaleProductOfferRequestV2:
+      allOf:
+        - type: object
+          required:
+            - stock
+          properties:
+            product:
+              allOf:
+                - description: You should enter the product identifier (UUID or EAN) or a complete product definition.
+                - $ref: '#/components/schemas/ProductOffer'
+        - $ref: '#/components/schemas/SaleProductOfferRequestBase'
+    SaleProductOfferRequestV3:
+      allOf:
+        - type: object
+          required:
+            - stock
+          properties:
+            productSet:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/ProductSetElement'
+                    - description: List of products sold in the offer. You should enter the product ids (UUID or EAN) or a complete product definition.
+        - $ref: '#/components/schemas/SaleProductOfferRequestBase'
+    SaleProductOfferPatchRequestV2:
       allOf:
         - type: object
           properties:
             product:
-              description: You should enter the product's data which you want to modify.
               allOf:
-                - type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Product identificator.
-                    parameters:
-                      type: array
-                      description: Product parameters.
-                      items:
-                        $ref: '#/components/schemas/ProductParameterDto'
-            stock:
-              $ref: '#/components/schemas/Stock'
-            afterSalesServices:
-              $ref: '#/components/schemas/AfterSalesServicesProductOfferRequest'
-            delivery:
-              $ref: '#/components/schemas/DeliveryProductOfferRequest'
-            tax:
-              $ref: '#/components/schemas/ExtendedTax'
-            parameters:
+                - description: You should enter the product's data which you want to modify.
+                - $ref: '#/components/schemas/ProductOfferBase'
+        - $ref: '#/components/schemas/SaleProductOfferRequestBase'
+    SaleProductOfferPatchRequestV3:
+      allOf:
+        - type: object
+          properties:
+            productSet:
               type: array
               items:
-                $ref: '#/components/schemas/ParameterProductOfferRequest'
-            publication:
-              type: object
-              properties:
-                duration:
-                  $ref: '#/components/schemas/OfferDuration'
-                startingAt:
-                  $ref: '#/components/schemas/OfferStartingAt'
-                status:
-                  $ref: '#/components/schemas/OfferStatus'
-            sizeTable:
-              allOf:
-                - $ref: '#/components/schemas/SizeTable'
-                - type: object
-                  properties:
-                    name:
-                      type: string
-                      description: The name of the size table definition.
-              description: The size table information. You should enter the size tabe identifier or name.
-            discounts:
-              $ref: '#/components/schemas/DiscountsProductOfferRequest'
-        - $ref: '#/components/schemas/SaleProductOffer'
-    SaleProductOfferResponse:
+                allOf:
+                  - $ref: '#/components/schemas/ProductSetElement'
+                  - description: List of products sold in the offer. You should enter the product ids (UUID or EAN) or a complete product definition.
+        - $ref: '#/components/schemas/SaleProductOfferRequestBase'
+    SaleProductOfferResponseBase:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            product:
-              $ref: '#/components/schemas/ProductOfferResponse'
             validation:
               $ref: '#/components/schemas/Validation'
             publication:
@@ -16821,6 +16828,25 @@ components:
                 Last update date: Format (ISO 8601) - yyyy-MM-dd'T'HH:mm:ss.SSSZ.
                 Cannot be modified.
         - $ref: '#/components/schemas/SaleProductOffer'
+    SaleProductOfferResponseV2:
+      allOf:
+        - type: object
+          properties:
+            product:
+              $ref: '#/components/schemas/ProductOfferResponse'
+        - $ref: '#/components/schemas/SaleProductOfferResponseBase'
+    SaleProductOfferResponseV3:
+      allOf:
+        - type: object
+          properties:
+            productSet:
+              type: array
+              items:
+                type: object
+                properties:
+                 product:
+                  $ref: '#/components/schemas/ProductOfferResponse'
+        - $ref: '#/components/schemas/SaleProductOfferResponseBase'
     SaleProductOfferStatusResponse:
       type: object
       properties:
@@ -16847,31 +16873,43 @@ components:
               description: 'The starting date and time of operation.'
               example: '2019-05-29T12:00:00Z'
       description: Single opertion data.
-    ProductOffer:
+    ProductOfferBase:
       type: object
       properties:
         id:
           type: string
           example: c9e39cae-9cb6-11e9-a2a3-2a2ae2dbcce4
           description: Product id.
-        name:
-          type: string
-          description: Product name.
-          example: iPhone 5s
-        category:
-          allOf:
-            - $ref: '#/components/schemas/Category'
-          description: Category identifier of product
-        images:
-          type: array
-          items:
-            type: string
-          description: List of product images.
         parameters:
           type: array
           items:
             $ref: '#/components/schemas/ParameterProductOfferRequest'
           description: List of product parameters.
+        images:
+          type: array
+          items:
+            type: string
+          description: List of product images.
+    ProductOffer:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+              description: Product name.
+              example: iPhone 5s
+            category:
+              allOf:
+                - $ref: '#/components/schemas/Category'
+              description: Category identifier of product
+        - $ref: '#/components/schemas/ProductOfferBase'
+    ProductSetElement:
+      type: object
+      properties:
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductOffer'
+          description: You should enter the product identifier (UUID or EAN) or a complete product definition.
     ProductOfferResponse:
       type: object
       properties:
